@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sysco.app</groupId>
+    <artifactId>om-system</artifactId>
+    <name>om-system</name>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Shared version number properties -->
+    <properties>
+        <java-version>1.8</java-version>
+        <org.springframework-version>4.2.2.RELEASE</org.springframework-version>
+        <org.springframework.security-version>4.0.1.RELEASE</org.springframework.security-version>
+        <org.aspectj-version>1.8.1</org.aspectj-version>
+        <org.slf4j-version>1.7.12</org.slf4j-version>
+    </properties>
+
+    <dependencies>
+        <!-- Spring -->
+        <!--
+           Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans)
+           This is the central artifact for Spring's Dependency Injection Container and is generally always defined
+       -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        <!--
+            Spring MVC for Servlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
+            Define this if you use Spring MVC with a Servlet Container such as Apache Tomcat (org.springframework.web.servlet.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>om-system</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
