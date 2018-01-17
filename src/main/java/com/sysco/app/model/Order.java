@@ -3,27 +3,46 @@ package com.sysco.app.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "order")
-public class Order{
+import java.util.Date;
+import java.util.List;
+
+@Document(collection = "orders")
+public class Order {
+
     @Id
-    private int orderId;
+    private String orderId;
+    private String restaurantId;
+    private String deliveryAddressId;
     private String deliveryMethod;
     private String status;
+    private Date createdDate;
+    private Date validUntil;
+    private Date lastUpdatedAt;
     private String description;
+    private List<String> goodsIdList;
 
-    public Order(int orderId, String deliveryMethod, String status, String description) {
-        this.orderId = orderId;
-        this.deliveryMethod = deliveryMethod;
-        this.status = status;
-        this.description = description;
-    }
-
-    public int getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getDeliveryAddressId() {
+        return deliveryAddressId;
+    }
+
+    public void setDeliveryAddressId(String deliveryAddressId) {
+        this.deliveryAddressId = deliveryAddressId;
     }
 
     public String getDeliveryMethod() {
@@ -42,6 +61,30 @@ public class Order{
         this.status = status;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getValidUntil() {
+        return validUntil;
+    }
+
+    public void setValidUntil(Date validUntil) {
+        this.validUntil = validUntil;
+    }
+
+    public Date getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(Date lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -50,11 +93,11 @@ public class Order{
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("Id:- " + getOrderId() + ", Delivery method:- " + getDeliveryMethod() + ", Status:- " + getStatus());
-        return str.toString();
+    public List<String> getGoodsIdList() {
+        return goodsIdList;
     }
 
+    public void setGoodsIdList(List<String> goodsIdList) {
+        this.goodsIdList = goodsIdList;
+    }
 }
