@@ -134,6 +134,7 @@
             <!--</plugin>-->
 
         </plugins>
+        <finalName>omsystem</finalName>
     </build>
 
 </project>
