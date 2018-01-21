@@ -22,6 +22,7 @@ public class OrderController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> index() {
+        logger.debug("Root service called");
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 }
