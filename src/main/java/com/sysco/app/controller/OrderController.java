@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-
 import com.sysco.app.model.Good;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.GoodRepository;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/order")
 public class OrderController {
 
     @Autowired

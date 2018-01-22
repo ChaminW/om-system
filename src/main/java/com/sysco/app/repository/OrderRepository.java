@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository("orderRepository")
 public interface OrderRepository extends MongoRepository<Order, String> {
 
-
 }
