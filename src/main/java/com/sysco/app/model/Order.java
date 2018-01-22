@@ -15,9 +15,9 @@ public class Order {
     private String deliveryAddressId;
     private String deliveryMethod;
     private String status;
-    private Date createdDate;
-    private Date validUntil;
-    private Date lastUpdatedAt;
+    private String createdDate;
+    private String validUntil;
+    private String lastUpdatedAt;
     private String description;
     private List<String> goodsIdList;
 
@@ -61,27 +61,27 @@ public class Order {
         this.status = status;
     }
 
-    public Date getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getValidUntil() {
+    public String getValidUntil() {
         return validUntil;
     }
 
-    public void setValidUntil(Date validUntil) {
+    public void setValidUntil(String validUntil) {
         this.validUntil = validUntil;
     }
 
-    public Date getLastUpdatedAt() {
+    public String getLastUpdatedAt() {
         return lastUpdatedAt;
     }
 
-    public void setLastUpdatedAt(Date lastUpdatedAt) {
+    public void setLastUpdatedAt(String lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 

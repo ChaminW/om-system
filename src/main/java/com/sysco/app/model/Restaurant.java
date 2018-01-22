@@ -12,7 +12,6 @@ public class Restaurant {
     private String restaurantId;
     private String owner;
     private String addressId;
-    private String address;
     private Date createdAt;
     private String contact;
     private String description;
@@ -40,14 +39,6 @@ public class Restaurant {
 
     public void setAddressId(String addressId) {
         this.addressId = addressId;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Date getCreatedAt() {

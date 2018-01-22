@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
     protected String getDatabaseName() {
-        return "springTest";
+        return "omapp-db";
     }
 
     public MongoClient mongoClient() {
