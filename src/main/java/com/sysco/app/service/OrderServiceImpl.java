@@ -1,7 +1,6 @@
 package com.sysco.app.service;
 
 import com.sysco.app.model.Order;
-
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
@@ -32,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delteOrder(long id) {
+    public void deleteOrder(long id) {
 
     }
 }
