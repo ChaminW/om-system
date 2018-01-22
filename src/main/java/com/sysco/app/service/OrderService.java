@@ -8,6 +8,8 @@ public interface OrderService {
 
     void createOrder(Order order);
 
+    List<Order> readOrder();
+
     List<Order> readOrder(Order order);
 
     List<Order> readOrder(long id);
