@@ -9,23 +9,23 @@ import java.util.List;
 public class Order {
 
     @Id
-    private String orderId;
+    private String id;
     private String restaurantId;
     private String deliveryAddressId;
     private String deliveryMethod;
     private String status;
-    private String createdDate;
-    private String validUntil;
-    private String lastUpdatedAt;
+    private Date createdDate;
+    private Date validUntil;
+    private Date lastUpdatedAt;
     private String description;
-    private List<String> goodsIdList;
+    private List<String> itemIdList;
 
-    public String getOrderId() {
-        return orderId;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRestaurantId() {
@@ -60,27 +60,27 @@ public class Order {
         this.status = status;
     }
 
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public String getValidUntil() {
+    public Date getValidUntil() {
         return validUntil;
     }
 
-    public void setValidUntil(String validUntil) {
+    public void setValidUntil(Date validUntil) {
         this.validUntil = validUntil;
     }
 
-    public String getLastUpdatedAt() {
+    public Date getLastUpdatedAt() {
         return lastUpdatedAt;
     }
 
-    public void setLastUpdatedAt(String lastUpdatedAt) {
+    public void setLastUpdatedAt(Date lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 
@@ -92,11 +92,11 @@ public class Order {
         this.description = description;
     }
 
-    public List<String> getGoodsIdList() {
-        return goodsIdList;
+    public List<String> getItemIdList() {
+        return itemIdList;
     }
 
-    public void setGoodsIdList(List<String> goodsIdList) {
-        this.goodsIdList = goodsIdList;
+    public void setItemIdList(List<String> itemIdList) {
+        this.itemIdList = itemIdList;
     }
 }

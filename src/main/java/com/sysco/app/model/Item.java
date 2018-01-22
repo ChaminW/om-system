@@ -3,23 +3,23 @@ package com.sysco.app.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "goods")
-public class Good {
+@Document(collection = "items")
+public class Item {
 
     @Id
-    private String goodId;
+    private String id;
     private String name;
     private String type;
     private Double pricePerItem;
     private String totalQuantity;
     private String description;
 
-    public String getGoodId() {
-        return goodId;
+    public String getId() {
+        return id;
     }
 
-    public void setGoodId(String goodId) {
-        this.goodId = goodId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

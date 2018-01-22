@@ -1,9 +1,9 @@
 package com.sysco.app.repository;
 
-import com.sysco.app.model.Good;
+import com.sysco.app.model.Item;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("goodRepository")
-public interface GoodRepository extends MongoRepository<Good, String> {
+@Repository("itemRepository")
+public interface ItemRepository extends MongoRepository<Item, String> {
 }

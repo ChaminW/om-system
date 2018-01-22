@@ -2,7 +2,7 @@ package com.sysco.app.controller;
 
 import com.sysco.app.exceptions.OrderNotFoundException;
 import com.sysco.app.model.Order;
-import com.sysco.app.repository.GoodRepository;
+import com.sysco.app.repository.ItemRepository;
 import com.sysco.app.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -23,12 +22,11 @@ public class OrderController {
 
     @Autowired
     @Qualifier("goodRepository")
-    GoodRepository goodRepository;
+    ItemRepository goodRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> rootService() {
-
-        return new ResponseEntity<String>("Success", HttpStatus.OK);
+        return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
@@ -56,7 +54,7 @@ public class OrderController {
 //    public List<Order> getOrderList() {
 //        System.out.println("In the order list end point");
 //        List<Order> orderList = (List<Order>) orderRepository.findAll();
-//        Optional<Good> good = goodRepository.findById(orderList.get(0).getGoodsIdList().get(0));
+//        Optional<Item> good = goodRepository.findById(orderList.get(0).getItemIdList().get(0));
 //        System.out.println(orderList.toString());
 //        return orderList;
 //    }
