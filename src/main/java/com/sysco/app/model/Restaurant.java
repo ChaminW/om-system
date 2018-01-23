@@ -71,5 +71,4 @@ public class Restaurant {
     public void setActive(Boolean active) {
         isActive = active;
     }
-
 }

@@ -16,22 +16,27 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void createItem(Item item) {
-
+        itemRepository.insert(item);
     }
 
     @Override
     public List<Item> readItem() {
-        return null;
+        return itemRepository.findAll();
     }
 
     @Override
-    public List<Item> readItem(Item id) {
+    public List<Item> readItem(Item item) {
         return null;
     }
 
     @Override
     public List<Item> readItem(long id) {
         return null;
+    }
+
+    @Override
+    public List<Item> readItem(String name) {
+        return itemRepository.findItemsByName(name);
     }
 
     @Override

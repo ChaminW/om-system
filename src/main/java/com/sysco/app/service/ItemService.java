@@ -9,9 +9,11 @@ public interface ItemService {
 
     List<Item> readItem();
 
-    List<Item> readItem(Item id);
+    List<Item> readItem(Item item);
 
     List<Item> readItem(long id);
+
+    List<Item> readItem(String name);
 
     void updateItem(Item item);
 
