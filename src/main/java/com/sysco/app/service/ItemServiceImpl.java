@@ -21,7 +21,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> readItem() {
-        return null;
+        return itemRepository.findAll();
     }
 
     @Override

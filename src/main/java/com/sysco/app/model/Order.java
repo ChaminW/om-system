@@ -1,5 +1,7 @@
 package com.sysco.app.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
@@ -19,6 +21,9 @@ public class Order {
     private Date lastUpdatedAt;
     private String description;
     private List<String> itemIdList;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     public String getId() {
         return id;
@@ -98,5 +103,10 @@ public class Order {
 
     public void setItemIdList(List<String> itemIdList) {
         this.itemIdList = itemIdList;
+    }
+
+    @Override
+    public String toString() {
+        objectMapper
     }
 }
