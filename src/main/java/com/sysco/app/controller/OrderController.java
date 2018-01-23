@@ -1,13 +1,13 @@
 package com.sysco.app.controller;
 
 import com.sysco.app.exceptions.OrderNotFoundException;
+import com.sysco.app.model.Item;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.ItemRepository;
 import com.sysco.app.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.net.URL;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class OrderController {
@@ -29,6 +32,8 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+    @Autowired
+    ItemRepository itemRepository;
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -39,7 +44,9 @@ public class OrderController {
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
-
+        order.setCreatedDate(Date.from(Instant.now()));
+        order.setLastUpdatedAt(Date.from(Instant.now()));
+        order.setValidUntil(Date.from(Instant.now()));
         orderService.createOrder(order);
 
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
@@ -48,8 +55,8 @@ public class OrderController {
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     public ResponseEntity<List<Order>> getOrder() {
 
-        List orders = orderService.readOrder();
-
+        List<Order> orders = orderService.readOrder();
+        Optional<Item> item =  itemRepository.findById(orders.get(0).getItemIdList().get(0));
         if(orders.isEmpty()) {
             throw new OrderNotFoundException();
         }

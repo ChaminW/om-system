@@ -1,17 +1,78 @@
 package com.sysco.app;
 
 import com.sysco.app.model.Order;
-import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
+import java.time.Instant;
+import java.util.*;
+
+@RunWith(MockitoJUnitRunner.class)
+//@PrepareForTest(Order.class)
 public class ApiTest {
 
-    @Mock
+    private String server;
+    private RestTemplate rest;
+    private HttpHeaders headers;
+    private HttpStatus status;
+    private List<String> itemIdList;
+   // @Mock
     Order order;
 
-    @Test
-    public void testGet() {
-
-
+    @BeforeClass
+    public void setUp()
+    {
+        itemIdList = new ArrayList<String>();
+        itemIdList.add("5a5f411f062cb49fbcd43ad6");
+        order = new Order("5a5f705d062cb49fbcd43ad7","5a5f712c062cb49fbcd43ad8","aaa","asas", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",itemIdList);
+        rest = new RestTemplate();
+        server = "http://localhost:10000/order";
+       // MockitoAnnotations.initMocks(this);
+        headers = new HttpHeaders();
+        headers.add("Content-type","application/json");
     }
+
+    @Test
+    public void testApiGet()
+    {
+        HttpEntity<String> requestEntity = new HttpEntity<String>("", null);
+        ResponseEntity<String> responseEntity = rest.exchange(server, HttpMethod.GET, requestEntity, String.class);
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.FOUND);
+        //other get method test cases
+    }
+
+    @Test
+    public void testApiPost()
+    {
+        HttpEntity<Order> requestEntity = new HttpEntity<Order>(order,headers);
+        ResponseEntity<Order> responseEntity = rest.exchange(server, HttpMethod.POST, requestEntity, Order.class);
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
+        Assert.assertEquals(order.getClass(),responseEntity.getBody().getClass());
+    }
+
+  /*  public String post(String uri, String json) {
+        HttpEntity<String> requestEntity = new HttpEntity<String>(json, headers);
+        ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.POST, requestEntity, String.class);
+        this.setStatus(responseEntity.getStatusCode());
+        return responseEntity.getBody();
+    }
+
+    public void put(String uri, String json) {
+        HttpEntity<String> requestEntity = new HttpEntity<String>(json, headers);
+        ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.PUT, requestEntity, null);
+        this.setStatus(responseEntity.getStatusCode());
+    }
+
+    public void delete(String uri) {
+        HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
+        ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.DELETE, requestEntity, null);
+        this.setStatus(responseEntity.getStatusCode());
+    }*/
 }

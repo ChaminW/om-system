@@ -20,6 +20,21 @@ public class Order {
     private String description;
     private List<String> itemIdList;
 
+    public Order() {
+    }
+
+    public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Date createdDate, Date validUntil, Date lastUpdatedAt, String description, List<String> itemIdList) {
+        this.restaurantId = restaurantId;
+        this.deliveryAddressId = deliveryAddressId;
+        this.deliveryMethod = deliveryMethod;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.validUntil = validUntil;
+        this.lastUpdatedAt = lastUpdatedAt;
+        this.description = description;
+        this.itemIdList = itemIdList;
+    }
+
     public String getId() {
         return id;
     }
