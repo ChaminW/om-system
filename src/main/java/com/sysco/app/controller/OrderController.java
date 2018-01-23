@@ -36,13 +36,10 @@ public class OrderController {
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     public ResponseEntity<List<Order>> getOrder() {
-
         List orders = orderService.readOrder();
-
         if(orders.isEmpty()) {
             throw new OrderNotFoundException();
         }
-
         return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
     }
 
