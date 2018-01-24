@@ -24,16 +24,9 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll();
     }
 
-<<<<<<< HEAD
     @Override
     public List<Item> readItemsById(String id) {
         return itemRepository.findItemsById(id);
-=======
-
-    @Override
-    public List<Item> readItem(String name) {
-        return itemRepository.findItemsByName(name);
->>>>>>> be3f54e64a47c057437609138322759d63eec9aa
     }
 
     @Override
@@ -42,11 +35,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-<<<<<<< HEAD
-    public void deleteItem(long id) {
-=======
     public void deleteItem(String id) {
->>>>>>> be3f54e64a47c057437609138322759d63eec9aa
 
     }
 }

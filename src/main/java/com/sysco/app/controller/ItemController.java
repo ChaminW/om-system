@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-import com.sun.org.apache.regexp.internal.RESyntaxException;
 import com.sysco.app.exceptions.ItemNotFoundException;
 import com.sysco.app.model.Item;
 import com.sysco.app.service.ItemService;
