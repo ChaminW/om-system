@@ -24,15 +24,6 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll();
     }
 
-    @Override
-    public List<Item> readItem(Item item) {
-        return null;
-    }
-
-    @Override
-    public List<Item> readItem(long id) {
-        return null;
-    }
 
     @Override
     public List<Item> readItem(String name) {
@@ -40,17 +31,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void updateItem(Item item) {
+    public void updateItem(Item item, String id) {
 
     }
 
     @Override
-    public void deleteItem(Item id) {
-
-    }
-
-    @Override
-    public void delteItem(long id) {
+    public void deleteItem(String id) {
 
     }
 }
