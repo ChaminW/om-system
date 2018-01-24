@@ -7,17 +7,13 @@ public interface ItemService {
 
     void createItem(Item item);
 
-    List<Item> readItem();
+    List<Item> readItems();
 
-    List<Item> readItem(Item item);
-
-    List<Item> readItem(long id);
-
-    List<Item> readItem(String name);
+    List<Item> readItemsById(String id);
 
     void updateItem(Item item);
 
     void deleteItem(Item id);
 
-    void delteItem(long id);
+    void deleteItem(long id);
 }
