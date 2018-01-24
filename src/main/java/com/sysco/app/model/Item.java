@@ -11,7 +11,7 @@ public class Item {
     private String name;
     private String type;
     private Double pricePerItem;
-    private String totalQuantity;
+    private Double totalQuantity;
     private String description;
 
     public String getId() {
@@ -46,11 +46,11 @@ public class Item {
         this.pricePerItem = pricePerItem;
     }
 
-    public String getTotalQuantity() {
+    public Double getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(String totalQuantity) {
+    public void setTotalQuantity(Double totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 
