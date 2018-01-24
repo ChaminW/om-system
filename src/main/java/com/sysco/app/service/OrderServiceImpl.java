@@ -36,8 +36,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> readOrder(long id) {
-        return null;
+    public List<Order> readOrder(String id) {
+        return orderRepository.findOrdersById(id);
     }
 
     @Transactional
@@ -46,15 +46,10 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    @Transactional
-    @Override
-    public void deleteOrder(Order order) {
-
-    }
 
     @Transactional
     @Override
-    public void deleteOrder(long id) {
+    public void deleteOrder(String id) {
 
     }
 }

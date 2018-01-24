@@ -11,11 +11,9 @@ public interface OrderService {
 
     List<Order> readOrder(Order order);
 
-    List<Order> readOrder(long id);
+    List<Order> readOrder(String id);
 
     void updateOrder(Order order);
 
-    void deleteOrder(Order order);
-
-    void deleteOrder(long id);
+    void deleteOrder(String id);
 }
