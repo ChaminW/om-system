@@ -10,9 +10,8 @@ public class Main {
         item.setName("Salmon");
         item.setDescription("Delmage");
         item.setPricePerItem(12.32);
-        item.setTotalQuantity("1");
+        item.setTotalQuantity(1.0);
         item.setType("Canned Food");
-
         System.out.println(item);
 
     }
