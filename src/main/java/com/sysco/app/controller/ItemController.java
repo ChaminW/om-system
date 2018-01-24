@@ -30,7 +30,7 @@ public class ItemController {
 
     @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
-        Item item = itemService.readItemsById(id);
+        Item item = itemService.readItemById(id);
         if(item == null){
             throw new ItemNotFoundException(id);
         } else {
