@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends MongoRepository<Item, String> {
-    List<Item> findItemsById(String id);
+    Item findItemById(String id);
 }

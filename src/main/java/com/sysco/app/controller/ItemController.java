@@ -22,19 +22,19 @@ public class ItemController {
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/items", method = RequestMethod.GET)
+    @RequestMapping(value = "/item", method = RequestMethod.GET)
     public ResponseEntity<List<Item>> getItems() {
         List<Item> items = itemService.readItems();
         return new ResponseEntity<List<Item>>(items, HttpStatus.FOUND);
     }
 
-    @RequestMapping(value = "/items/{id}", method = RequestMethod.GET)
-    public ResponseEntity<List<Item>> getItemsById(@PathVariable String id) {
-        List<Item> items = itemService.readItemsById(id);
-        if(items.isEmpty()){
+    @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Item> getItemById(@PathVariable String id) {
+        Item item = itemService.readItemsById(id);
+        if(item == null){
             throw new ItemNotFoundException(id);
         } else {
-            return new ResponseEntity<List<Item>>(items, HttpStatus.FOUND);
+            return new ResponseEntity<Item>(item, HttpStatus.FOUND);
         }
     }
 }

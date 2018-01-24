@@ -9,7 +9,7 @@ public interface ItemService {
 
     List<Item> readItems();
 
-    List<Item> readItemsById(String id);
+    Item readItemById(String id);
 
     void updateItem(Item item,String id);
 
