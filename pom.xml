@@ -63,6 +63,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.0</version>
@@ -81,13 +87,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
-        </dependency>
-
-        <!-- swagger dependencies/api documentation -->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs2</artifactId>
-            <version>2.0.0-rc1</version>
         </dependency>
 
         <!-- Test -->
@@ -115,8 +114,6 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
     <build>
@@ -138,6 +135,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+
             <!--<plugin>-->
             <!--<groupId>org.apache.tomcat.maven</groupId>-->
             <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
