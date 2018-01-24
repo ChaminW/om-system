@@ -10,10 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.File;
 import java.net.URL;
 import java.time.Instant;
@@ -56,13 +54,25 @@ public class OrderController {
     public ResponseEntity<List<Order>> getOrder() {
 
         List<Order> orders = orderService.readOrder();
-        Optional<Item> item =  itemRepository.findById(orders.get(0).getItemIdList().get(0));
         if(orders.isEmpty()) {
             throw new OrderNotFoundException();
         }
 
         return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
     }
+
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Order>> getOrderById(@PathVariable("id") String id) {
+
+        List<Order> orders = orderService.readOrder(id);
+        if(orders.isEmpty()) {
+            throw new OrderNotFoundException();
+        }
+
+        return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
+    }
+
+
 
 
 //    @RequestMapping(method = RequestMethod.GET)
