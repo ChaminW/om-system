@@ -7,12 +7,11 @@ public interface ItemService {
 
     void createItem(Item item);
 
-    List<Item> readItem();
+    List<Item> readItems();
 
-    List<Item> readItem(String name);
+    List<Item> readItemsById(String id);
 
     void updateItem(Item item,String id);
 
     void deleteItem(String id);
-
 }

@@ -20,15 +20,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> readItem() {
+    public List<Item> readItems() {
         return itemRepository.findAll();
     }
 
-
     @Override
-    public List<Item> readItem(String name) {
-        return itemRepository.findItemsByName(name);
+    public List<Item> readItemsById(String id) {
+        return itemRepository.findItemsById(id);
     }
+
 
     @Override
     public void updateItem(Item item, String id) {

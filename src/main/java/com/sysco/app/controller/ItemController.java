@@ -1,16 +1,17 @@
 package com.sysco.app.controller;
 
-import com.sun.org.apache.regexp.internal.RESyntaxException;
+import com.sysco.app.exceptions.ItemNotFoundException;
 import com.sysco.app.model.Item;
 import com.sysco.app.service.ItemService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@Api(value = "items", description = "Item API")
 public class ItemController {
 
     @Autowired
@@ -21,11 +22,17 @@ public class ItemController {
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/item", method = RequestMethod.GET)
-    public ResponseEntity<List<Item>> getItems(@RequestParam("name") String name) {
-        List<Item> items = itemService.readItem(name);
+    @RequestMapping(value = "/items", method = RequestMethod.GET)
+    public ResponseEntity<List<Item>> getItems() {
+        List<Item> items = itemService.readItems();
+        return new ResponseEntity<List<Item>>(items, HttpStatus.FOUND);
+    }
+
+    @RequestMapping(value = "/items/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Item>> getItemsById(@PathVariable String id) {
+        List<Item> items = itemService.readItemsById(id);
         if(items.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ItemNotFoundException(id);
         } else {
             return new ResponseEntity<List<Item>>(items, HttpStatus.FOUND);
         }
