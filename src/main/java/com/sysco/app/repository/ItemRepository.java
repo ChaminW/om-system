@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends MongoRepository<Item, String> {
     List<Item> findItemsByName(String name);
+
 }
