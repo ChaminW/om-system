@@ -3,14 +3,15 @@ package com.sysco.app.controller;
 import com.sysco.app.exceptions.ItemNotFoundException;
 import com.sysco.app.model.Item;
 import com.sysco.app.service.ItemService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@Api(value = "items", description = "Item API")
 public class ItemController {
 
     @Autowired

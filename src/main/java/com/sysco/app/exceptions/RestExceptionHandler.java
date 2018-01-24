@@ -16,7 +16,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         /*
             Exception resolving code
          */
-        System.out.println("Handle exception");
+        return new ResponseEntity<>(ex, ex.getStatus());
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    protected ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException ex) {
+        /*
+            Exception resolving code
+         */
         return new ResponseEntity<>(ex, ex.getStatus());
     }
 }
