@@ -83,6 +83,13 @@
             <version>1.2.17</version>
         </dependency>
 
+        <!-- swagger dependencies/api documentation -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <version>2.0.0-rc1</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -108,6 +115,7 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 
