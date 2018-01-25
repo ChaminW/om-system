@@ -7,5 +7,6 @@ import java.util.List;
 
 @Repository(value = "orderRepository")
 public interface OrderRepository extends MongoRepository<Order, String> {
-    List<Order> findOrdersById (String id);
+    Order findOrderById (String id);
+
 }

@@ -2,6 +2,8 @@ package com.sysco.app.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.Filter;
+
 public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
@@ -19,4 +21,9 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
         return new String[] { "/" };
     }
 
+   /* @Override
+    protected Filter[] getServletFilters() {
+        Filter [] singleton = { new CORSFilter()};
+        return singleton;
+    }*/
 }

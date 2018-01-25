@@ -36,14 +36,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> readOrder(String id) {
-        return orderRepository.findOrdersById(id);
+    public Order readOrder(String id) {
+        return orderRepository.findOrderById(id);
     }
 
     @Transactional
     @Override
     public void updateOrder(Order order) {
-
+        orderRepository.save(order);
     }
 
 
