@@ -38,14 +38,27 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
-    public ResponseEntity<List<Order>> getOrderById(@PathVariable("id") String id) {
+    public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
 
-        List<Order> orders = orderService.readOrder(id);
-        if(orders.isEmpty()) {
+        Order order = orderService.readOrder(id);
+        if(order == null) {
             throw new OrderNotFoundException();
         }
 
-        return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
+        return new ResponseEntity<Order>(order, HttpStatus.FOUND);
+    }
+
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
+        Order newOrder = orderService.readOrder(id);
+        newOrder.setRestaurantId(order.getRestaurantId());
+        newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
+        newOrder.setDeliveryMethod(order.getDeliveryMethod());
+        newOrder.setStatus(order.getStatus());
+        orderService.updateOrder(order);
+
+        return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
 }
+
