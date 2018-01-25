@@ -69,8 +69,7 @@ public class OrderController {
         newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         newOrder.setDeliveryMethod(order.getDeliveryMethod());
         newOrder.setStatus(order.getStatus());
-        orderService.updateOrder(order);
-
+        orderService.updateOrder(newOrder);
         return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
