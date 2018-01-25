@@ -4,6 +4,8 @@ import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -22,6 +24,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> readItems() {
         return itemRepository.findAll();
+    }
+
+    @Override
+    public Page<Item> readItemsPageable(PageRequest pageRequest) {
+        return itemRepository.findAll(pageRequest);
     }
 
     @Override
