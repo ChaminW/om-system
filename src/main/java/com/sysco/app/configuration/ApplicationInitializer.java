@@ -21,9 +21,9 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
         return new String[] { "/" };
     }
 
-    @Override
+   /* @Override
     protected Filter[] getServletFilters() {
         Filter [] singleton = { new CORSFilter()};
         return singleton;
-    }
+    }*/
 }
