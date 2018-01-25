@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@Api(value = "order", description = "Order API")
+@Api(value = "order", description = "\"Operations pertaining to orders in Sysco Order Manger\"")
 public class OrderController {
 
     @Autowired
