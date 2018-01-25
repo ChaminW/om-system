@@ -1,6 +1,6 @@
 package com.sysco.app.controller;
 
-import com.sysco.app.exceptions.ItemNotFoundException;
+import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.model.Item;
 import com.sysco.app.service.ItemService;
 import io.swagger.annotations.Api;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @Api(value = "items", description = "Operations pertaining to items in Sysco Order Manger")
@@ -25,27 +24,20 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View items pageable")
-    @RequestMapping(value = "/itemPS", method = RequestMethod.GET)
-    public ResponseEntity<Page<Item>> getItemsPageable(@RequestParam("page") int page,
+    @RequestMapping(value = "/items", method = RequestMethod.GET)
+    public ResponseEntity<Page<Item>> getItemsPageable(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                        @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
-        PageRequest pageRequest = new PageRequest(page, size);
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items = itemService.readItemsPageable(pageRequest);
-        return new ResponseEntity<Page<Item>>(items, HttpStatus.FOUND);
-    }
-
-    @ApiOperation(value = "View all available items")
-    @RequestMapping(value = "/item", method = RequestMethod.GET)
-    public ResponseEntity<List<Item>> getItems() {
-        List<Item> items = itemService.readItems();
-        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+        return new ResponseEntity<Page<Item>>(items, HttpStatus.OK);
     }
 
     @ApiOperation(value = "View an item for a given Id")
-    @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/items/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
         Item item = itemService.readItemById(id);
         if(item == null){
-            throw new ItemNotFoundException(id);
+            throw new EntityNotFoundException(id);
         } else {
             return new ResponseEntity<Item>(item, HttpStatus.FOUND);
         }

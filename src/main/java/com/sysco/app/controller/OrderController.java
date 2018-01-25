@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-import com.sysco.app.exceptions.OrderNotFoundException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
