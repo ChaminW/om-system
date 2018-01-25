@@ -6,6 +6,8 @@ import com.sysco.app.service.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +24,20 @@ public class ItemController {
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "View items pageable")
+    @RequestMapping(value = "/itemPS", method = RequestMethod.GET)
+    public ResponseEntity<Page<Item>> getItemsPageable(@RequestParam("page") int page,
+                                                       @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
+        PageRequest pageRequest = new PageRequest(page, size);
+        Page<Item> items = itemService.readItemsPageable(pageRequest);
+        return new ResponseEntity<Page<Item>>(items, HttpStatus.FOUND);
+    }
+
     @ApiOperation(value = "View all available items")
     @RequestMapping(value = "/item", method = RequestMethod.GET)
     public ResponseEntity<List<Item>> getItems() {
         List<Item> items = itemService.readItems();
-        return new ResponseEntity<List<Item>>(items, HttpStatus.FOUND);
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
     }
 
     @ApiOperation(value = "View an item for a given Id")
