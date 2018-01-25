@@ -21,7 +21,6 @@ public class ApiTest {
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;
-
     private Order order;
 
     @BeforeClass
