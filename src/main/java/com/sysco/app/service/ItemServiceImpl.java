@@ -25,8 +25,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> readItemsById(String id) {
-        return itemRepository.findItemsById(id);
+    public Item readItemById(String id) {
+        return itemRepository.findItemById(id);
     }
 
     @Override

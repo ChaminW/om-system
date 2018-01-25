@@ -14,6 +14,17 @@ public class Item {
     private Double totalQuantity;
     private String description;
 
+    public Item() {
+    }
+
+    public Item(String name, String type, Double pricePerItem, Double totalQuantity, String description) {
+        this.name = name;
+        this.type = type;
+        this.pricePerItem = pricePerItem;
+        this.totalQuantity = totalQuantity;
+        this.description = description;
+    }
+
     public String getId() {
         return id;
     }
