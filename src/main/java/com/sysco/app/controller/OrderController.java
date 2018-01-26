@@ -9,10 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.Date;
@@ -29,7 +25,7 @@ public class OrderController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> rootService() {
-        logger.debug("Root service called");
+        logger.info("Root service called {}");
         return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
