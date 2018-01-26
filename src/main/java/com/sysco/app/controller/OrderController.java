@@ -1,6 +1,6 @@
 package com.sysco.app.controller;
 
-import com.sysco.app.exceptions.OrderNotFoundException;
+import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -52,7 +52,7 @@ public class OrderController {
 
         Order order = orderService.readOrder(id);
         if(order == null) {
-            throw new OrderNotFoundException(id);
+            throw new EntityNotFoundException(id);
         }
 
         return new ResponseEntity<Order>(order, HttpStatus.FOUND);
