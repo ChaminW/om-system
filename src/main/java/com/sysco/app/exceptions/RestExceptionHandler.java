@@ -16,12 +16,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ResponseEntity<Object> handleItemNotFoundException(EntityNotFoundException ex) {
+    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
         /*
             Exception resolving code
          */
+        Document error = new Document();
 
-        return new ResponseEntity<Object>(ex.toString() , HttpStatus.NOT_FOUND);
+        error.put("message", ex.toString());
+        error.put("requestedEntity", ex.getRequestedEntity());
+        error.put("debug",ex.getDebugMessage());
+        error.put("rootClass", ex.getRootClass());
+        error.put("timestamp", ex.getTimestamp().toString());
+
+        return new ResponseEntity<Object>(error , HttpStatus.NOT_FOUND);
     }
+
+
 
 }

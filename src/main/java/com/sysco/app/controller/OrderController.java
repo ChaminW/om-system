@@ -29,7 +29,7 @@ public class OrderController {
         return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
@@ -39,7 +39,7 @@ public class OrderController {
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/order", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public ResponseEntity<List<Order>> getOrder() {
 
         List<Order> orders = orderService.readOrder();
@@ -47,7 +47,7 @@ public class OrderController {
         return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
     public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
 
         Order order = orderService.readOrder(id);
@@ -58,7 +58,7 @@ public class OrderController {
         return new ResponseEntity<Order>(order, HttpStatus.FOUND);
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
         Order newOrder = orderService.readOrder(id);
         newOrder.setRestaurantId(order.getRestaurantId());
