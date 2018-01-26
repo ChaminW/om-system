@@ -1,5 +1,6 @@
 package com.sysco.app.exceptions;
 
+import org.bson.Document;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         /*
             Exception resolving code
          */
+
         return new ResponseEntity<Object>(ex.toString() , HttpStatus.NOT_FOUND);
     }
 

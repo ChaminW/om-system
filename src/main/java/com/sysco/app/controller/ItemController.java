@@ -37,7 +37,8 @@ public class ItemController {
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
         Item item = itemService.readItemById(id);
         if(item == null){
-            throw new EntityNotFoundException(id);
+            throw new EntityNotFoundException("ItemController.getItemById: /items/{id}",
+                    id, ItemController.class);
         } else {
             return new ResponseEntity<Item>(item, HttpStatus.FOUND);
         }
