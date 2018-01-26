@@ -1,6 +1,8 @@
 package com.sysco.app.service;
 
 import com.sysco.app.model.Item;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 public interface ItemService {
@@ -9,7 +11,9 @@ public interface ItemService {
 
     List<Item> readItems();
 
-    List<Item> readItemsById(String id);
+    Page<Item> readItemsPageable(PageRequest pageable);
+
+    Item readItemById(String id);
 
     void updateItem(Item item,String id);
 

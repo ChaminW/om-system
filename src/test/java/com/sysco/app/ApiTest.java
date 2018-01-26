@@ -1,10 +1,6 @@
 package com.sysco.app;
 
 import com.sysco.app.model.Order;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
@@ -12,16 +8,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ApiTest {
 
     private String server;
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;
-
     private Order order;
 
     @BeforeClass

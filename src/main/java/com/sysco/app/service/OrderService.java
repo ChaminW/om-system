@@ -11,7 +11,7 @@ public interface OrderService {
 
     List<Order> readOrder(Order order);
 
-    List<Order> readOrder(String id);
+    Order readOrder(String id);
 
     void updateOrder(Order order);
 
