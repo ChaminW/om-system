@@ -14,8 +14,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler({SystemException.class})
+    protected ResponseEntity<Object> handleException(SystemException ex) {
+
+        Document error = new Document();
+
+        error.put("message", ex.getMessage());
+        error.put("debug", ex.getDebugMessage());
+        error.put("rootClass", ex.getRootClass());
+        error.put("timestamp", ex.getTimestamp());
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler({EntityNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
         /*
             Exception resolving code
@@ -26,11 +38,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("requestedEntity", ex.getRequestedEntity());
         error.put("debug",ex.getDebugMessage());
         error.put("rootClass", ex.getRootClass());
-        error.put("timestamp", ex.getTimestamp().toString());
+        error.put("timestamp", ex.getTimestamp());
 
         return new ResponseEntity<Object>(error , HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({DatabaseException.class})
+    protected ResponseEntity<Object> handleDatabaseException(DatabaseException ex) {
+        /*
+            Exception resolving code
+         */
+        Document error = new Document();
 
+        error.put("message", ex.toString());
+        error.put("debug", ex.getDebugMessage());
+        error.put("rootClass", ex.getRootClass());
+        error.put("timestamp", ex.getTimestamp());
 
+        return new ResponseEntity<Object>(error , HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
