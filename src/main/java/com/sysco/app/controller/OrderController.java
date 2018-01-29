@@ -23,13 +23,13 @@ public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping(value = "/")
     public ResponseEntity<String> rootService() {
         logger.info("Root service called {}");
         return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.POST)
+    @PostMapping(value = "/orders")
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
@@ -39,22 +39,18 @@ public class OrderController {
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    @GetMapping(value = "/orders")
     public ResponseEntity<List<Order>> getOrder() {
-
         List<Order> orders = orderService.readOrder();
-
         return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
     }
 
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/orders/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
-
         Order order = orderService.readOrder(id);
         if(order == null) {
             throw new EntityNotFoundException(id);
         }
-
         return new ResponseEntity<Order>(order, HttpStatus.FOUND);
     }
 
