@@ -10,19 +10,6 @@
         </filter>-->
     </appender>
 
-   <!-- <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        &lt;!&ndash;<File>/tmp/rest-demo.log</File>&ndash;&gt;
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            &lt;!&ndash; daily rollover &ndash;&gt;
-            <FileNamePattern>rest-demo.%d{yyyy-MM-dd}.log</FileNamePattern>
-            &lt;!&ndash; keep 30 days' worth of history &ndash;&gt;
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-
-        <encoder>
-            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
-        </encoder>
-    </appender> -->
 
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/tmp/omsystem.log</file>
@@ -30,14 +17,14 @@
             <Pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg %n</Pattern>
         </encoder>
 
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <FileNamePattern>tmp/omsystem.%i.log.zip</FileNamePattern>
-            <MinIndex>1</MinIndex>
-            <MaxIndex>10</MaxIndex>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>tmp/omsystem.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxHistory>1</MaxHistory>
+            <totalSizeCap>1KB</totalSizeCap>
         </rollingPolicy>
 
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>2MB</MaxFileSize>
+            <MaxFileSize>5MB</MaxFileSize>
         </triggeringPolicy>
 
     </appender>
