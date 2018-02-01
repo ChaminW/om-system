@@ -11,7 +11,7 @@ public interface ItemService {
 
     List<Item> readItems();
 
-    Page<Item> readItemsPageable(PageRequest pageable);
+    Page<Item> readItemsPageable(PageRequest pageRequest);
 
     Item readItemById(String id);
 

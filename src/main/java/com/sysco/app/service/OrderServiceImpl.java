@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -31,6 +33,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<Order> readOrdersPageable(PageRequest pageRequest) {
+        return orderRepository.findAll(pageRequest);
+    }
+
+    @Override
     public List<Order> readOrder(Order order) {
         return null;
     }
@@ -45,7 +52,6 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrder(Order order) {
         orderRepository.save(order);
     }
-
 
     @Transactional
     @Override
