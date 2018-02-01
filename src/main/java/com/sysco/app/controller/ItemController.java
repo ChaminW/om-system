@@ -19,12 +19,15 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
+    @ApiOperation(value = "Add items")
+    @PostMapping(value = "/items")
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
+        itemService.createItem(item);
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "View items pageable")
-    @RequestMapping(value = "/items", method = RequestMethod.GET)
+    @GetMapping(value = "/items" )
     public ResponseEntity<Page<Item>> getItemsPageable(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                        @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -33,7 +36,7 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View an item for a given Id")
-    @RequestMapping(value = "/items/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/items/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
         Item item = itemService.readItemById(id);
         if(item == null){
