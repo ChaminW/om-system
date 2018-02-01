@@ -7,6 +7,8 @@ import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,32 +35,43 @@ public class ApiTest {
         headers.add("Content-type","application/json");
     }
 
-    //--response testing
     @Test
     public void testApiGet()
     {
-        HttpEntity<String> requestEntity = new HttpEntity<String>("", null);
-        ResponseEntity<String> responseEntity = rest.exchange(orderServiceEndpoint, HttpMethod.GET, requestEntity, String.class);
+        HttpEntity<String> httpEntity = new HttpEntity<String>("", null);
+        ResponseEntity<String> responseEntity = rest.exchange(orderServiceEndpoint, HttpMethod.GET, httpEntity, String.class);
         Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.FOUND);
     }
 
     @Test
     public void testApiPost()
     {
-        HttpEntity<Order> requestEntity = new HttpEntity<Order>(order,headers);
-        ResponseEntity<Order> responseEntity = rest.exchange(orderServiceEndpoint, HttpMethod.POST, requestEntity, Order.class);
+        HttpEntity<Order> httpEntity = new HttpEntity<Order>(order,headers);
+        ResponseEntity<Order> responseEntity = rest.exchange(orderServiceEndpoint, HttpMethod.POST, httpEntity, Order.class);
         Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
-        //Assert.assertEquals(order.getClass(),responseEntity.getBody().getClass());
     }
 
     @Test
-    public void addItem(){
-        HttpEntity<Item> entity = new HttpEntity<Item>(item, headers);
-        ResponseEntity<Item> responseEntity = rest.exchange(itemServiceEndpoint, HttpMethod.POST,entity, Item.class);
+    public void itemPost() {
+        HttpEntity<Item> httpEntity = new HttpEntity<Item>(item, headers);
+        ResponseEntity<Item> responseEntity = rest.exchange(itemServiceEndpoint, HttpMethod.POST,httpEntity, Item.class);
         Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
     }
 
-    //
+    @Test
+    public void itemGetAll() {
+        HttpEntity<String> httpEntity = new HttpEntity<String>("", null);
+        ResponseEntity<String> responseEntity = rest.exchange(itemServiceEndpoint, HttpMethod.GET, httpEntity, String.class);
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    public void itemGetById() {
+        HttpEntity<String> httpEntity = new HttpEntity<>("", null);
+        ResponseEntity<String> responseEntity = rest.exchange(itemServiceEndpoint + "/{item_id}", HttpMethod.GET, httpEntity, String.class, "5a6947a326a0f6c320005e74");
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.FOUND);
+    }
+
 
   /*  public String post(String uri, String json) {
         HttpEntity<String> requestEntity = new HttpEntity<String>(json, headers);
