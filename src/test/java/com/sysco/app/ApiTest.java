@@ -1,7 +1,15 @@
 package com.sysco.app;
 
+import com.sysco.app.configuration.ApplicationConfiguration;
+import com.sysco.app.configuration.MongoConfiguration;
+import com.sysco.app.configuration.SwaggerConfiguration;
 import com.sysco.app.model.Order;
+import com.sysco.app.service.OrderService;
+import com.sysco.app.service.OrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -11,6 +19,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
+@ContextConfiguration( locations = "classpath:Beans.xml", classes = ApplicationConfiguration.class )
 public class ApiTest {
 
     private String server;
@@ -18,6 +27,10 @@ public class ApiTest {
     private HttpHeaders headers;
     private HttpStatus status;
     private Order order;
+
+    @Qualifier("orderServiceImpl")
+    @Autowired
+    private OrderServiceImpl orderServiceImpl;
 
     @BeforeClass
     public void setUp()
@@ -47,6 +60,11 @@ public class ApiTest {
         //Assert.assertEquals(order.getClass(),responseEntity.getBody().getClass());
     }
 
+    @Test
+    public void testWiring()
+    {
+        orderServiceImpl.readOrder();
+    }
 
     //
 
