@@ -11,17 +11,11 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class[]{};
     }
 
     @Override
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
-
-   /* @Override
-    protected Filter[] getServletFilters() {
-        Filter [] singleton = { new CORSFilter()};
-        return singleton;
-    }*/
 }

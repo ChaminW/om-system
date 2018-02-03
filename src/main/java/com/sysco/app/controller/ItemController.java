@@ -28,7 +28,7 @@ public class ItemController {
 
     @ApiOperation(value = "View items pageable")
     @GetMapping(value = "/items" )
-    public ResponseEntity<Page<Item>> getItemsPageable(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+    public ResponseEntity<Page<Item>> getItems(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                        @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items = itemService.readItemsPageable(pageRequest);

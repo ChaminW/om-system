@@ -9,12 +9,16 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.sysco.app.repository")
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
+    private final static String databaseName = "omapp-db";
+    private final static int clientPort = 27017;
+    private final static String clientHost = "127.0.0.1";
+
     protected String getDatabaseName() {
-        return "omapp-db";
+        return databaseName;
     }
 
     public MongoClient mongoClient() {
-        return new MongoClient("127.0.0.1",27017);
+        return new MongoClient(clientHost, clientPort);
     }
 
 
