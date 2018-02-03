@@ -5,6 +5,8 @@ import com.sysco.app.model.Item;
 import com.sysco.app.service.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,9 +21,13 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
+    Logger logger = LoggerFactory.getLogger(ItemController.class);
+
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
 
         itemService.createItem(item);
+
+        logger.info("Item added", item);
 
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
@@ -34,6 +40,8 @@ public class ItemController {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items = itemService.readItemsPageable(pageRequest);
 
+        logger.info("Items retrieved", items);
+
         return new ResponseEntity<Page<Item>>(items, HttpStatus.OK);
     }
 
@@ -43,9 +51,13 @@ public class ItemController {
 
         Item item = itemService.readItemById(id);
         if(item == null){
+            logger.info("Empty item");
             throw new EntityNotFoundException(id);
-        } else {
-            return new ResponseEntity<Item>(item, HttpStatus.FOUND);
         }
+
+        logger.info("Item retrieved", item);
+
+        return new ResponseEntity<Item>(item, HttpStatus.FOUND);
+
     }
 }
