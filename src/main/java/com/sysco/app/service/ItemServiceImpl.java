@@ -2,6 +2,7 @@ package com.sysco.app.service;
 
 import com.mongodb.MongoException;
 import com.sysco.app.exceptions.DatabaseException;
+import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
             itemRepository.insert(item);
         } catch (MongoException e) {
             throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in creating",
-                    ItemServiceImpl.class);
+                    ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
         }
     }
 
@@ -35,7 +36,7 @@ public class ItemServiceImpl implements ItemService {
             items = itemRepository.findAll();
         } catch (MongoException e) {
             throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in reading",
-                    ItemServiceImpl.class);
+                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
         return items;
     }
@@ -47,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
             items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
             throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in reading",
-                    ItemServiceImpl.class);
+                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
         return items;
     }
@@ -59,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
             throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in reading",
-                    ItemServiceImpl.class);
+                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
         return item;
     }

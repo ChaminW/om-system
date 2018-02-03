@@ -3,8 +3,8 @@ package com.sysco.app.exceptions;
 import java.time.LocalDateTime;
 
 public class EntityNotFoundException extends RuntimeException {
-    private Object requestedEntity;
     private String debugMessage;
+    private ErrorCode errorCode;
     private Class rootClass;
     private LocalDateTime timestamp;
 
@@ -18,10 +18,10 @@ public class EntityNotFoundException extends RuntimeException {
         this.debugMessage = debugMessage;
     }
 
-    public EntityNotFoundException(String debugMessage, Object requestedEntity, Class rootClass) {
+    public EntityNotFoundException(String debugMessage,ErrorCode errorCode, Class rootClass) {
         this();
         this.debugMessage = debugMessage;
-        this.requestedEntity = requestedEntity;
+        this.errorCode = errorCode;
         this.rootClass = rootClass;
     }
 
@@ -29,12 +29,12 @@ public class EntityNotFoundException extends RuntimeException {
         return debugMessage;
     }
 
-    public Class getRootClass() {
-        return rootClass;
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 
-    public Object getRequestedEntity() {
-        return requestedEntity;
+    public Class getRootClass() {
+        return rootClass;
     }
 
     public LocalDateTime getTimestamp() {

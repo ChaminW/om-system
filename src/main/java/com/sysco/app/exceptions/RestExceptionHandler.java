@@ -31,10 +31,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         /*
             Exception resolving code
          */
+
         Document error = new Document();
 
         error.put("message", ex.toString());
-        error.put("requestedEntity", ex.getRequestedEntity());
+        error.put("errorCode", ex.getErrorCode());
         error.put("debug",ex.getDebugMessage());
         error.put("rootClass", ex.getRootClass());
         error.put("timestamp", ex.getTimestamp());
@@ -47,9 +48,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         /*
             Exception resolving code
          */
+
         Document error = new Document();
 
         error.put("message", ex.toString());
+        error.put("errorCode", ex.getErrorCode());
         error.put("debug", ex.getDebugMessage());
         error.put("rootClass", ex.getRootClass());
         error.put("timestamp", ex.getTimestamp());

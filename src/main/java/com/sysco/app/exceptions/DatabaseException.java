@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class DatabaseException extends RuntimeException {
     private String debugMessage;
+    private ErrorCode errorCode;
     private Class rootClass;
     private LocalDateTime timestamp;
 
@@ -12,14 +13,19 @@ public class DatabaseException extends RuntimeException {
         timestamp = LocalDateTime.now();
     }
 
-    public DatabaseException(String debugMessage, Class rootClass) {
+    public DatabaseException(String debugMessage, ErrorCode errorCode, Class rootClass) {
         this();
         this.debugMessage = debugMessage;
+        this.errorCode = errorCode;
         this.rootClass = rootClass;
     }
 
     public String getDebugMessage() {
         return debugMessage;
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 
     public Class getRootClass() {
