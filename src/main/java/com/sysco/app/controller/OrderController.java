@@ -7,30 +7,34 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 
 @RestController
-@Api(value = "order", description = "\"Operations pertaining to orders in Sysco Order Manger\"")
+@Api(value = "orders", description = "Operations pertaining to orders in Sysco Order Manger")
 public class OrderController {
 
     @Autowired
     OrderService orderService;
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> rootService() {
+
         logger.info("Root service called {}");
+
         return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @RequestMapping(value = "/orderw", method = RequestMethod.POST)
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
+
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
         order.setValidUntil(Date.from(Instant.now()));
@@ -39,12 +43,14 @@ public class OrderController {
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/order", method = RequestMethod.GET)
-    public ResponseEntity<List<Order>> getOrder() {
+    @RequestMapping(value = "/orderw", method = RequestMethod.GET)
+    public ResponseEntity<Page<Order>> getOrders(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                                 @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
-        List<Order> orders = orderService.readOrder();
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Order> orders = orderService.readOrdersPageable(pageRequest);
 
-        return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
+        return new ResponseEntity<Page<Order>>(orders, HttpStatus.FOUND);
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
@@ -60,12 +66,14 @@ public class OrderController {
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
+
         Order newOrder = orderService.readOrder(id);
         newOrder.setRestaurantId(order.getRestaurantId());
         newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         newOrder.setDeliveryMethod(order.getDeliveryMethod());
         newOrder.setStatus(order.getStatus());
         orderService.updateOrder(newOrder);
+
         return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
