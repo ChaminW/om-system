@@ -27,12 +27,12 @@ public class OrderController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> rootService() {
 
-        logger.info("Root service called {}");
+        logger.info("Service initiated");
 
         return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/orderw", method = RequestMethod.POST)
+    @RequestMapping(value = "/orders", method = RequestMethod.POST)
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
 
         order.setCreatedDate(Date.from(Instant.now()));
@@ -40,15 +40,19 @@ public class OrderController {
         order.setValidUntil(Date.from(Instant.now()));
         orderService.createOrder(order);
 
+        logger.info("Order added", order);
+
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/orderw", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders", method = RequestMethod.GET)
     public ResponseEntity<Page<Order>> getOrders(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                  @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Order> orders = orderService.readOrdersPageable(pageRequest);
+
+        logger.info("Orders retrieved", orders);
 
         return new ResponseEntity<Page<Order>>(orders, HttpStatus.FOUND);
     }
@@ -58,8 +62,10 @@ public class OrderController {
 
         Order order = orderService.readOrder(id);
         if(order == null) {
+            logger.info("Empty order");
             throw new EntityNotFoundException(id);
         }
+        logger.info("Order retrieved", order);
 
         return new ResponseEntity<Order>(order, HttpStatus.FOUND);
     }
@@ -74,7 +80,8 @@ public class OrderController {
         newOrder.setStatus(order.getStatus());
         orderService.updateOrder(newOrder);
 
+        logger.info("Order updated", order);
+
         return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
-
 }
