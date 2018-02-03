@@ -19,10 +19,7 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @ApiOperation(value = "Add items")
-    @PostMapping(value = "/items")
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
-        itemService.createItem(item);
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
 
@@ -36,12 +33,11 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View an item for a given Id")
-    @GetMapping(value = "/items/{id}")
+    @RequestMapping(value = "/items/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
         Item item = itemService.readItemById(id);
         if(item == null){
-            throw new EntityNotFoundException("ItemController.getItemById: /items/{id}",
-                    id, ItemController.class);
+            throw new EntityNotFoundException(id);
         } else {
             return new ResponseEntity<Item>(item, HttpStatus.FOUND);
         }

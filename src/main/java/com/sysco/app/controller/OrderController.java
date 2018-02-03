@@ -23,13 +23,13 @@ public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
-    @GetMapping(value = "/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> rootService() {
         logger.info("Root service called {}");
         return new ResponseEntity<String>("Running", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/orders")
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
@@ -39,22 +39,26 @@ public class OrderController {
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/orders")
+    @RequestMapping(value = "/order", method = RequestMethod.GET)
     public ResponseEntity<List<Order>> getOrder() {
+
         List<Order> orders = orderService.readOrder();
+
         return new ResponseEntity<List<Order>>(orders, HttpStatus.FOUND);
     }
 
-    @GetMapping(value = "/orders/{id}")
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
     public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
+
         Order order = orderService.readOrder(id);
         if(order == null) {
             throw new EntityNotFoundException(id);
         }
+
         return new ResponseEntity<Order>(order, HttpStatus.FOUND);
     }
 
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
         Order newOrder = orderService.readOrder(id);
         newOrder.setRestaurantId(order.getRestaurantId());

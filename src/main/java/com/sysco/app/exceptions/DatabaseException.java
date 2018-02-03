@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 public class DatabaseException extends RuntimeException {
     private String debugMessage;
     private Class rootClass;
-    private String timestamp;
+    private LocalDateTime timestamp;
 
     private DatabaseException() {
         super("Database Exception");
-        timestamp = LocalDateTime.now().toString();
+        timestamp = LocalDateTime.now();
     }
 
     public DatabaseException(String debugMessage, Class rootClass) {
@@ -26,7 +26,7 @@ public class DatabaseException extends RuntimeException {
         return rootClass;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 }
