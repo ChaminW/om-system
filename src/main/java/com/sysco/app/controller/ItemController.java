@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping(value = "/items")
 @Api(value = "items", description = "Operations pertaining to items in Sysco Order Manger")
 public class ItemController {
 
@@ -23,6 +24,8 @@ public class ItemController {
 
     Logger logger = LoggerFactory.getLogger(ItemController.class);
 
+    @ApiOperation(value = "Add an item")
+    @PostMapping(value = "/")
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
 
         itemService.createItem(item);
@@ -33,9 +36,9 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View items pageable")
-    @GetMapping(value = "/items" )
+    @GetMapping(value = "/" )
     public ResponseEntity<Page<Item>> getItems(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                                       @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
+                                               @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items = itemService.readItemsPageable(pageRequest);
@@ -46,7 +49,7 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View an item for a given Id")
-    @RequestMapping(value = "/items/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
 
         Item item = itemService.readItemById(id);
