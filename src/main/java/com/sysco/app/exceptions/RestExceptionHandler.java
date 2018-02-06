@@ -1,6 +1,9 @@
 package com.sysco.app.exceptions;
 
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,9 @@ import java.util.Set;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    MessageSource messageSource;
 
     @ExceptionHandler({SystemException.class})
     protected ResponseEntity<Object> handleException(SystemException ex) {
@@ -39,10 +45,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
 
-        error.put("message", ex.toString());
-        error.put("errorCode", ex.getErrorCode());
-        error.put("debug",ex.getDebugMessage());
-        error.put("rootClass", ex.getRootClass());
+        error.put("message", messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
+                LocaleContextHolder.getLocale()));
+        error.put("errorCode", ex.getErrorCode().getCode());
         error.put("timestamp", ex.getTimestamp());
 
         return new ResponseEntity<Object>(error , HttpStatus.NOT_FOUND);
@@ -56,10 +61,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
 
-        error.put("message", ex.toString());
-        error.put("errorCode", ex.getErrorCode());
-        error.put("debug", ex.getDebugMessage());
-        error.put("rootClass", ex.getRootClass());
+        error.put("message", messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
+                LocaleContextHolder.getLocale()));
+        error.put("errorCode", ex.getErrorCode().getCode());
         error.put("timestamp", ex.getTimestamp());
 
         return new ResponseEntity<Object>(error , HttpStatus.INTERNAL_SERVER_ERROR);

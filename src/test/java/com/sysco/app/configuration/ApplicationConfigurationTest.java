@@ -32,12 +32,30 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
+    public void givenContext_whenServletContext_thenItProvidesRootController() {
+        ServletContext servletContext = context.getServletContext();
+
+        Assert.assertNotNull(servletContext);
+        Assert.assertTrue(servletContext instanceof MockServletContext);
+        Assert.assertNotNull(context.getBean("rootController"));
+    }
+
+    @Test
     public void givenContext_whenServletContext_thenItProvidesOrderController() {
         ServletContext servletContext = context.getServletContext();
 
         Assert.assertNotNull(servletContext);
         Assert.assertTrue(servletContext instanceof MockServletContext);
         Assert.assertNotNull(context.getBean("orderController"));
+    }
+
+    @Test
+    public void givenContext_whenServletContext_thenItProvidesItemController() {
+        ServletContext servletContext = context.getServletContext();
+
+        Assert.assertNotNull(servletContext);
+        Assert.assertTrue(servletContext instanceof MockServletContext);
+        Assert.assertNotNull(context.getBean("itemController"));
     }
 
     @After
