@@ -1,5 +1,6 @@
 package com.sysco.app.controller;
 
+import com.sun.istack.internal.NotNull;
 import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
@@ -12,13 +13,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/orders")
-@Api(value = "orders", description = "Operations pertaining to orders in Sysco Order Manger")
+@Api(value = "orders", description = "Operations pertaining to orders in Sysco Order Manager")
 public class OrderController {
 
     @Autowired
@@ -28,11 +35,16 @@ public class OrderController {
 
     @ApiOperation(value = "Add an order")
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<Order> addOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
 
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
         order.setValidUntil(Date.from(Instant.now()));
+
+        if (errors.hasErrors()) {
+            return new ResponseEntity<Order>((Order) null, HttpStatus.BAD_REQUEST);
+        }
+
         orderService.createOrder(order);
 
         logger.info("Order added", order);
