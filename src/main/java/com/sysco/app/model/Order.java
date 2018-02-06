@@ -1,7 +1,10 @@
 package com.sysco.app.model;
 
+import com.sun.istack.internal.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +13,7 @@ public class Order {
 
     @Id
     private String id;
+    @NotBlank(message = "Restaurant Id must not be blank!") @NotNull
     private String restaurantId;
     private String deliveryAddressId;
     private String deliveryMethod;
