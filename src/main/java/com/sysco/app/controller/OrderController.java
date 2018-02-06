@@ -69,8 +69,9 @@ public class OrderController {
 
         Order order = orderService.readOrder(id);
         if(order == null) {
-            logger.info("Empty order");
-            throw new EntityNotFoundException("OrderController.getOrderById: Empty order",
+            String errorMessage = "OrderController.getOrderById: Empty order";
+            logger.info(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
         }
 
@@ -83,16 +84,21 @@ public class OrderController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
 
-        Order updatedOrder = orderService.readOrder(id);
-        updatedOrder.setRestaurantId(order.getRestaurantId());
-        updatedOrder.setDeliveryAddressId(order.getDeliveryAddressId());
-        updatedOrder.setDeliveryMethod(order.getDeliveryMethod());
-        updatedOrder.setStatus(order.getStatus());
-        orderService.updateOrder(updatedOrder);
+        Order newOrder = orderService.readOrder(id);
+
+        if(newOrder == null) {
+
+        }
+
+        newOrder.setRestaurantId(order.getRestaurantId());
+        newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
+        newOrder.setDeliveryMethod(order.getDeliveryMethod());
+        newOrder.setStatus(order.getStatus());
+        orderService.updateOrder(newOrder);
 
         logger.info("Order updated", order);
 
-        return new ResponseEntity<Order>(updatedOrder, HttpStatus.OK);
+        return new ResponseEntity<Order>(newOrder, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete an order for a given Id")
