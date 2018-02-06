@@ -98,10 +98,9 @@ public class OrderController {
 
     @ApiOperation(value = "Update an order for a given Id",produces = "application/json")
     @ApiResponses( value = {
-            @ApiResponse(code = 400, message = "Invalid ID supplied"),
+            @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 401, message = "Authorization failed"),
-            @ApiResponse(code = 404, message = "Order not found"),
-            @ApiResponse(code = 405, message = "Validation exception")
+            @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order) {
@@ -127,15 +126,22 @@ public class OrderController {
 
     @ApiOperation(value = "Delete an order for a given Id", produces = "application/json")
     @ApiResponses( value = {
-            @ApiResponse(code = 204, message = "No content"),
-            @ApiResponse(code = 400, message = "Invalid ID supplied"),
+            @ApiResponse(code = 204, message = "Successfully processed"),
+            @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 401, message = "Authorization failed"),
-            @ApiResponse(code = 404, message = "Order not found"),
-            @ApiResponse(code = 405, message = "Validation exception")
+            @ApiResponse(code = 404, message = "Order not found")
     })
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Order> deleteOrder(@PathVariable String id){
         Order currentOrder = orderService.readOrder(id);
+        if(currentOrder==null)
+        {
+            String errorMessage = "OrderController.deleteOrder: Empty order";
+            LOGGER.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
+                    ErrorCode.NO_ITEM_FOR_THE_ID, OrderController.class);
+
+        }
         orderService.deleteOrder(id);
         return new ResponseEntity<Order>(currentOrder, HttpStatus.NO_CONTENT);
     }
