@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-import com.sun.istack.internal.NotNull;
 import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
@@ -14,14 +13,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/orders")
@@ -84,15 +81,23 @@ public class OrderController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
 
-        Order newOrder = orderService.readOrder(id);
-        newOrder.setRestaurantId(order.getRestaurantId());
-        newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
-        newOrder.setDeliveryMethod(order.getDeliveryMethod());
-        newOrder.setStatus(order.getStatus());
-        orderService.updateOrder(newOrder);
+        Order updatedOrder = orderService.readOrder(id);
+        updatedOrder.setRestaurantId(order.getRestaurantId());
+        updatedOrder.setDeliveryAddressId(order.getDeliveryAddressId());
+        updatedOrder.setDeliveryMethod(order.getDeliveryMethod());
+        updatedOrder.setStatus(order.getStatus());
+        orderService.updateOrder(updatedOrder);
 
         logger.info("Order updated", order);
 
-        return new ResponseEntity<Order>(order, HttpStatus.OK);
+        return new ResponseEntity<Order>(updatedOrder, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Delete an order for a given Id")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Order> deleteOrder(@PathVariable String id){
+        Order currentOrder = orderService.readOrder(id);
+        orderService.deleteOrder(id);
+        return new ResponseEntity<Order>(currentOrder, HttpStatus.NO_CONTENT);
     }
 }

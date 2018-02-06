@@ -56,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void deleteOrder(String id) {
-
+        Order order = orderRepository.findOrderById(id);
+        orderRepository.delete(order);
     }
 }
