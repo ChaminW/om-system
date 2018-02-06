@@ -1,11 +1,12 @@
 package com.sysco.app.service;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class OrderServiceImplTest {
 
-    @BeforeClass
+    @Before
     public void setUp()
     {
 

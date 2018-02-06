@@ -1,13 +1,13 @@
 package com.sysco.app.service;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 @ContextConfiguration( locations = "" )
 public class ItemServiceImplTest {
 
-    @BeforeClass
+    @Before
     public void setUp()
     {
 

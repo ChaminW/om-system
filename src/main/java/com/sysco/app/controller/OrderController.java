@@ -102,6 +102,14 @@ public class OrderController {
 
         LOGGER.info("Order updated", order);
 
-        return new ResponseEntity<Order>(order, HttpStatus.OK);
+        return new ResponseEntity<Order>(newOrder, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Delete an order for a given Id")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Order> deleteOrder(@PathVariable String id){
+        Order currentOrder = orderService.readOrder(id);
+        orderService.deleteOrder(id);
+        return new ResponseEntity<Order>(currentOrder, HttpStatus.NO_CONTENT);
     }
 }

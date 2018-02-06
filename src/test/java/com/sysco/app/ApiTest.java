@@ -3,20 +3,21 @@ package com.sysco.app;
 import com.sysco.app.configuration.ApplicationConfiguration;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderServiceImpl;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
-@ContextConfiguration( locations = "classpath:Beans.xml", classes = ApplicationConfiguration.class )
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration( classes = ApplicationConfiguration.class )
 public class ApiTest {
 
     private String server;
@@ -25,11 +26,10 @@ public class ApiTest {
     private HttpStatus status;
     private Order order;
 
-    @Qualifier("orderServiceImpl")
     @Autowired
     private OrderServiceImpl orderServiceImpl;
 
-    @BeforeClass
+    @Before
     public void setUp()
     {
         order = new Order("5a5f705d062cb49fbcd43ad7","5a5f712c062cb49fbcd43ad8","aaa","asas", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
@@ -60,7 +60,7 @@ public class ApiTest {
     @Test
     public void testWiring()
     {
-        //orderServiceImpl.readOrder();
+        orderServiceImpl.readOrders();
     }
 
     //
