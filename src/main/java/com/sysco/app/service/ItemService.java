@@ -15,7 +15,7 @@ public interface ItemService {
 
     Item readItemById(String id);
 
-    void updateItem(Item item,String id);
+    void updateItem(Item item);
 
     void deleteItem(String id);
 }

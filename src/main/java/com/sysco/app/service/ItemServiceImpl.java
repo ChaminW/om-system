@@ -5,6 +5,8 @@ import com.sysco.app.exceptions.DatabaseException;
 import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -19,60 +21,78 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     ItemRepository itemRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+
     @Override
     public void createItem(Item item) {
         try {
             itemRepository.insert(item);
         } catch (MongoException e) {
-            throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in creating",
+            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in creating";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
         }
     }
 
     @Override
     public List<Item> readItems() {
-        List<Item> items = null;
         try {
-            items = itemRepository.findAll();
+            return itemRepository.findAll();
         } catch (MongoException e) {
-            throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in reading",
+            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
-        return items;
     }
 
     @Override
     public Page<Item> readItemsPageable(PageRequest pageRequest) {
-        Page<Item> items = null;
         try {
-            items = itemRepository.findAll(pageRequest);
+            return itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in reading",
+            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
-        return items;
     }
 
     @Override
     public Item readItemById(String id) {
-        Item item = null;
         try {
-            item = itemRepository.findItemById(id);
+            return itemRepository.findItemById(id);
         } catch (MongoException e) {
-            throw new DatabaseException("ItemServiceImpl.readItemsPageable: Error in reading",
+            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
-        return item;
     }
 
     @Override
-    public void updateItem(Item item, String id) {
-
+    public void updateItem(Item item) {
+        try {
+            itemRepository.save(item);
+        } catch (MongoException e) {
+            String errorMessage = "ItemServiceImpl.updateItem: Error in updating";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
+        }
     }
 
     @Override
     public void deleteItem(String id) {
+        try {
 
+        } catch (MongoException e) {
+            String errorMessage = "ItemServiceImpl.deleteItem: Error in deleting";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
+        }
     }
 
 

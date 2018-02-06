@@ -55,8 +55,9 @@ public class ItemController {
 
         Item item = itemService.readItemById(id);
         if(item == null){
-            logger.info("Empty item");
-            throw new EntityNotFoundException("ItemController.getItemById: Empty item",
+            String errorMessage = "ItemController.getItemById: Empty item";
+            logger.info(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
         }
 

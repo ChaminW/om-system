@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-import com.sun.istack.internal.NotNull;
 import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Order;
@@ -70,8 +69,9 @@ public class OrderController {
 
         Order order = orderService.readOrder(id);
         if(order == null) {
-            logger.info("Empty order");
-            throw new EntityNotFoundException("OrderController.getOrderById: Empty order",
+            String errorMessage = "OrderController.getOrderById: Empty order";
+            logger.info(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
         }
 
@@ -85,6 +85,11 @@ public class OrderController {
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
 
         Order newOrder = orderService.readOrder(id);
+
+        if(newOrder == null) {
+
+        }
+
         newOrder.setRestaurantId(order.getRestaurantId());
         newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         newOrder.setDeliveryMethod(order.getDeliveryMethod());
@@ -93,6 +98,14 @@ public class OrderController {
 
         logger.info("Order updated", order);
 
-        return new ResponseEntity<Order>(order, HttpStatus.OK);
+        return new ResponseEntity<Order>(newOrder, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Delete an order for a given Id")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Order> deleteOrder(@PathVariable String id){
+        Order currentOrder = orderService.readOrder(id);
+        orderService.deleteOrder(id);
+        return new ResponseEntity<Order>(currentOrder, HttpStatus.NO_CONTENT);
     }
 }
