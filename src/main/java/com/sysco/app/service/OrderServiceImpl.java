@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.insert(order);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.createOrder: Cannot create order";
+            String errorMessage = "OrderServiceImpl.createOrder: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             return orderRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.readOrder: Cannot read orders";
+            String errorMessage = "OrderServiceImpl.readOrder: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             return orderRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.readOrdersPageable: Cannot read orders";
+            String errorMessage = "OrderServiceImpl.readOrdersPageable: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             return orderRepository.findOrderById(id);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.readOrder: Cannot read order";
+            String errorMessage = "OrderServiceImpl.readOrder: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.save(order);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.updateOrder: Cannot update order";
+            String errorMessage = "OrderServiceImpl.updateOrder: Error in updating";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_UPDATE_FAILURE, OrderServiceImpl.class);
@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.deleteById(id);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.deleteOrder: Cannot delete order";
+            String errorMessage = "OrderServiceImpl.deleteOrder: Error in deleting";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
