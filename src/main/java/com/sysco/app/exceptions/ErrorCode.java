@@ -12,9 +12,9 @@ public enum ErrorCode {
     ITEM_UPDATE_FAILURE(22, "Cannot update item"),
     ITEM_DELETE_FAILURE(23, "Cannot delete item"),
     ORDER_CREATE_FAILURE(24, "Cannot create order"),
-    ORDER_READ_FAILURE(25, "Cannot create order"),
-    ORDER_UPDATE_FAILURE(26, "Cannot create order"),
-    ORDER_DELETE_FAILURE(27, "Cannot create order"),
+    ORDER_READ_FAILURE(25, "Cannot read order"),
+    ORDER_UPDATE_FAILURE(26, "Cannot update order"),
+    ORDER_DELETE_FAILURE(27, "Cannot delete order"),
 
     ;
 

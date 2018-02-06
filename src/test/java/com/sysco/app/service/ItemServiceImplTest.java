@@ -1,8 +1,10 @@
 package com.sysco.app.service;
 
+import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+@ContextConfiguration( locations = "" )
 public class ItemServiceImplTest {
 
     @BeforeClass
@@ -10,7 +12,7 @@ public class ItemServiceImplTest {
     {
 
     }
-    // registerNewUserAccount_ExistingEmailAddressGiven_ShouldThrowException().
+    // method-name_testing-feature_expectation().
     @Test
     public void createItem()
     {

@@ -2,6 +2,7 @@ package com.sysco.app.controller;
 
 import com.sun.istack.internal.NotNull;
 import com.sysco.app.exceptions.EntityNotFoundException;
+import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -14,14 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Date;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping(value = "/orders")
@@ -34,8 +32,9 @@ public class OrderController {
     Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @ApiOperation(value = "Add an order")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
+
 
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
@@ -53,7 +52,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "View orders pageable")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<Page<Order>> getOrders(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                  @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
@@ -66,13 +65,14 @@ public class OrderController {
     }
 
     @ApiOperation(value = "View an order for a given Id")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
 
         Order order = orderService.readOrder(id);
         if(order == null) {
             logger.info("Empty order");
-            throw new EntityNotFoundException(id);
+            throw new EntityNotFoundException("OrderController.getOrderById: Empty order",
+                    ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
         }
 
         logger.info("Order retrieved", order);
@@ -81,7 +81,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "Update an order for a given Id")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
 
         Order newOrder = orderService.readOrder(id);

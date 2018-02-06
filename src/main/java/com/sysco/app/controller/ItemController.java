@@ -1,6 +1,7 @@
 package com.sysco.app.controller;
 
 import com.sysco.app.exceptions.EntityNotFoundException;
+import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Item;
 import com.sysco.app.service.ItemService;
 import io.swagger.annotations.Api;
@@ -25,7 +26,7 @@ public class ItemController {
     Logger logger = LoggerFactory.getLogger(ItemController.class);
 
     @ApiOperation(value = "Add an item")
-    @PostMapping(value = "/")
+    @PostMapping
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
 
         itemService.createItem(item);
@@ -36,7 +37,7 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View items pageable")
-    @GetMapping(value = "/" )
+    @GetMapping
     public ResponseEntity<Page<Item>> getItems(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
@@ -49,18 +50,18 @@ public class ItemController {
     }
 
     @ApiOperation(value = "View an item for a given Id")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
 
         Item item = itemService.readItemById(id);
         if(item == null){
             logger.info("Empty item");
-            throw new EntityNotFoundException(id);
+            throw new EntityNotFoundException("ItemController.getItemById: Empty item",
+                    ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
         }
 
         logger.info("Item retrieved", item);
 
         return new ResponseEntity<Item>(item, HttpStatus.FOUND);
-
     }
 }
