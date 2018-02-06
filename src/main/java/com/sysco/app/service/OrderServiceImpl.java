@@ -1,5 +1,8 @@
 package com.sysco.app.service;
 
+import com.mongodb.MongoException;
+import com.sysco.app.exceptions.DatabaseException;
+import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
 import org.slf4j.Logger;
@@ -24,38 +27,75 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void createOrder(Order order) {
-        orderRepository.insert(order);
+        try {
+            orderRepository.insert(order);
+        } catch (MongoException e) {
+            String errorMessage = "OrderServiceImpl.createOrder: Cannot create order";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
+        }
     }
 
     @Override
-    public List<Order> readOrder() {
-        return orderRepository.findAll();
+    public List<Order> readOrders() {
+        try {
+            return orderRepository.findAll();
+        } catch (MongoException e) {
+            String errorMessage = "OrderServiceImpl.readOrder: Cannot read orders";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+        }
     }
 
     @Override
     public Page<Order> readOrdersPageable(PageRequest pageRequest) {
-        return orderRepository.findAll(pageRequest);
-    }
-
-    @Override
-    public List<Order> readOrder(Order order) {
-        return null;
+        try {
+            return orderRepository.findAll(pageRequest);
+        } catch (MongoException e) {
+            String errorMessage = "OrderServiceImpl.readOrdersPageable: Cannot read orders";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+        }
     }
 
     @Override
     public Order readOrder(String id) {
-        return orderRepository.findOrderById(id);
-    }
+        try {
+            return orderRepository.findOrderById(id);
+        } catch (MongoException e) {
+            String errorMessage = "OrderServiceImpl.readOrder: Cannot read order";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+        }
+            }
 
     @Transactional
     @Override
     public void updateOrder(Order order) {
-        orderRepository.save(order);
+        try {
+            orderRepository.save(order);
+        } catch (MongoException e) {
+            String errorMessage = "OrderServiceImpl.updateOrder: Cannot update order";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_UPDATE_FAILURE, OrderServiceImpl.class);
+        }
     }
 
     @Transactional
     @Override
     public void deleteOrder(String id) {
-
+        try {
+            orderRepository.deleteById(id);
+        } catch (MongoException e) {
+            String errorMessage = "OrderServiceImpl.deleteOrder: Cannot delete order";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
+        }
     }
 }
