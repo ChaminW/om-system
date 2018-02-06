@@ -1,10 +1,7 @@
 package com.sysco.app;
 
 import com.sysco.app.configuration.ApplicationConfiguration;
-import com.sysco.app.configuration.MongoConfiguration;
-import com.sysco.app.configuration.SwaggerConfiguration;
 import com.sysco.app.model.Order;
-import com.sysco.app.service.OrderService;
 import com.sysco.app.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
