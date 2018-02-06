@@ -54,6 +54,7 @@ public class ItemController {
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
 
         Item item = itemService.readItemById(id);
+
         if(item == null){
             String errorMessage = "ItemController.getItemById: Empty item";
             LOGGER.info(errorMessage);
@@ -70,7 +71,6 @@ public class ItemController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Item> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
 
-        System.out.println("asdasd");
         Item newItem = itemService.readItemById(id);
 
         if(newItem == null) {
