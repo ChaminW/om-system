@@ -11,11 +11,9 @@ public interface OrderService {
 
     void createOrder(Order order);
 
-    List<Order> readOrder();
+    List<Order> readOrders();
 
     Page<Order> readOrdersPageable(PageRequest pageRequest);
-
-    List<Order> readOrder(Order order);
 
     Order readOrder(String id);
 

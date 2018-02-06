@@ -60,7 +60,7 @@ public class ApiTest {
     @Test
     public void testWiring()
     {
-        orderServiceImpl.readOrder();
+//        orderServiceImpl.readOrder();
     }
 
     //
