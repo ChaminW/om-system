@@ -31,13 +31,12 @@ public class OrderControllerTest {
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
     }
 
     /**
      * Integration testing for /orders[id] API endpoint
-     * @throws Exception
      */
     @Test
     public void givenOrderById_whenMockMVC_thenVerifyResponse() throws Exception {

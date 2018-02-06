@@ -30,7 +30,7 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 
     @ApiOperation(value = "Add an order")
     @ApiResponses( value = {
@@ -51,7 +51,7 @@ public class OrderController {
 
         orderService.createOrder(order);
 
-        logger.info("Order added", order);
+        LOGGER.info("Order added", order);
 
         return new ResponseEntity<Order>(order, HttpStatus.CREATED);
     }
@@ -68,7 +68,7 @@ public class OrderController {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Order> orders = orderService.readOrdersPageable(pageRequest);
 
-        logger.info("Orders retrieved", orders);
+        LOGGER.info("Orders retrieved", orders);
 
         return new ResponseEntity<Page<Order>>(orders, HttpStatus.FOUND);
     }
@@ -86,12 +86,12 @@ public class OrderController {
         Order order = orderService.readOrder(id);
         if(order == null) {
             String errorMessage = "OrderController.getOrderById: Empty order";
-            logger.info(errorMessage);
+            LOGGER.error(errorMessage);
             throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
         }
 
-        logger.info("Order retrieved", order);
+        LOGGER.info("Order retrieved", order);
 
         return new ResponseEntity<Order>(order, HttpStatus.FOUND);
     }
@@ -104,10 +104,14 @@ public class OrderController {
             @ApiResponse(code = 405, message = "Validation exception")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable("id") String id){
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order) {
 
         Order newOrder = orderService.readOrder(id);
         if(newOrder == null) {
+            String errorMessage = "OrderController.updateOrder: Empty order";
+            LOGGER.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
+                    ErrorCode.NO_ITEM_FOR_THE_ID, OrderController.class);
 
         }
         newOrder.setRestaurantId(order.getRestaurantId());
@@ -116,7 +120,7 @@ public class OrderController {
         newOrder.setStatus(order.getStatus());
         orderService.updateOrder(newOrder);
 
-        logger.info("Order updated", order);
+        LOGGER.info("Order updated", order);
 
         return new ResponseEntity<Order>(newOrder, HttpStatus.OK);
     }

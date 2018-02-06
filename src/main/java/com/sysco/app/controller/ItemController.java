@@ -23,7 +23,7 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    Logger logger = LoggerFactory.getLogger(ItemController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
 
     @ApiOperation(value = "Add an item")
     @PostMapping
@@ -31,7 +31,7 @@ public class ItemController {
 
         itemService.createItem(item);
 
-        logger.info("Item added", item);
+        LOGGER.info("Item added", item);
 
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
@@ -44,7 +44,7 @@ public class ItemController {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items = itemService.readItemsPageable(pageRequest);
 
-        logger.info("Items retrieved", items);
+        LOGGER.info("Items retrieved", items);
 
         return new ResponseEntity<Page<Item>>(items, HttpStatus.OK);
     }
@@ -56,13 +56,39 @@ public class ItemController {
         Item item = itemService.readItemById(id);
         if(item == null){
             String errorMessage = "ItemController.getItemById: Empty item";
-            logger.info(errorMessage);
+            LOGGER.info(errorMessage);
             throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
         }
 
-        logger.info("Item retrieved", item);
+        LOGGER.info("Item retrieved", item);
 
         return new ResponseEntity<Item>(item, HttpStatus.FOUND);
+    }
+
+    @ApiOperation(value = "Update an item for a given id")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Item> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
+
+        System.out.println("asdasd");
+        Item newItem = itemService.readItemById(id);
+
+        if(newItem == null) {
+            String errorMessage = "ItemController.updateItem: Empty item";
+            LOGGER.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
+                    ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
+        }
+
+        newItem.setName(item.getName());
+        newItem.setType(item.getType());
+        newItem.setPricePerItem(item.getPricePerItem());
+        newItem.setTotalQuantity(item.getTotalQuantity());
+        newItem.setDescription(item.getDescription());
+        itemService.updateItem(newItem);
+
+        LOGGER.info("Item updated");
+
+        return new ResponseEntity<Item>(newItem, HttpStatus.OK);
     }
 }
