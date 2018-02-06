@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,17 +37,33 @@ public class OrderControllerTest {
     }
 
     /**
-     * Integration testing for /orders[id] API endpoint
+     * Integration testing for /orders API endpoint
      */
     @Test
-    public void givenOrderById_whenMockMVC_thenVerifyResponse() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get("/orders/5a65da6ba9e34b389546fd12"))
+    public void givenOrders_whenMockMVC_thenVerifyResponse() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(get("/orders"))
                 .andDo(print()).andExpect(status().isFound())
-                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"))
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.content").isArray())
                 .andReturn();
 
-        Assert.assertEquals("application/json;charset=UTF-8",
-                mvcResult.getResponse().getContentType());
+        //Can be used for test functions which Spring test library does not provide
+        //Assert.assertEquals("application/json;charset=UTF-8",
+        //        mvcResult.getResponse().getContentType());
+    }
+
+    /**
+     * Integration testing for /orders/{id} API endpoint
+     */
+    @Test
+    public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
+        this.mockMvc
+                .perform(get("/orders/{id}", "5a65da6ba9e34b389546fd12"))
+                .andDo(print()).andExpect(status().isFound())
+
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.id").value("5a65da6ba9e34b389546fd12"))
+                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"));
     }
 
     @After

@@ -36,7 +36,7 @@ public class ItemController {
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "View items pageable")
+    @ApiOperation(value = "View items pageable" , produces = "application/json")
     @GetMapping
     public ResponseEntity<Page<Item>> getItems(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
@@ -49,7 +49,7 @@ public class ItemController {
         return new ResponseEntity<Page<Item>>(items, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "View an item for a given Id")
+    @ApiOperation(value = "View an item for a given Id" , produces = "application/json")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
 

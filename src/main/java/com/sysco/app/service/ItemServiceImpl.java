@@ -12,9 +12,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
-@Component
+@Component("itemService")
 public class ItemServiceImpl implements ItemService {
 
     @Qualifier("itemRepository")

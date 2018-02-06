@@ -1,6 +1,7 @@
 package com.sysco.app.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class RootController {
 
     Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+    @ApiOperation(value = "view API documentation", produces = "test/HTML")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public RedirectView rootService() {
 
