@@ -26,8 +26,6 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
-
     @ApiOperation(value = "Add an order")
     @ApiResponses( value = {
             @ApiResponse(code = 201, message = "Successfully created"),
@@ -51,7 +49,7 @@ public class OrderController {
                                                  @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
         Page<Order> orders = orderService.readOrdersPageable(page, size);
-        return new ResponseEntity<Page<Order>>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "View an order for a given Id", produces = "application/json")
@@ -66,7 +64,7 @@ public class OrderController {
                                               @PathVariable("id") String id) {
 
         Order order = orderService.readOrder(id);
-        return new ResponseEntity<Order>(order, HttpStatus.FOUND);
+        return new ResponseEntity<>(order, HttpStatus.FOUND);
     }
 
     @ApiOperation(value = "Update an order for a given Id",produces = "application/json")
@@ -95,6 +93,6 @@ public class OrderController {
                                                   @PathVariable String id){
 
         orderService.deleteOrderById(id);
-        return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
