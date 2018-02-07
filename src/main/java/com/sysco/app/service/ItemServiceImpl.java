@@ -158,17 +158,4 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
         }
     }
-
-    @Override
-    public void deleteItems(Item item) {
-
-        try {
-            itemRepository.delete(item);
-        } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.deleteItems: Error in deleting";
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
-        }
-    }
 }

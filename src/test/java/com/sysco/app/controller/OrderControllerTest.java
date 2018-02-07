@@ -45,7 +45,6 @@ public class OrderControllerTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
                 .andReturn();
-
         //Can be used for test functions which Spring test library does not provide
         //Assert.assertEquals("application/json;charset=UTF-8",
         //        mvcResult.getResponse().getContentType());
