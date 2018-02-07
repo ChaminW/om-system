@@ -2,26 +2,42 @@ package com.sysco.app.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.Date;
 
 @Document(collection = "restaurants")
 public class Restaurant {
 
     @Id
-    private String restaurantId;
+    private String id;
     private String owner;
     private String addressId;
-    private Date createdAt;
+    private String createdAt;
     private String contact;
     private String description;
     private Boolean isActive;
 
-    public String getRestaurantId() {
-        return restaurantId;
+    public Restaurant() {
     }
 
-    public void setRestaurantId(String restaurantId) {
-        this.restaurantId = restaurantId;
+    public Restaurant(String id) {
+        this.id = id;
+    }
+
+    public Restaurant(String id, String owner, String addressId, String createdAt, String contact, String description, Boolean isActive) {
+        this.id = id;
+        this.owner = owner;
+        this.addressId = addressId;
+        this.createdAt = createdAt;
+        this.contact = contact;
+        this.description = description;
+        this.isActive = isActive;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getOwner() {
@@ -40,11 +56,11 @@ public class Restaurant {
         this.addressId = addressId;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

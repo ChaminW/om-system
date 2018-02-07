@@ -2,9 +2,7 @@ package com.sysco.app.controller;
 
 import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.exceptions.ErrorCode;
-import com.sysco.app.exceptions.RestExceptionHandler;
 import com.sysco.app.model.Order;
-import com.sysco.app.model.Restaurant;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,11 +11,11 @@ import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -33,6 +31,9 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+
+    @Qualifier("restaurantRepository")
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 
@@ -104,7 +105,7 @@ public class OrderController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order) {
-
+        System.out.println("put method called");
         Order newOrder = orderService.readOrder(id);
         if(newOrder == null) {
             String errorMessage = "OrderController.updateOrder: Empty order";
