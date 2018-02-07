@@ -1,7 +1,9 @@
 package com.sysco.app.service;
 
 import com.mongodb.MongoException;
+import com.sysco.app.controller.ItemController;
 import com.sysco.app.exceptions.DatabaseException;
+import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
@@ -26,6 +28,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void createItem(Item item) {
+
         try {
             itemRepository.insert(item);
         } catch (MongoException e) {
@@ -34,46 +37,90 @@ public class ItemServiceImpl implements ItemService {
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
         }
+
+        LOGGER.info("Item added", item);
     }
 
     @Override
     public List<Item> readItems() {
+
+        List<Item> items;
         try {
-            return itemRepository.findAll();
+            items = itemRepository.findAll();
         } catch (MongoException e) {
             String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
+
+        return items;
     }
 
     @Override
-    public Page<Item> readItemsPageable(PageRequest pageRequest) {
+    public Page<Item> readItemsPageable(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Item> items;
+
         try {
-            return itemRepository.findAll(pageRequest);
+            items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
             String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
+
+        LOGGER.info("Items retrieved");
+
+        return items;
     }
 
     @Override
     public Item readItemById(String id) {
+
+        Item item;
+
         try {
-            return itemRepository.findItemById(id);
+            item = itemRepository.findItemById(id);
         } catch (MongoException e) {
             String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
+
+        if(item == null){
+            String errorMessage = "ItemServiceImpl.readItemsPageable: Empty item";
+            LOGGER.info(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
+                    ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
+        }
+
+        LOGGER.info("Item retrieved", item);
+
+        return item;
     }
 
     @Override
-    public void updateItem(Item item) {
+    public void updateItem(String id, Item item) {
+
+        Item newItem = readItemById(id);
+
+        if(newItem == null) {
+            String errorMessage = "ItemServiceImpl.updateItem: Empty item";
+            LOGGER.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage,
+                    ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
+        }
+
+        newItem.setName(item.getName());
+        newItem.setType(item.getType());
+        newItem.setPricePerItem(item.getPricePerItem());
+        newItem.setTotalQuantity(item.getTotalQuantity());
+        newItem.setDescription(item.getDescription());
+
         try {
             itemRepository.save(item);
         } catch (MongoException e) {
@@ -82,22 +129,20 @@ public class ItemServiceImpl implements ItemService {
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
         }
+
+        LOGGER.info("Item updated");
     }
 
     @Override
     public void deleteItem(String id) {
-        try {
 
+        try {
+            itemRepository.deleteById(id);
         } catch (MongoException e) {
             String errorMessage = "ItemServiceImpl.deleteItem: Error in deleting";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
         }
-    }
-
-
-    public void addItem(){
-
     }
 }
