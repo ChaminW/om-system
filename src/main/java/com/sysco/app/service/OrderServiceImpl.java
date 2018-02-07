@@ -30,14 +30,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void createOrder(Order order) {
+    public Order createOrder(Order order) {
 
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
         order.setValidUntil(Date.from(Instant.now()));
 
+        Order createdOrder;
         try {
-            orderRepository.insert(order);
+            createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
             String errorMessage = "OrderServiceImpl.createOrder: Error in reading";
             LOGGER.error(errorMessage, e);
@@ -46,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         LOGGER.info("Order added", order);
+
+        return createdOrder;
     }
 
     @Override
@@ -85,8 +88,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order readOrder(String id) {
 
-        Order order;
-        // Read order
+        Order order = new Order();        // Read order
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {
@@ -111,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void updateOrder(String id, Order order) {
+    public Order updateOrder(String id, Order order) {
 
         // Read order for the given id
         Order newOrder = readOrder(id);
@@ -141,6 +143,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         LOGGER.info("Order updated", order);
+
+        return newOrder;
     }
 
     @Transactional

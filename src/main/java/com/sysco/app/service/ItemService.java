@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ItemService {
 
-    void createItem(Item item);
+    Item createItem(Item item);
 
     List<Item> readItems();
 
@@ -15,7 +15,7 @@ public interface ItemService {
 
     Item readItemById(String id);
 
-    void updateItem(String id, Item item);
+    Item updateItem(String id, Item item);
 
     void deleteItemById(String id);
 }

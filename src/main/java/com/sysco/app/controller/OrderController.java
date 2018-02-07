@@ -6,14 +6,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -33,10 +32,10 @@ public class OrderController {
             @ApiResponse(code = 401, message = "Authorization failed")
     })
     @PostMapping
-    public ResponseEntity<String> addOrder(@Valid @RequestBody Order order) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order) {
 
-        orderService.createOrder(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Order createdOrder = orderService.createOrder(order);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "View orders pageable", produces = "application/json")
@@ -74,11 +73,11 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
+    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
                                                   @PathVariable("id") String id, @RequestBody Order order) {
 
-        orderService.updateOrder(id, order);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Order updatedOrder = orderService.updateOrder(id, order);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.NO_CONTENT);
     }
 
     @ApiOperation(value = "Delete an order for a given Id")
