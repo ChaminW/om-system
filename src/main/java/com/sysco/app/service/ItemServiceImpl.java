@@ -2,9 +2,9 @@ package com.sysco.app.service;
 
 import com.mongodb.MongoException;
 import com.sysco.app.controller.ItemController;
-import com.sysco.app.exceptions.DatabaseException;
-import com.sysco.app.exceptions.EntityNotFoundException;
-import com.sysco.app.exceptions.ErrorCode;
+import com.sysco.app.exception.DatabaseException;
+import com.sysco.app.exception.EntityNotFoundException;
+import com.sysco.app.exception.ErrorCode;
 import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
 import org.slf4j.Logger;

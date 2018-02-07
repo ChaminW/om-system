@@ -23,8 +23,6 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
-
     @ApiOperation(value = "Add an item")
     @ApiResponses( value = {
             @ApiResponse(code = 201, message = "Successfully created"),
@@ -49,7 +47,7 @@ public class ItemController {
                                                @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
         Page<Item> items = itemService.readItemsPageable(page, size);
-        return new ResponseEntity<Page<Item>>(items, HttpStatus.OK);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @ApiOperation(value = "View an item for a given Id" , produces = "application/json")
@@ -64,7 +62,7 @@ public class ItemController {
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
 
         Item item = itemService.readItemById(id);
-        return new ResponseEntity<Item>(item, HttpStatus.FOUND);
+        return new ResponseEntity<>(item, HttpStatus.FOUND);
     }
 
     @ApiOperation(value = "Update an item for a given id")

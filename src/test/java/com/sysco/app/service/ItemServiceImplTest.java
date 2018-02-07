@@ -1,8 +1,6 @@
 package com.sysco.app.service;
 
-import com.mongodb.MongoException;
 import com.sysco.app.configuration.ApplicationConfiguration;
-import com.sysco.app.exceptions.DatabaseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
