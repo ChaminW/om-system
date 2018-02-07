@@ -18,8 +18,10 @@ public class ItemsValidator implements ConstraintValidator<ItemsConstraint, List
 
     @Override
     public boolean isValid(List<String> itemIds, ConstraintValidatorContext constraintValidatorContext) {
+        System.out.println("Is valid invoked");
         for(String itemId: itemIds) {
             if(itemRepository.findItemById(itemId) == null) {
+                System.out.println("Invalid item for " + itemId);
                 return false;
             }
         }
