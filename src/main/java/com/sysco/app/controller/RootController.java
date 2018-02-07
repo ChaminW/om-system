@@ -1,22 +1,19 @@
 package com.sysco.app.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.Locale;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@Api(value = "home", description = "Expose Swagger API Documentation")
+//@Api(value = "home", description = "Expose Swagger API Documentation")
+@ApiIgnore
 public class RootController {
 
     @Autowired
