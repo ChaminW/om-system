@@ -86,7 +86,6 @@ public class OrderServiceImpl implements OrderService {
     public Order readOrder(String id) {
 
         Order order;
-
         // Read order
         try {
             order = orderRepository.findOrderById(id);
