@@ -43,15 +43,11 @@ public class OrderController {
             @ApiResponse(code = 401, message = "Authorization failed")
     })
     @PostMapping
-    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order) {
 
         order.setCreatedDate(Date.from(Instant.now()));
         order.setLastUpdatedAt(Date.from(Instant.now()));
         order.setValidUntil(Date.from(Instant.now()));
-
-        if (errors.hasErrors()) {
-            return new ResponseEntity<Order>((Order) null, HttpStatus.BAD_REQUEST);
-        }
 
         orderService.createOrder(order);
 
@@ -119,18 +115,15 @@ public class OrderController {
         if(order.getRestaurantId()!= null) {
             newOrder.setRestaurantId(order.getRestaurantId());
         }
-        newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
-        newOrder.setDeliveryMethod(order.getDeliveryMethod());
-        newOrder.setStatus(order.getStatus());
-
-//
-//        newOrder.stream()
-//
-//        Optional.of(newOrder)
-//                .map(newOrder::getRestaurantId())
-//                .map(Nested::getInner)
-//                .map(Inner::getFoo)
-//                .ifPresent(System.out::println);
+        if(order.getDeliveryAddressId()!= null) {
+            newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
+        }
+        if(order.getDeliveryMethod()!= null) {
+            newOrder.setDeliveryMethod(order.getDeliveryMethod());
+        }
+        if(order.getStatus()!= null) {
+            newOrder.setStatus(order.getStatus());
+        }
 
         orderService.updateOrder(newOrder);
 
