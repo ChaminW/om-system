@@ -13,7 +13,7 @@ public class EntityNotFoundException extends RuntimeException {
         timestamp = LocalDateTime.now();
     }
 
-    public EntityNotFoundException(String debugMessage,ErrorCode errorCode, Class rootClass) {
+    public EntityNotFoundException(String debugMessage, ErrorCode errorCode, Class rootClass) {
         this();
         this.debugMessage = debugMessage;
         this.errorCode = errorCode;
