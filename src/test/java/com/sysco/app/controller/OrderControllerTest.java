@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -58,12 +57,15 @@ public class OrderControllerTest {
     @Timed(millis=1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
-                .perform(get("/orders/{id}", "5a7051182095c97dae0f7384"))
+                .perform(get("/orders/{id}", "5a65da6ba9e34b389546fd12"))
                 .andDo(print()).andExpect(status().isFound())
 
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value("5a7051182095c97dae0f7384"))
-                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"));
+                .andExpect(jsonPath("$.id").value("5a65da6ba9e34b389546fd12"))
+                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"))
+                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
+                .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
+                .andExpect(jsonPath("$.status").value("pending"));
     }
 
     @Test

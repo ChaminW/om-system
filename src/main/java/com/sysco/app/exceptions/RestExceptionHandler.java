@@ -39,9 +39,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
-        /*
-            Exception resolving code
-         */
 
         Document error = new Document();
 
@@ -55,9 +52,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({DatabaseException.class})
     protected ResponseEntity<Object> handleDatabaseException(DatabaseException ex) {
-        /*
-            Exception resolving code
-         */
 
         Document error = new Document();
 
@@ -70,7 +64,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
-    public ResponseEntity<Object> handle(ConstraintViolationException e) {
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
         error.put("message", e.getMessage());

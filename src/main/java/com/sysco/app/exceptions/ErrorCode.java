@@ -16,6 +16,7 @@ public enum ErrorCode {
     ORDER_UPDATE_FAILURE(26, "Cannot update order"),
     ORDER_DELETE_FAILURE(27, "Cannot delete order"),
 
+
     ;
 
     private String desc;
