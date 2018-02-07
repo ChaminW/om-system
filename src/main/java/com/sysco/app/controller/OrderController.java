@@ -3,7 +3,6 @@ package com.sysco.app.controller;
 import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.exceptions.RestExceptionHandler;
-import com.sysco.app.exceptions.ValidationException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
