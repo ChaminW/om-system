@@ -18,4 +18,6 @@ public interface ItemService {
     void updateItem(String id, Item item);
 
     void deleteItemById(String id);
+
+    void deleteItems(Item item);
 }

@@ -152,7 +152,20 @@ public class ItemServiceImpl implements ItemService {
         try {
             itemRepository.deleteById(id);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.deleteItem: Error in deleting";
+            String errorMessage = "ItemServiceImpl.deleteItemById: Error in deleting";
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
+        }
+    }
+
+    @Override
+    public void deleteItems(Item item) {
+
+        try {
+            itemRepository.delete(item);
+        } catch (MongoException e) {
+            String errorMessage = "ItemServiceImpl.deleteItems: Error in deleting";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
