@@ -2,6 +2,8 @@ package com.sysco.app.controller;
 
 import com.sysco.app.exceptions.EntityNotFoundException;
 import com.sysco.app.exceptions.ErrorCode;
+import com.sysco.app.exceptions.RestExceptionHandler;
+import com.sysco.app.exceptions.ValidationException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -16,12 +18,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.Date;
 
-
+@Validated
 @RestController
 @RequestMapping(value = "/orders")
 @Api(value = "orders", description = "Operations pertaining to orders in Sysco Order Manager")
@@ -81,8 +87,8 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
-
+    public ResponseEntity<Order> getOrderById(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
+                                              @PathVariable("id") String id) {
         Order order = orderService.readOrder(id);
         if(order == null) {
             String errorMessage = "OrderController.getOrderById: Empty order";
