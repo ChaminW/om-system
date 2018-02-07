@@ -66,6 +66,17 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"));
     }
 
+    @Test
+    public void givenOrderByIdWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
+    {
+        this.mockMvc
+                .perform(get("orders/{id}","ABC"))
+                .andDo(print()).andExpect(status().isBadRequest())
+
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.message").value("getOrderById.arg0: Id should be of varchar type"));
+    }
+
     @After
     public void tearDown() {
     }
