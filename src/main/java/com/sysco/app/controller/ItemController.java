@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping(value = "/items")
@@ -77,6 +78,19 @@ public class ItemController {
     public ResponseEntity<String> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
 
         itemService.updateItem(id, item);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ApiOperation(value = "Delete an item for a given id")
+    @ApiResponses( value = {
+            @ApiResponse(code = 400, message = "Invalid input"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteItem(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
+                                                 @PathVariable String id) {
+
+        itemService.deleteItemById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

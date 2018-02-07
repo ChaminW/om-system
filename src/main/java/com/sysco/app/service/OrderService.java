@@ -12,11 +12,11 @@ public interface OrderService {
 
     List<Order> readOrders();
 
-    Page<Order> readOrdersPageable(PageRequest pageRequest);
+    Page<Order> readOrdersPageable(int page, int size);
 
     Order readOrder(String id);
 
-    void updateOrder(Order order);
+    void updateOrder(String id, Order order);
 
-    void deleteOrder(String id);
+    void deleteOrderById(String id);
 }

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component("itemService")
@@ -29,6 +28,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void createItem(Item item) {
 
+        // Create item
         try {
             itemRepository.insert(item);
         } catch (MongoException e) {
@@ -45,6 +45,8 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> readItems() {
 
         List<Item> items;
+
+        // Read items
         try {
             items = itemRepository.findAll();
         } catch (MongoException e) {
@@ -60,9 +62,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<Item> readItemsPageable(int page, int size) {
 
+        // Initiate a page request
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items;
 
+        // Read items
         try {
             items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
@@ -82,6 +86,7 @@ public class ItemServiceImpl implements ItemService {
 
         Item item;
 
+        // Read item for the given id
         try {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
@@ -91,6 +96,7 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
 
+        // If there is no item for the given id
         if(item == null){
             String errorMessage = "ItemServiceImpl.readItemsPageable: Empty item";
             LOGGER.info(errorMessage);
@@ -106,23 +112,29 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void updateItem(String id, Item item) {
 
+        // Read item for the given id
         Item newItem = readItemById(id);
 
-        if(newItem == null) {
-            String errorMessage = "ItemServiceImpl.updateItem: Empty item";
-            LOGGER.error(errorMessage);
-            throw new EntityNotFoundException(errorMessage,
-                    ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
+        // Setup parameters
+        if(item.getName() != null) {
+            newItem.setName(item.getName());
+        }
+        if(item.getType() != null) {
+            newItem.setType(item.getType());
+        }
+        if(item.getPricePerItem() != null) {
+            newItem.setPricePerItem(item.getPricePerItem());
+        }
+        if(item.getTotalQuantity() != null) {
+            newItem.setTotalQuantity(item.getTotalQuantity());
+        }
+        if(item.getDescription() != null) {
+            newItem.setDescription(item.getDescription());
         }
 
-        newItem.setName(item.getName());
-        newItem.setType(item.getType());
-        newItem.setPricePerItem(item.getPricePerItem());
-        newItem.setTotalQuantity(item.getTotalQuantity());
-        newItem.setDescription(item.getDescription());
-
+        // Update item
         try {
-            itemRepository.save(item);
+            itemRepository.save(newItem);
         } catch (MongoException e) {
             String errorMessage = "ItemServiceImpl.updateItem: Error in updating";
             LOGGER.error(errorMessage, e);
@@ -134,8 +146,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItem(String id) {
+    public void deleteItemById(String id) {
 
+        // Delete item for a given id
         try {
             itemRepository.deleteById(id);
         } catch (MongoException e) {
