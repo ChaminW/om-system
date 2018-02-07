@@ -1,4 +1,4 @@
-package com.sysco.app.exceptions;
+package com.sysco.app.exception;
 
 import java.time.LocalDateTime;
 

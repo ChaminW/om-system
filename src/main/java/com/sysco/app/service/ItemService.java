@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface ItemService {
 
-    void createItem(Item item);
+    Item createItem(Item item);
 
     List<Item> readItems();
 
-    Page<Item> readItemsPageable(PageRequest pageRequest);
+    Page<Item> readItemsPageable(int page, int size);
 
     Item readItemById(String id);
 
-    void updateItem(Item item);
+    Item updateItem(String id, Item item);
 
-    void deleteItem(String id);
+    void deleteItemById(String id);
 }

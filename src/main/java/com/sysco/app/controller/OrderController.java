@@ -1,7 +1,6 @@
 package com.sysco.app.controller;
 
-import com.sysco.app.exceptions.EntityNotFoundException;
-import com.sysco.app.exceptions.ErrorCode;
+
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -13,15 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.time.Instant;
-import java.util.Date;
 
 @Validated
 @RestController
@@ -32,11 +28,6 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @Qualifier("restaurantRepository")
-
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
-
     @ApiOperation(value = "Add an order")
     @ApiResponses( value = {
             @ApiResponse(code = 201, message = "Successfully created"),
@@ -46,15 +37,8 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order) {
 
-        order.setCreatedDate(Date.from(Instant.now()));
-        order.setLastUpdatedAt(Date.from(Instant.now()));
-        order.setValidUntil(Date.from(Instant.now()));
-
-        orderService.createOrder(order);
-
-        LOGGER.info("Order added", order);
-
-        return new ResponseEntity<Order>(order, HttpStatus.CREATED);
+        Order createdOrder = orderService.createOrder(order);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "View orders pageable", produces = "application/json")
@@ -66,12 +50,8 @@ public class OrderController {
     public ResponseEntity<Page<Order>> getOrders(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                  @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Order> orders = orderService.readOrdersPageable(pageRequest);
-
-        LOGGER.info("Orders retrieved", orders);
-
-        return new ResponseEntity<Page<Order>>(orders, HttpStatus.FOUND);
+        Page<Order> orders = orderService.readOrdersPageable(page, size);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "View an order for a given Id", produces = "application/json")
@@ -85,17 +65,9 @@ public class OrderController {
     public ResponseEntity<Order> getOrderById(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
                                               @PathVariable("id") String id) {
         Order order = orderService.readOrder(id);
-        if(order == null) {
-            String errorMessage = "OrderController.getOrderById: Empty order";
-            LOGGER.error(errorMessage);
-            throw new EntityNotFoundException(errorMessage,
-                    ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
-        }
-
-        LOGGER.info("Order retrieved", order);
-
-        return new ResponseEntity<Order>(order, HttpStatus.FOUND);
+        return new ResponseEntity<>(order, HttpStatus.FOUND);
     }
+
 
     @ApiOperation(value = "Update an order for a given Id",produces = "application/json")
     @ApiResponses( value = {
@@ -104,36 +76,15 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order) {
-        System.out.println("put method called");
-        Order newOrder = orderService.readOrder(id);
-        if(newOrder == null) {
-            String errorMessage = "OrderController.updateOrder: Empty order";
-            LOGGER.error(errorMessage);
-            throw new EntityNotFoundException(errorMessage,
-                    ErrorCode.NO_ITEM_FOR_THE_ID, OrderController.class);
-        }
-        if(order.getRestaurantId()!= null) {
-            newOrder.setRestaurantId(order.getRestaurantId());
-        }
-        if(order.getDeliveryAddressId()!= null) {
-            newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
-        }
-        if(order.getDeliveryMethod()!= null) {
-            newOrder.setDeliveryMethod(order.getDeliveryMethod());
-        }
-        if(order.getStatus()!= null) {
-            newOrder.setStatus(order.getStatus());
-        }
+    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
+                                             @PathVariable("id") String id, @RequestBody Order order) {
 
-        orderService.updateOrder(newOrder);
-
-        LOGGER.info("Order updated", order);
-
-        return new ResponseEntity<Order>(newOrder, HttpStatus.OK);
+        Order updatedOrder = orderService.updateOrder(id, order);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Delete an order for a given Id", produces = "application/json")
+
+    @ApiOperation(value = "Delete an order for a given Id")
     @ApiResponses( value = {
             @ApiResponse(code = 204, message = "Successfully processed"),
             @ApiResponse(code = 400, message = "Invalid input"),
@@ -141,17 +92,10 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Order> deleteOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable String id){
-        Order currentOrder = orderService.readOrder(id);
-        if(currentOrder==null)
-        {
-            String errorMessage = "OrderController.deleteOrder: Empty order";
-            LOGGER.error(errorMessage);
-            throw new EntityNotFoundException(errorMessage,
-                    ErrorCode.NO_ITEM_FOR_THE_ID, OrderController.class);
+    public ResponseEntity<String> deleteOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
+                                                  @PathVariable String id){
 
-        }
-        orderService.deleteOrder(id);
-        return new ResponseEntity<Order>(currentOrder, HttpStatus.NO_CONTENT);
+        orderService.deleteOrderById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

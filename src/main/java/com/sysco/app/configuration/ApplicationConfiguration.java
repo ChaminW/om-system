@@ -47,7 +47,6 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
         return validator;
     }
 
-
     @Bean
     public ReloadableResourceBundleMessageSource messageSource(){
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

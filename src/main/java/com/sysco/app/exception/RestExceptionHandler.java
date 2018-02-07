@@ -1,4 +1,4 @@
-package com.sysco.app.exceptions;
+package com.sysco.app.exception;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Set;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -39,9 +36,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
-        /*
-            Exception resolving code
-         */
 
         Document error = new Document();
 
@@ -55,9 +49,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({DatabaseException.class})
     protected ResponseEntity<Object> handleDatabaseException(DatabaseException ex) {
-        /*
-            Exception resolving code
-         */
 
         Document error = new Document();
 
@@ -70,7 +61,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
-    public ResponseEntity<Object> handle(ConstraintViolationException e) {
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
         error.put("message", e.getMessage());
