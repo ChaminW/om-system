@@ -1,9 +1,9 @@
 package com.sysco.app.service;
 
 import com.sysco.app.configuration.ApplicationConfiguration;
-import com.sysco.app.exceptions.DatabaseException;
-import com.sysco.app.exceptions.EntityNotFoundException;
-import com.sysco.app.exceptions.ErrorCode;
+import com.sysco.app.exception.DatabaseException;
+import com.sysco.app.exception.EntityNotFoundException;
+import com.sysco.app.exception.ErrorCode;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
 import org.junit.Assert;

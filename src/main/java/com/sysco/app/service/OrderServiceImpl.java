@@ -19,7 +19,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-@Component
+@Component("orderService")
 public class OrderServiceImpl implements OrderService {
 
     @Qualifier("orderRepository")
