@@ -5,6 +5,7 @@ import com.sysco.app.exceptions.ErrorCode;
 import com.sysco.app.exceptions.RestExceptionHandler;
 import com.sysco.app.exceptions.ValidationException;
 import com.sysco.app.model.Order;
+import com.sysco.app.model.Restaurant;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,8 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
@@ -109,7 +108,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order) {
+    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order) {
 
         Order newOrder = orderService.readOrder(id);
         if(newOrder == null) {
@@ -117,12 +116,23 @@ public class OrderController {
             LOGGER.error(errorMessage);
             throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ITEM_FOR_THE_ID, OrderController.class);
-
         }
-        newOrder.setRestaurantId(order.getRestaurantId());
+        if(order.getRestaurantId()!= null) {
+            newOrder.setRestaurantId(order.getRestaurantId());
+        }
         newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         newOrder.setDeliveryMethod(order.getDeliveryMethod());
         newOrder.setStatus(order.getStatus());
+
+//
+//        newOrder.stream()
+//
+//        Optional.of(newOrder)
+//                .map(newOrder::getRestaurantId())
+//                .map(Nested::getInner)
+//                .map(Inner::getFoo)
+//                .ifPresent(System.out::println);
+
         orderService.updateOrder(newOrder);
 
         LOGGER.info("Order updated", order);
@@ -138,7 +148,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Order> deleteOrder(@PathVariable String id){
+    public ResponseEntity<Order> deleteOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable String id){
         Order currentOrder = orderService.readOrder(id);
         if(currentOrder==null)
         {
