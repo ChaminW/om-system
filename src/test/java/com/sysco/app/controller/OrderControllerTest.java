@@ -50,9 +50,9 @@ public class OrderControllerTest {
      */
     @Test
     @Timed(millis=1000)
-    public void givenOrders_whenMockMVC_thenVerifyResponse() throws Exception {
+    public void givenOrders_whenMockMVC_thenVerifyResponseOK() throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(get("/orders"))
-                .andDo(print()).andExpect(status().isFound())
+                .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
                 .andReturn();
@@ -79,7 +79,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void givenOrdersWithPostAndFormData_whenMockMVC_thenResponseOK() throws Exception {
+    public void givenOrdersWithPostAndFormData_whenMockMVC_thenResponseCREATED() throws Exception {
         Order order = new Order("213k705d062cb49fbc1j2kd7","123kj312c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
