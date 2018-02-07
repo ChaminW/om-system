@@ -30,10 +30,10 @@ public class ItemController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     @PostMapping
-    public ResponseEntity<String> addItem(@RequestBody Item item) {
+    public ResponseEntity<Item> addItem(@RequestBody Item item) {
 
-        itemService.createItem(item);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Item createdItem = itemService.createItem(item);
+        return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "View items pageable" , produces = "application/json")
@@ -73,10 +73,10 @@ public class ItemController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
+    public ResponseEntity<Item> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
 
-        itemService.updateItem(id, item);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Item updatedItem = itemService.updateItem(id, item);
+        return new ResponseEntity<>(updatedItem, HttpStatus.NO_CONTENT);
     }
 
     @ApiOperation(value = "Delete an item for a given id")

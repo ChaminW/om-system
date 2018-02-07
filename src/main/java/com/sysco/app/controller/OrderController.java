@@ -33,10 +33,10 @@ public class OrderController {
             @ApiResponse(code = 401, message = "Authorization failed")
     })
     @PostMapping
-    public ResponseEntity<String> addOrder(@Valid @RequestBody Order order) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order) {
 
-        orderService.createOrder(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Order createdOrder = orderService.createOrder(order);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "View orders pageable", produces = "application/json")
@@ -74,11 +74,11 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
+    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
                                                   @PathVariable("id") String id, @RequestBody Order order) {
 
-        orderService.updateOrder(id, order);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Order updatedOrder = orderService.updateOrder(id, order);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.NO_CONTENT);
     }
 
     @ApiOperation(value = "Delete an order for a given Id")

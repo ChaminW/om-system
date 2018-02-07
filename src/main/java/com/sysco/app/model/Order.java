@@ -1,5 +1,6 @@
 package com.sysco.app.model;
 
+import com.sysco.app.validation.ItemsConstraint;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,6 +27,7 @@ public class Order {
     @DateTimeFormat
     private Date lastUpdatedAt;
     private String description;
+    @ItemsConstraint
     private List<String> itemIdList;
 
     public Order() {

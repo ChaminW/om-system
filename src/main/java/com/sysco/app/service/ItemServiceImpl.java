@@ -26,11 +26,12 @@ public class ItemServiceImpl implements ItemService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Override
-    public void createItem(Item item) {
+    public Item createItem(Item item) {
 
+        Item createdItem;
         // Create item
         try {
-            itemRepository.insert(item);
+            createdItem = itemRepository.insert(item);
         } catch (MongoException e) {
             String errorMessage = "ItemServiceImpl.readItemsPageable: Error in creating";
             LOGGER.error(errorMessage, e);
@@ -39,6 +40,8 @@ public class ItemServiceImpl implements ItemService {
         }
 
         LOGGER.info("Item added", item);
+
+        return createdItem;
     }
 
     @Override
@@ -110,7 +113,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void updateItem(String id, Item item) {
+    public Item updateItem(String id, Item item) {
 
         // Read item for the given id
         Item newItem = readItemById(id);
@@ -143,6 +146,8 @@ public class ItemServiceImpl implements ItemService {
         }
 
         LOGGER.info("Item updated");
+
+        return newItem;
     }
 
     @Override
