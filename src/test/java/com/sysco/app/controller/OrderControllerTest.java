@@ -45,7 +45,7 @@ public class OrderControllerTest {
      */
     @Test
     @Timed(millis=1000)
-    public void givenOrders_whenMockMVC_thenVerifyResponse() throws Exception {
+    public void givenOrders_whenMockMVC_thenVerifyResponseOK() throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(get("/orders"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -63,12 +63,12 @@ public class OrderControllerTest {
     @Timed(millis=1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
-                .perform(get("/orders/{id}", "5a7ae6ad0fb9d43975b6a539"))
+                .perform(get("/orders/{id}", "5a65da6ba9e34b389546fd12"))
                 .andDo(print()).andExpect(status().isFound())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value("5a7ae6ad0fb9d43975b6a539"))
-                .andExpect(jsonPath("$.restaurantId").value("213k705d062cb49fbc1j2kd7"))
-                .andExpect(jsonPath("$.deliveryAddressId").value("123kj312c062cb49fbcd43ad8"))
+                .andExpect(jsonPath("$.id").value("5a65da6ba9e34b389546fd12"))
+                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"))
+                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
                 .andExpect(jsonPath("$.status").value("pending"));
     }
@@ -101,8 +101,8 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void givenOrdersWithPostAndFormData_whenMockMVC_thenResponseOK() throws Exception {
-        Order order = new Order("213k705d062cb49fbc1j2kd7","123kj312c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
+    public void givenOrdersWithPostAndFormData_whenMockMVC_thenResponseCREATED() throws Exception {
+        Order order = new Order("213k705d062cb49fbc1j2kd7","123kj312c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
@@ -129,6 +129,7 @@ public class OrderControllerTest {
 
     @After
     public void tearDown() {
+
 
     }
 }
