@@ -66,7 +66,10 @@ public class OrderControllerTest {
 
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.id").value("5a65da6ba9e34b389546fd12"))
-                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"));
+                .andExpect(jsonPath("$.restaurantId").value("5a5f705d062cb49fbcd43ad7"))
+                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
+                .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
+                .andExpect(jsonPath("$.status").value("pending"));
     }
 
     @After
