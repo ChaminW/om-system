@@ -2,7 +2,6 @@ package com.sysco.app.controller;
 
 import com.sysco.app.configuration.ApplicationConfiguration;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -70,6 +67,18 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
                 .andExpect(jsonPath("$.status").value("pending"));
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void givenOrderByIdWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
+    {
+        this.mockMvc
+                .perform(get("/orders/{id}","ABCD"))
+                .andDo(print()).andExpect(status().isBadRequest())
+
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.message").value("getOrderById.arg0: Id should be of varchar type"));
     }
 
     @After
