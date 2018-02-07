@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -40,6 +41,7 @@ public class OrderControllerTest {
      * Integration testing for /orders API endpoint
      */
     @Test
+    @Timed(millis=1000)
     public void givenOrders_whenMockMVC_thenVerifyResponse() throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(get("/orders"))
                 .andDo(print()).andExpect(status().isFound())
@@ -56,6 +58,7 @@ public class OrderControllerTest {
      * Integration testing for /orders/{id} API endpoint
      */
     @Test
+    @Timed(millis=1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
                 .perform(get("/orders/{id}", "5a65da6ba9e34b389546fd12"))
