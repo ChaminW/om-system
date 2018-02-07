@@ -31,7 +31,6 @@ import java.util.List;
 @WebAppConfiguration
 public class OrderServiceImplTest {
 
-    private PageRequest pageRequest;
     private Order order1,order2;
 
     @InjectMocks
@@ -43,7 +42,6 @@ public class OrderServiceImplTest {
     @Before
     public void setUp()
     {
-        pageRequest = new PageRequest(0,2);
         MockitoAnnotations.initMocks(this);
         order1 = new Order("res0001","addr0001","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("item0001");}});
         order1.setId("order0001");
@@ -94,10 +92,11 @@ public class OrderServiceImplTest {
     @Timed(millis = 1000)
     public void readOrderById_IncorrectId_NotFoundEx(){
 
-        Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(order1);
+        Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(null);
 
         try{
-            orderService.readOrder("order0002");
+            orderService.readOrder("order0001");
+            Assert.fail("");
         }
         catch (EntityNotFoundException ex)
         {

@@ -85,8 +85,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order readOrder(String id) {
 
-        Order order;
-        // Read order
+        Order order = new Order();        // Read order
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {
