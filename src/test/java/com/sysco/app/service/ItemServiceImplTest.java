@@ -2,6 +2,7 @@ package com.sysco.app.service;
 
 import com.mongodb.MongoException;
 import com.sysco.app.configuration.ApplicationConfiguration;
+import com.sysco.app.exceptions.DatabaseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +27,8 @@ public class ItemServiceImplTest {
 
     }
     // method-name_testing-feature_expectation().
-    @Test//(expected = MongoException.class)
-    public void readItemById_passStringId_DBExceptionExpected() {
-        itemService.readItemById("teyue");
+    @Test(expected = Exception.class)
+    public void givenReadItemById_whenMongoServiceStopped_thenMongoException() {
+        itemService.readItems();
     }
 }
