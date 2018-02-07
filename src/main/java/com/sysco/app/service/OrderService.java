@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    void createOrder(Order order);
+    Order createOrder(Order order);
 
     List<Order> readOrders();
 
@@ -16,7 +16,7 @@ public interface OrderService {
 
     Order readOrder(String id);
 
-    void updateOrder(String id, Order order);
+    Order updateOrder(String id, Order order);
 
     void deleteOrderById(String id);
 }
