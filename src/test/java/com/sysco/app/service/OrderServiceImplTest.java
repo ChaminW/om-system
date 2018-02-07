@@ -51,7 +51,6 @@ public class OrderServiceImplTest {
         MockitoAnnotations.initMocks(this);
         order = new Order("5a5f705d062cb49fbcd43ad7","5a5f712c062cb49fbcd43ad8","aaa","asas", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
         order.setId("123");
-        Mockito.when(orderRepository.findOrderById("123")).thenReturn(order);
     }
 
     @Test
@@ -80,7 +79,7 @@ public class OrderServiceImplTest {
 
     @Test
     public void readOrderById(){
-
+        Mockito.when(orderRepository.findOrderById("123")).thenReturn(order);
 
         Order order = orderService.readOrder("123");
         Assert.assertEquals(order.getId(),"123");
