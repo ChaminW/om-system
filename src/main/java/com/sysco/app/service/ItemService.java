@@ -11,11 +11,11 @@ public interface ItemService {
 
     List<Item> readItems();
 
-    Page<Item> readItemsPageable(PageRequest pageRequest);
+    Page<Item> readItemsPageable(int page, int size);
 
     Item readItemById(String id);
 
-    void updateItem(Item item);
+    void updateItem(String id, Item item);
 
-    void deleteItem(String id);
+    void deleteItemById(String id);
 }

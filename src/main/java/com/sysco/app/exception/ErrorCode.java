@@ -1,4 +1,4 @@
-package com.sysco.app.exceptions;
+package com.sysco.app.exception;
 
 public enum ErrorCode {
 
@@ -15,6 +15,7 @@ public enum ErrorCode {
     ORDER_READ_FAILURE(25, "Cannot read order"),
     ORDER_UPDATE_FAILURE(26, "Cannot update order"),
     ORDER_DELETE_FAILURE(27, "Cannot delete order"),
+
 
     ;
 

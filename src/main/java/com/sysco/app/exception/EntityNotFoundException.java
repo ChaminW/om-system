@@ -1,19 +1,19 @@
-package com.sysco.app.exceptions;
+package com.sysco.app.exception;
 
 import java.time.LocalDateTime;
 
-public class DatabaseException extends RuntimeException {
+public class EntityNotFoundException extends RuntimeException {
     private String debugMessage;
     private ErrorCode errorCode;
     private Class rootClass;
     private LocalDateTime timestamp;
 
-    private DatabaseException() {
-        super("Database Exception");
+    private EntityNotFoundException(){
+        super("Entity not found");
         timestamp = LocalDateTime.now();
     }
 
-    public DatabaseException(String debugMessage, ErrorCode errorCode, Class rootClass) {
+    public EntityNotFoundException(String debugMessage, ErrorCode errorCode, Class rootClass) {
         this();
         this.debugMessage = debugMessage;
         this.errorCode = errorCode;
