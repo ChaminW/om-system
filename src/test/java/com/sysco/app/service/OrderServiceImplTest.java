@@ -6,22 +6,21 @@ import com.sysco.app.exception.EntityNotFoundException;
 import com.sysco.app.exception.ErrorCode;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
+import javafx.beans.binding.When;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,31 +31,55 @@ import java.util.List;
 @WebAppConfiguration
 public class OrderServiceImplTest {
 
-    @Qualifier("orderService")
-    @Autowired
-    private OrderService orderService;
     private PageRequest pageRequest;
-    private Order order;
+    private Order order1,order2;
 
     @InjectMocks
-    OrderServiceImpl orderService1;
+    OrderServiceImpl orderService;
 
     @Mock
     OrderRepository orderRepository;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp()
     {
         pageRequest = new PageRequest(0,2);
         MockitoAnnotations.initMocks(this);
-        order = new Order("5a5f705d062cb49fbcd43ad7","5a5f712c062cb49fbcd43ad8","aaa","asas", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
-        order.setId("123");
+        order1 = new Order("res0001","addr0001","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("item0001");}});
+        order1.setId("order0001");
+        order2 = new Order("res0002","addr0002","pipeline","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("item0002");}});
+        order2.setId("order0002");
     }
 
+
+   /* @Test
+    @Timed(millis = 1000)
+    public void createOrder_passNull_thenCreateFailure(){
+        try {
+            orderService.createOrder(null);
+        }
+        catch (DatabaseException ex) {
+            Assert.assertEquals(ex.getDebugMessage(),"OrderServiceImpl.createOrder: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
+        }
+    }*/
+
+    /*@Test
+    @Timed(millis = 1000)
+    public void createOrder_passOrderOb_thenSuccess(){
+
+        Mockito.when(orderRepository.insert(order1)).thenReturn(order1);
+        //Order order = orderService.createOrder(order1);
+    }*/
+
+    /*@Test
+    @Timed(millis = 1000)
+    public void deleteOrderById_passIncorrectId_notFoundEx(){
+
+    }*/
+
     @Test
+    @Timed(millis = 1000)
     public void createOrder_passNewObject_thenCreateFailure(){
         try {
             orderService.createOrder(new Order());
@@ -68,10 +91,13 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    public void readOrderById_IncorrectId_OrderNotFoundEx(){
+    @Timed(millis = 1000)
+    public void readOrderById_IncorrectId_NotFoundEx(){
+
+        Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(order1);
 
         try{
-            orderService.readOrder("aaaaaaa");
+            orderService.readOrder("order0002");
         }
         catch (EntityNotFoundException ex)
         {
@@ -81,21 +107,59 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    public void readOrderById(){
+    @Timed(millis = 1000)
+    public void readOrderById_correctId_successful(){
 
-        List<Order> orderList = new ArrayList<>();
-        orderList.add(order);
+        Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(order1);
 
-        Mockito.when(orderRepository.findOrderById("123")).thenReturn(order);
-
-        Order order = orderService1.readOrder("123");
-        Assert.assertEquals(order.getId(),"123");
-       // assertThat("Size", userList.size(), equalTo(resultUserList.size());
-       // assertEquals("Details",details, equalTo(resultUserList.get(0)));
-        //orderService.readOrders();
-
+        Order order = orderService.readOrder("order0001");
+        Assert.assertEquals(order.getRestaurantId(),"res0001");
+        Assert.assertEquals(order.getDeliveryAddressId(),"addr0001");
+        Assert.assertEquals(order.getItemIdList().get(0),"item0001");
     }
 
+    @Test
+    @Timed(millis = 1000)
+    public void readAllOrdersTest(){
 
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(order1);
+        orderList.add(order2);
+        Mockito.when(orderRepository.findAll()).thenReturn(orderList);
+
+        List<Order> orders = orderService.readOrders();
+        Assert.assertEquals(orders.size(),orderList.size());
+        Assert.assertEquals(orders.get(0),order1);
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void updateOrder_IncorrectId_NotFoundEx(){
+
+        Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(null);
+
+        try{
+            orderService.updateOrder("order0002",order1);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            Assert.assertEquals(ex.getDebugMessage(),"OrderServiceImpl.readOrder: Empty order");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.NO_ORDER_FOR_THE_ID);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void updateOrderTest(){
+
+        Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(order2);
+        orderService.updateOrder("order0002",order1);
+
+        Assert.assertEquals(order2.getRestaurantId(),"res0001");
+        Assert.assertEquals(order2.getDeliveryAddressId(),"addr0001");
+        Assert.assertEquals(order2.getDeliveryMethod(),"shipping");
+        Assert.assertEquals(order2.getStatus(),"pending");
+
+    }
 
 }
