@@ -57,7 +57,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("errorCode", ex.getErrorCode().getCode());
         error.put("timestamp", ex.getTimestamp());
 
-        return new ResponseEntity<Object>(error , HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
@@ -66,6 +66,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         Document error = new Document();
         error.put("message", e.getMessage());
 
-        return new ResponseEntity<Object>(error , HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
