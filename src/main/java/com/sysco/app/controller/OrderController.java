@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,12 @@ public class OrderController {
             @ApiResponse(code = 401, message = "Authorization failed")
     })
     @PostMapping
-    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
 
+        if(errors.hasErrors()){
+            System.out.println("has errors");
+            return new ResponseEntity<>((Order) null, HttpStatus.BAD_REQUEST);
+        }
         Order createdOrder = orderService.createOrder(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
