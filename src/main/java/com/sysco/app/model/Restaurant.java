@@ -3,6 +3,8 @@ package com.sysco.app.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "restaurants")
 public class Restaurant {
 
@@ -10,7 +12,7 @@ public class Restaurant {
     private String id;
     private String owner;
     private String addressId;
-    private String createdAt;
+    private Date createdAt;
     private String contact;
     private String description;
     private Boolean isActive;
@@ -22,7 +24,7 @@ public class Restaurant {
         this.id = id;
     }
 
-    public Restaurant(String id, String owner, String addressId, String createdAt, String contact, String description, Boolean isActive) {
+    public Restaurant(String id, String owner, String addressId, Date createdAt, String contact, String description, Boolean isActive) {
         this.id = id;
         this.owner = owner;
         this.addressId = addressId;
@@ -56,11 +58,11 @@ public class Restaurant {
         this.addressId = addressId;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -87,4 +89,5 @@ public class Restaurant {
     public void setActive(Boolean active) {
         isActive = active;
     }
+
 }
