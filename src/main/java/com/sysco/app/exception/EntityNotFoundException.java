@@ -6,11 +6,11 @@ public class EntityNotFoundException extends RuntimeException {
     private String debugMessage;
     private ErrorCode errorCode;
     private Class rootClass;
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     private EntityNotFoundException(){
         super("Entity not found");
-        timestamp = LocalDateTime.now();
+        timestamp = LocalDateTime.now().toString();
     }
 
     public EntityNotFoundException(String debugMessage, ErrorCode errorCode, Class rootClass) {
@@ -32,7 +32,7 @@ public class EntityNotFoundException extends RuntimeException {
         return rootClass;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 }
