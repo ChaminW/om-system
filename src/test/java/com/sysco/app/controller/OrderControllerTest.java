@@ -78,7 +78,7 @@ public class OrderControllerTest {
     public void givenOrderByIdWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
     {
         this.mockMvc
-                .perform(get("/orders/{id}","ABCD"))
+                .perform(get("/orders/{id}","ABCD*"))
                 .andDo(print()).andExpect(status().isBadRequest())
 
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -91,7 +91,7 @@ public class OrderControllerTest {
     {
         Order order = new Order("213k705d062cb49fbc1j2kd7","123kj312c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
         this.mockMvc
-                .perform(put("/orders/{id}","ABCD")
+                .perform(put("/orders/{id}","ABCD*")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(order)))
 
@@ -120,6 +120,17 @@ public class OrderControllerTest {
     public void givenOrdersWithPostAndFormDataInInvalidFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
         Order order = new Order(null,"123kj312c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
         //pass null value as the restaurant Id
+        this.mockMvc.perform(post("/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(order)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void givenOrdersWithPostAndFormDataWithNoRestaurant_whenMockMVC_thenResponseBadRequest() throws Exception{
+        Order order = new Order("5a7b52c03235b718d1edcedo","123kj312c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
