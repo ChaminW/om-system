@@ -68,4 +68,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
+    public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException e) {
+
+        Document error = new Document();
+
+        error.put("message", messageSource.getMessage(String.valueOf(e.getErrorCode().getCode()), null,
+                LocaleContextHolder.getLocale()));
+        error.put("errorCode", e.getErrorCode().getCode());
+        error.put("timestamp", e.getTimestamp());
+
+
+        return new ResponseEntity<Object>(error , HttpStatus.BAD_REQUEST);
+    }
 }
