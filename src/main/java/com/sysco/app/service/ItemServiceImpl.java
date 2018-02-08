@@ -10,7 +10,6 @@ import com.sysco.app.repository.ItemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import java.util.List;
 @Component("itemService")
 public class ItemServiceImpl implements ItemService {
 
-    @Qualifier("itemRepository")
     @Autowired
     ItemRepository itemRepository;
 
