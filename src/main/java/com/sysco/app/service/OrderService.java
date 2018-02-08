@@ -2,13 +2,15 @@ package com.sysco.app.service;
 
 import com.sysco.app.model.Order;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+
 import java.util.List;
 
 public interface OrderService {
 
     Order createOrder(Order order);
+
+    Order createValidatedOrder(Order order, Errors errors);
 
     List<Order> readOrders();
 
