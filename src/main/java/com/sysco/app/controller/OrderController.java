@@ -36,14 +36,22 @@ public class OrderController {
     })
     @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
-
+//        Order createdOrder = orderService.createOrder(order);
         if(errors.hasErrors()){
-            System.out.println("has errors");
-            return new ResponseEntity<>((Order) null, HttpStatus.BAD_REQUEST);
+            System.out.println("add order error has");
         }
-        Order createdOrder = orderService.createOrder(order);
+        Order createdOrder = orderService.createValidatedOrder(order, errors);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
+
+//    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
+//
+//        if(errors.hasErrors()){
+//            return new ResponseEntity<>((Order) null, HttpStatus.BAD_REQUEST);
+//        }
+//        Order createdOrder = orderService.createOrder(order);
+//        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+//    }
 
     @ApiOperation(value = "View orders pageable", produces = "application/json")
     @ApiResponses( value = {
