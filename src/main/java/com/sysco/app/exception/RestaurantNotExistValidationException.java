@@ -18,6 +18,7 @@ public class RestaurantNotExistValidationException extends RuntimeException{
         this.debugMessage = debugMessage;
         this.errorCode = errorCode;
         this.rootClass = rootClass;
+        this.timestamp  = LocalDateTime.now();
     }
 
     public String getDebugMessage() {
