@@ -1,5 +1,6 @@
 package com.sysco.app.controller;
 
+
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -7,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,10 +63,10 @@ public class OrderController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Order> getOrderById(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
                                               @PathVariable("id") String id) {
-
         Order order = orderService.readOrder(id);
         return new ResponseEntity<>(order, HttpStatus.FOUND);
     }
+
 
     @ApiOperation(value = "Update an order for a given Id",produces = "application/json")
     @ApiResponses( value = {
@@ -74,11 +76,12 @@ public class OrderController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
-                                                  @PathVariable("id") String id, @RequestBody Order order) {
+                                             @PathVariable("id") String id, @RequestBody Order order) {
 
         Order updatedOrder = orderService.updateOrder(id, order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.NO_CONTENT);
     }
+
 
     @ApiOperation(value = "Delete an order for a given Id")
     @ApiResponses( value = {
