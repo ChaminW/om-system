@@ -25,7 +25,5 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
     public MongoClient mongoClient() {
         return new MongoClient(clientHost, clientPort);
     }
-
-
 }
 
