@@ -15,7 +15,8 @@ public enum ErrorCode {
     ORDER_READ_FAILURE(25, "Cannot read order"),
     ORDER_UPDATE_FAILURE(26, "Cannot update order"),
     ORDER_DELETE_FAILURE(27, "Cannot delete order"),
-
+    RESTAURANT_CREATE_FAILURE(28, "Cannot create restaurant"),
+    RESTAURANT_READ_FAILURE(29, "Cannot read restaurant")
 
     ;
 

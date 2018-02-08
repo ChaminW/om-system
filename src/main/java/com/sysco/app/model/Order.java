@@ -1,5 +1,6 @@
 package com.sysco.app.model;
 
+import com.sysco.app.annotation.CheckRestaurant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +14,7 @@ public class Order {
 
     @Id
     private String id;
-    @NotBlank(message = "Restaurant Id must not be blank!") @NotNull
+    @NotBlank(message = "Restaurant Id must not be blank!") @NotNull @CheckRestaurant
     private String restaurantId;
     private String deliveryAddressId;
     private String deliveryMethod;
