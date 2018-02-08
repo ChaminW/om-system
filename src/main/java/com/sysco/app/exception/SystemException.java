@@ -3,9 +3,9 @@ package com.sysco.app.exception;
 import java.time.LocalDateTime;
 
 public class SystemException extends RuntimeException {
-    protected String debugMessage;
-    protected Class rootClass;
-    protected String timestamp;
+    private String debugMessage;
+    private Class rootClass;
+    private String timestamp;
 
     public SystemException(String debugMessage, Class rootClass) {
         super("System Exception");
@@ -14,15 +14,15 @@ public class SystemException extends RuntimeException {
         this.timestamp = LocalDateTime.now().toString();
     }
 
-    public String getDebugMessage() {
+    String getDebugMessage() {
         return debugMessage;
     }
 
-    public Class getRootClass() {
+    Class getRootClass() {
         return rootClass;
     }
 
-    public String getTimestamp() {
+    String getTimestamp() {
         return timestamp;
     }
 }
