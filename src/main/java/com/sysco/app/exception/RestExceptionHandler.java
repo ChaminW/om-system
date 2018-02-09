@@ -11,12 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final String MESSAGE = "message";
+    private static final String ERROR_CODE = "errorCode";
+    private static final String DEBUG = "debug";
+    private static final String ROOT_CLASS = "rootClass";
+    private static final String TIMESTAMP = "timestamp";
 
     @Autowired
     MessageSource messageSource;
@@ -26,10 +31,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
 
-        error.put("message", ex.getMessage());
-        error.put("debug", ex.getDebugMessage());
-        error.put("rootClass", ex.getRootClass());
-        error.put("timestamp", ex.getTimestamp());
+        error.put(MESSAGE, ex.getMessage());
+        error.put(DEBUG, ex.getDebugMessage());
+        error.put(ROOT_CLASS, ex.getRootClass());
+        error.put(TIMESTAMP, ex.getTimestamp());
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -39,10 +44,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
 
-        error.put("message", messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
+        error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
                 LocaleContextHolder.getLocale()));
-        error.put("errorCode", ex.getErrorCode().getCode());
-        error.put("timestamp", ex.getTimestamp());
+        error.put(ERROR_CODE, ex.getErrorCode().getCode());
+        error.put(TIMESTAMP, ex.getTimestamp());
 
         return new ResponseEntity<Object>(error , HttpStatus.NOT_FOUND);
     }
@@ -52,10 +57,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
 
-        error.put("message", messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
+        error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
                 LocaleContextHolder.getLocale()));
-        error.put("errorCode", ex.getErrorCode().getCode());
-        error.put("timestamp", ex.getTimestamp());
+        error.put(ERROR_CODE, ex.getErrorCode().getCode());
+        error.put(TIMESTAMP, ex.getTimestamp());
 
         return new ResponseEntity<Object>(error , HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -64,7 +69,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
-        error.put("message", e.getMessage());
+        error.put(MESSAGE, e.getMessage());
 
         return new ResponseEntity<Object>(error , HttpStatus.BAD_REQUEST);
     }
