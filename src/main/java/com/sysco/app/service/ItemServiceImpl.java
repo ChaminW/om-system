@@ -10,7 +10,6 @@ import com.sysco.app.repository.ItemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import java.util.List;
 @Component("itemService")
 public class ItemServiceImpl implements ItemService {
 
-    @Qualifier("itemRepository")
     @Autowired
     ItemRepository itemRepository;
 
@@ -33,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             createdItem = itemRepository.insert(item);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in creating";
+            String errorMessage = "ItemServiceImpl.createItem: Error in creating";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
@@ -53,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
+            String errorMessage = "ItemServiceImpl.readItems: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
@@ -93,7 +91,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
+            String errorMessage = "ItemServiceImpl.readItemById: Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
@@ -101,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
 
         // If there is no item for the given id
         if(item == null){
-            String errorMessage = "ItemServiceImpl.readItemsPageable: Empty item";
+            String errorMessage = "ItemServiceImpl.readItemById: Empty item";
             LOGGER.info(errorMessage);
             throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);

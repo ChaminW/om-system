@@ -3,26 +3,20 @@ package com.sysco.app.exception;
 import java.time.LocalDateTime;
 
 public class RestaurantNotExistValidationException extends RuntimeException{
-    private String debugMessage;
     private ErrorCode errorCode;
     private Class rootClass;
     private LocalDateTime timestamp;
 
 
-    public RestaurantNotExistValidationException() {
-        super("Restaurant not exist");
+    public RestaurantNotExistValidationException(String message) {
+        super(message);
         timestamp = LocalDateTime.now();
     }
 
-    public RestaurantNotExistValidationException(String debugMessage, ErrorCode errorCode, Class rootClass) {
-        this.debugMessage = debugMessage;
+    public RestaurantNotExistValidationException(String message, ErrorCode errorCode, Class rootClass) {
+        this(message);
         this.errorCode = errorCode;
         this.rootClass = rootClass;
-        this.timestamp  = LocalDateTime.now();
-    }
-
-    public String getDebugMessage() {
-        return debugMessage;
     }
 
     public ErrorCode getErrorCode() {

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.constraints.Pattern;
 
 @RestController
@@ -18,13 +19,10 @@ import javax.validation.constraints.Pattern;
 @Api(value = "items", description = "Operations pertaining to items in Sysco Order Manger")
 public class ItemController {
 
-    private final
+    @Autowired
     ItemService itemService;
 
-    @Autowired
-    public ItemController(ItemService itemService) {
-        this.itemService = itemService;
-    }
+
 
     @ApiOperation(value = "Add an item")
     @ApiResponses( value = {

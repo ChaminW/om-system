@@ -46,5 +46,5 @@ public class RestaurantController {
         Page<Restaurant> restaurants = restaurantService.readRestaurantsPageable(page, size);
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
-    }
+}
 

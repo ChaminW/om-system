@@ -26,7 +26,7 @@ public enum ErrorCode {
     private String desc;
     private int code;
 
-    private ErrorCode(int code, String desc) {
+    ErrorCode(int code, String desc) {
         this.code = code;
         this.desc = desc;
     }
