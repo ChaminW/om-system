@@ -78,7 +78,7 @@ public class OrderController {
                                              @PathVariable("id") String id, @RequestBody Order order) {
 
         Order updatedOrder = orderService.updateOrder(id, order);
-        return new ResponseEntity<>(updatedOrder, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
 
 
