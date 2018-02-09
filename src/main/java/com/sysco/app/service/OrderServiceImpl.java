@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
-
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -59,8 +58,7 @@ public class OrderServiceImpl implements OrderService {
         if(errors.hasErrors()){
             String errorMessage = "OrderServiceImpl.createOrder: Error in creating order";
             LOGGER.error(errorMessage);
-            LOGGER.error("Inside not restaurant found");
-            throw new RestaurantNotExistValidationException("", ErrorCode.ORDER_VALIDATION_FAILURE, OrderServiceImpl.class);
+            throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE, OrderServiceImpl.class);
         }
         return this.createOrder(order);
     }
@@ -103,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order readOrder(String id) {
 
-        Order order = new Order();        // Read order
+        Order order;        // Read order
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {

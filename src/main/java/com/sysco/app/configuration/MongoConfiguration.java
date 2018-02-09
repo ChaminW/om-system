@@ -10,11 +10,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.sysco.app.repository")
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
-    @Value("${dbName}")
+    @Value("${DB_NAME}")
     private String databaseName;
-    @Value("${port}")
+    @Value("${PORT}")
     private int clientPort;
-    @Value("${host}")
+    @Value("${HOST}")
     private String clientHost;
 
     protected String getDatabaseName() {
