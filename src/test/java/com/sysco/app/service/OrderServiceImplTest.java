@@ -6,7 +6,6 @@ import com.sysco.app.exception.EntityNotFoundException;
 import com.sysco.app.exception.ErrorCode;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
-import javafx.beans.binding.When;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +30,10 @@ import java.util.List;
 @WebAppConfiguration
 public class OrderServiceImplTest {
 
-    private Order order1,order2;
+    private Order order1,order2,order3;
+    @Autowired
+    @Qualifier("orderService")
+    OrderService orderServiceWired;
 
     @InjectMocks
     OrderServiceImpl orderService;
@@ -47,20 +49,26 @@ public class OrderServiceImplTest {
         order1.setId("order0001");
         order2 = new Order("res0002","addr0002","pipeline","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("item0002");}});
         order2.setId("order0002");
+        order3 = new Order("213k705d062cb49fbc1j2kd7","123kj312c062cb49fbcd43ad8","pipeline","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
     }
 
 
-   /* @Test
+    @Test
     @Timed(millis = 1000)
-    public void createOrder_passNull_thenCreateFailure(){
-        try {
-            orderService.createOrder(null);
-        }
-        catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getDebugMessage(),"OrderServiceImpl.createOrder: Error in reading");
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
-        }
-    }*/
+    public void createOrder_submitNewOrder_thenSuccess(){
+        //order3 doesn't have an Id. Id will be auto generated in mongo db
+        Order order = orderServiceWired.createOrder(order3);
+
+        //check returned object Id value
+        Assert.assertNotEquals(order.getId(),"");
+        Assert.assertEquals(order.getId().length(),24);
+        Assert.assertEquals(order.getDeliveryAddressId(),order3.getDeliveryAddressId());
+        Assert.assertEquals(order.getDeliveryMethod(),order3.getDeliveryMethod());
+        Assert.assertEquals(order.getRestaurantId(),order3.getRestaurantId());
+        Assert.assertEquals(order.getStatus(),order3.getStatus());
+        Assert.assertEquals(order.getItemIdList().get(0),order3.getItemIdList().get(0));
+
+    }
 
     /*@Test
     @Timed(millis = 1000)

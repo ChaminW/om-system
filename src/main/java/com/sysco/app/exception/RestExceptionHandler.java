@@ -62,7 +62,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
         error.put(TIMESTAMP, ex.getTimestamp());
 
-        return new ResponseEntity<Object>(error , HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
@@ -70,6 +70,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
+    public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException e) {
+
+        Document error = new Document();
+
+        error.put("message", messageSource.getMessage(String.valueOf(e.getErrorCode().getCode()), null,
+                LocaleContextHolder.getLocale()));
+        error.put("errorCode", e.getErrorCode().getCode());
+        error.put("timestamp", e.getTimestamp());
+
 
         return new ResponseEntity<Object>(error , HttpStatus.BAD_REQUEST);
     }

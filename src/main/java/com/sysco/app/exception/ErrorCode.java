@@ -16,14 +16,17 @@ public enum ErrorCode {
     ORDER_UPDATE_FAILURE(26, "Cannot update order"),
     ORDER_DELETE_FAILURE(27, "Cannot delete order"),
     RESTAURANT_CREATE_FAILURE(28, "Cannot create restaurant"),
-    RESTAURANT_READ_FAILURE(29, "Cannot read restaurant")
+    RESTAURANT_READ_FAILURE(29, "Cannot read restaurant"),
+
+    //Validation Exceptions
+    ORDER_VALIDATION_FAILURE(30, "Cannot create order without existing restaurant")
 
     ;
 
     private String desc;
     private int code;
 
-    private ErrorCode(int code, String desc) {
+    ErrorCode(int code, String desc) {
         this.code = code;
         this.desc = desc;
     }

@@ -1,11 +1,13 @@
 package com.sysco.app.controller;
 
+<<<<<<< HEAD
 import com.sysco.app.repository.RestaurantRepository;
+=======
+>>>>>>> 562acfdd6a831e2ddcb1a97660f776bee9326ce4
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,11 +23,8 @@ public class RootController {
     @Autowired
     MessageSource messageSource;
 
-    @Qualifier("restaurantRepository")
-    @Autowired
-    RestaurantRepository restaurantRepository;
 
-    Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @ApiOperation(value = "view API documentation", produces = "test/HTML")
     @RequestMapping(value = "/", method = RequestMethod.GET)

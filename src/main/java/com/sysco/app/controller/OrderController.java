@@ -35,12 +35,7 @@ public class OrderController {
     })
     @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
-
-        if(errors.hasErrors()){
-            System.out.println("has errors");
-            return new ResponseEntity<>((Order) null, HttpStatus.BAD_REQUEST);
-        }
-        Order createdOrder = orderService.createOrder(order);
+        Order createdOrder = orderService.createValidatedOrder(order, errors);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
