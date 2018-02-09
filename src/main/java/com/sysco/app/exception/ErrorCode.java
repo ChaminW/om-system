@@ -19,8 +19,10 @@ public enum ErrorCode {
     RESTAURANT_READ_FAILURE(29, "Cannot read restaurant"),
 
     //Validation Exceptions
-    ORDER_VALIDATION_FAILURE(30, "Cannot create order without existing restaurant")
+    ORDER_VALIDATION_FAILURE(30, "Cannot create order without existing restaurant"),
 
+    //Security Exceptions
+    AUTHENTICATION_FAILURE(40, "Authentication failure")
     ;
 
     private String desc;

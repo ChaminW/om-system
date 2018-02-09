@@ -11,75 +11,70 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final String MESSAGE = "message";
+    private static final String ERROR_CODE = "errorCode";
+    private static final String ROOT_CLASS = "rootClass";
+    private static final String TIMESTAMP = "timestamp";
+
     @Autowired
     MessageSource messageSource;
 
     @ExceptionHandler({SystemException.class})
-    protected ResponseEntity<Object> handleException(SystemException ex) {
+    protected ResponseEntity<Object> handleSystemException(SystemException ex) {
 
-        Document error = new Document();
-
-        error.put("message", ex.getMessage());
-        error.put("debug", ex.getDebugMessage());
-        error.put("rootClass", ex.getRootClass());
-        error.put("timestamp", ex.getTimestamp());
-
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return sendErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
 
-        Document error = new Document();
-
-        error.put("message", messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
-                LocaleContextHolder.getLocale()));
-        error.put("errorCode", ex.getErrorCode().getCode());
-        error.put("timestamp", ex.getTimestamp());
-
-        return new ResponseEntity<Object>(error , HttpStatus.NOT_FOUND);
+        return sendErrorResponse(ex , HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({DatabaseException.class})
     protected ResponseEntity<Object> handleDatabaseException(DatabaseException ex) {
 
-        Document error = new Document();
-
-        error.put("message", messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
-                LocaleContextHolder.getLocale()));
-        error.put("errorCode", ex.getErrorCode().getCode());
-        error.put("timestamp", ex.getTimestamp());
-
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return sendErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
+    public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException ex) {
+
+        return sendErrorResponse(ex , HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({AuthorizationFailureException.class})
+    public ResponseEntity<Object> handleAuthorizationFailureException(AuthorizationFailureException ex) {
+
+        return sendErrorResponse(ex , HttpStatus.UNAUTHORIZED);
+    }
+
+    private ResponseEntity<Object> sendErrorResponse(SystemException ex, HttpStatus httpStatus) {
+
+        Document error = new Document();
+
+        error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
+                LocaleContextHolder.getLocale()));
+        error.put(ERROR_CODE, ex.getErrorCode().getCode());
+        error.put(ROOT_CLASS, ex.getRootClass());
+        error.put(TIMESTAMP, ex.getTimestamp());
+
+        return new ResponseEntity<Object>(error , httpStatus);
+    }
+
+    // Standard Exceptions
     @ExceptionHandler(value = { ConstraintViolationException.class })
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
-        error.put("message", e.getMessage());
+        error.put(MESSAGE, e.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
-    public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException e) {
-
-        Document error = new Document();
-
-        error.put("message", messageSource.getMessage(String.valueOf(e.getErrorCode().getCode()), null,
-                LocaleContextHolder.getLocale()));
-        error.put("errorCode", e.getErrorCode().getCode());
-        error.put("timestamp", e.getTimestamp());
-
-
-        return new ResponseEntity<Object>(error , HttpStatus.BAD_REQUEST);
     }
 }

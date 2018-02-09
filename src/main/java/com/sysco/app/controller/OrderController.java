@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -74,9 +72,11 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
-                                             @PathVariable("id") String id, @RequestBody Order order) {
-
+    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order, Errors errors) {
+        if (errors.hasErrors()){
+            System.out.println("inside get eroors");
+            return null;
+        }
         Order updatedOrder = orderService.updateOrder(id, order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
@@ -92,7 +92,6 @@ public class OrderController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
                                                   @PathVariable String id){
-
         orderService.deleteOrderById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

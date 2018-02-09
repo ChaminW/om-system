@@ -1,6 +1,5 @@
 package com.sysco.app.repository;
 
-
 import com.sysco.app.model.Restaurant;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;

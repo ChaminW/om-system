@@ -36,10 +36,10 @@ public class OrderServiceImplTest {
     OrderService orderServiceWired;
 
     @InjectMocks
-    OrderServiceImpl orderService;
+    private OrderServiceImpl orderService;
 
     @Mock
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Before
     public void setUp()
@@ -91,7 +91,7 @@ public class OrderServiceImplTest {
             orderService.createOrder(new Order());
         }
         catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getDebugMessage(),"OrderServiceImpl.createOrder: Error in reading");
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.createOrder: Error in reading");
             Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
         }
     }
@@ -108,7 +108,7 @@ public class OrderServiceImplTest {
         }
         catch (EntityNotFoundException ex)
         {
-            Assert.assertEquals(ex.getDebugMessage(),"OrderServiceImpl.readOrder: Empty order");
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrder: Empty order");
             Assert.assertEquals(ex.getErrorCode(),ErrorCode.NO_ORDER_FOR_THE_ID);
         }
     }
@@ -150,7 +150,7 @@ public class OrderServiceImplTest {
         }
         catch (EntityNotFoundException ex)
         {
-            Assert.assertEquals(ex.getDebugMessage(),"OrderServiceImpl.readOrder: Empty order");
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrder: Empty order");
             Assert.assertEquals(ex.getErrorCode(),ErrorCode.NO_ORDER_FOR_THE_ID);
         }
     }
