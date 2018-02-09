@@ -20,7 +20,7 @@ import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = "com.sysco.app")
-@PropertySource("classpath:application.propertises")
+@PropertySource("classpath:application.properties")
 public class ApplicationConfiguration extends WebMvcConfigurationSupport {
 
     @Override

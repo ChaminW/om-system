@@ -1,9 +1,5 @@
 package com.sysco.app.controller;
 
-<<<<<<< HEAD
-import com.sysco.app.repository.RestaurantRepository;
-=======
->>>>>>> 562acfdd6a831e2ddcb1a97660f776bee9326ce4
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

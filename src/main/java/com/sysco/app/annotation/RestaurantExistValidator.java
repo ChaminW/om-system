@@ -22,13 +22,6 @@ public class RestaurantExistValidator implements ConstraintValidator<CheckRestau
     OrderRepository orderRepository;
 
     @Override
-    public void initialize(CheckRestaurant contactNumber) {
-        /*
-            No initialization required
-         */
-    }
-
-    @Override
     public boolean isValid(String restaurantId,
                            ConstraintValidatorContext cxt) {
         Restaurant restaurant = restaurantRepository.findOrderById(restaurantId);

@@ -14,12 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
-
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -59,10 +56,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createValidatedOrder(Order order, Errors errors) {
         if(errors.hasErrors()){
-//            return new ResponseEntity<Order>((Order) null, HttpStatus.BAD_REQUEST);
             String errorMessage = "OrderServiceImpl.createOrder: Error in creating order";
             LOGGER.error(errorMessage);
-            throw new RestaurantNotExistValidationException("", ErrorCode.ORDER_VALIDATION_FAILURE, OrderServiceImpl.class);
+            throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE, OrderServiceImpl.class);
         }
         return this.createOrder(order);
     }
@@ -105,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order readOrder(String id) {
 
-        Order order = new Order();        // Read order
+        Order order;        // Read order
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {
