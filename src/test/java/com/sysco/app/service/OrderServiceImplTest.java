@@ -1,5 +1,6 @@
 package com.sysco.app.service;
 
+import com.mongodb.MongoException;
 import com.sysco.app.configuration.ApplicationConfiguration;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.EntityNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,32 +72,6 @@ public class OrderServiceImplTest {
 
     }
 
-    /*@Test
-    @Timed(millis = 1000)
-    public void createOrder_passOrderOb_thenSuccess(){
-
-        Mockito.when(orderRepository.insert(order1)).thenReturn(order1);
-        //Order order = orderService.createOrder(order1);
-    }*/
-
-    /*@Test
-    @Timed(millis = 1000)
-    public void deleteOrderById_passIncorrectId_notFoundEx(){
-
-    }*/
-
-    @Test
-    @Timed(millis = 1000)
-    public void createOrder_passNewObject_thenCreateFailure(){
-        try {
-            orderService.createOrder(new Order());
-        }
-        catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.createOrder: Error in reading");
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
-        }
-    }
-
     @Test
     @Timed(millis = 1000)
     public void readOrderById_IncorrectId_NotFoundEx(){
@@ -104,7 +80,7 @@ public class OrderServiceImplTest {
 
         try{
             orderService.readOrder("order0001");
-            Assert.fail("");
+            Assert.fail("testcase does not meet exception");
         }
         catch (EntityNotFoundException ex)
         {
@@ -147,6 +123,7 @@ public class OrderServiceImplTest {
 
         try{
             orderService.updateOrder("order0002",order1);
+            Assert.fail("testcase does not meet exception");
         }
         catch (EntityNotFoundException ex)
         {
@@ -167,6 +144,53 @@ public class OrderServiceImplTest {
         Assert.assertEquals(order2.getDeliveryMethod(),"shipping");
         Assert.assertEquals(order2.getStatus(),"pending");
 
+    }
+
+    //testing error codes when database exception raised
+    @Test
+    @Timed(millis = 1000)
+    public void createOrder_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).insert(order1);
+        try{
+            orderService.createOrder(order1);
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.createOrder: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_CREATE_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void readOrders_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).findAll();
+        try{
+            orderService.readOrders();
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrder: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_READ_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void updateOrder_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).save(order2);
+        Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(order2);
+        try{
+            orderService.updateOrder("order0002",order2);
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.updateOrder: Error in updating");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_UPDATE_FAILURE);
+        }
     }
 
 }
