@@ -15,8 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
-import java.time.Instant;
-import java.util.Date;
+
 import java.util.List;
 
 @Component("orderService")
@@ -100,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order readOrder(String id) {
-        if(!OrderValidator.isValidId(id)) {
+        if (!OrderValidator.isValidId(id)) {
             String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
@@ -117,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
         }
 
-        if(order == null) {
+        if (order == null) {
             String errorMessage = ErrorCode.NO_ORDER_FOR_THE_ID.getDesc();
             LOGGER.error(errorMessage);
             throw new EntityNotFoundException(errorMessage,
@@ -133,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order updateOrder(String id, Order order) {
 
-        if(!OrderValidator.isValidId(id)) {
+        if (!OrderValidator.isValidId(id)) {
             String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
@@ -174,7 +173,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrderById(String id) {
 
-        if(!OrderValidator.isValidId(id)) {
+        if (!OrderValidator.isValidId(id)) {
             String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,

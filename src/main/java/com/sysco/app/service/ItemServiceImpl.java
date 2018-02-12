@@ -109,7 +109,7 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
 
-        if(item == null){
+        if (item == null) {
             String errorMessage = ErrorCode.NO_ITEM_FOR_THE_ID.getDesc();
             LOGGER.info(errorMessage);
             throw new EntityNotFoundException(errorMessage,
@@ -125,7 +125,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item updateItem(String id, Item item) {
 
-        if(!ItemValidator.isValidId(id)) {
+        if (!ItemValidator.isValidId(id)) {
             String errorMessage = ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc();
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
@@ -168,7 +168,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteItemById(String id) {
 
-        if(!ItemValidator.isValidId(id)) {
+        if (!ItemValidator.isValidId(id)) {
             String errorMessage = ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc();
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
