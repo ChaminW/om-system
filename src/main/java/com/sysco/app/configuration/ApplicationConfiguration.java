@@ -1,5 +1,6 @@
 package com.sysco.app.configuration;
 
+import com.sysco.app.configuration.security.SecurityKeyInterceptor;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -24,8 +26,16 @@ import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = "com.sysco.app")
-@PropertySource("classpath:application.properties")
+@PropertySource(value = { "classpath:application.properties" })
 public class ApplicationConfiguration extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private SecurityKeyInterceptor securityKeyInterceptor;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -72,6 +82,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(securityKeyInterceptor).addPathPatterns("/items/**", "/orders/**");
         registry.addInterceptor(localeInterceptor());
     }
 }

@@ -1,6 +1,5 @@
 package com.sysco.app.annotation;
 
-
 import com.sysco.app.model.Restaurant;
 import com.sysco.app.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
