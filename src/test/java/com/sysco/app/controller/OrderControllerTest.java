@@ -45,19 +45,14 @@ public class OrderControllerTest{
     @Autowired
     private WebApplicationContext context;
 
-    @Autowired
-    private ConfigurableEnvironment env;
-
     private MockMvc mockMvc;
 
     @Mock
     OrderRepository orderRepository;
 
-//    @InjectMocks
-//    ItemServiceImpl itemService;
-
     @Before
     public void setUp() {
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
     }
 
@@ -67,14 +62,11 @@ public class OrderControllerTest{
     @Test
     @Timed(millis=1000)
     public void givenOrders_whenMockMVC_thenVerifyResponseOK() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get("/orders"))
+        this.mockMvc.perform(get("/orders"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
                 .andReturn();
-        //Can be used for test functions which Spring test library does not provide
-        //Assert.assertEquals("application/json;charset=UTF-8",
-        //        mvcResult.getResponse().getContentType());
     }
 
     /**
@@ -146,6 +138,7 @@ public class OrderControllerTest{
     }
 
     @Test
+    @Timed(millis = 1000)
     public void givenUpdateOrdersWithPathVariableAndFormData_whenMockMVC_thenResponseUPDATED() throws Exception {
         Order order = new Order("5a7b52c03235b718d1edcedo","5a5f3fec062cb49fbcd43ad5","shipping","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
         this.mockMvc.perform(put("/orders/{id}","5a807ad0136343325bde9702")
@@ -174,6 +167,16 @@ public class OrderControllerTest{
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.message").value("Invalid pattern for order id"));
     }
+
+    @Test
+    @Timed(millis = 1000)
+    public void givenDeleteOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
+    {
+        this.mockMvc
+                .perform(delete("/orders/{id}","5a7ad86ea2684c44debeafdb")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isNoContent());
+                }
 
     @After
     public void tearDown() {
