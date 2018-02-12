@@ -36,9 +36,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order order) {
 
-        order.setCreatedDate(Date.from(Instant.now()));
-        order.setLastUpdatedAt(Date.from(Instant.now()));
-        order.setValidUntil(Date.from(Instant.now()));
+        order.setCreatedDate(System.currentTimeMillis());
+        order.setLastUpdatedAt(System.currentTimeMillis());
 
         Order createdOrder;
         try {
@@ -142,6 +141,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order newOrder = readOrder(id);
+        newOrder.setLastUpdatedAt(System.currentTimeMillis());
 
         if (order.getRestaurantId() != null) {
             newOrder.setRestaurantId(order.getRestaurantId());
@@ -190,5 +190,4 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
         }
     }
-
 }

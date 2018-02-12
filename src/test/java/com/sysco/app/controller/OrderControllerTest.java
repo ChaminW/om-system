@@ -3,34 +3,25 @@ package com.sysco.app.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sysco.app.configuration.ApplicationConfiguration;
 import com.sysco.app.model.Order;
-import com.sysco.app.repository.ItemRepository;
 import com.sysco.app.repository.OrderRepository;
-import com.sysco.app.service.ItemServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
 
-import static org.springframework.test.util.AssertionErrors.assertEquals;
+import java.util.ArrayList;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,9 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"test"})
-@ContextConfiguration(classes = { ApplicationConfiguration.class })
+@ContextConfiguration(classes = {ApplicationConfiguration.class})
 @WebAppConfiguration
-public class OrderControllerTest{
+public class OrderControllerTest {
 
     @Autowired
     private WebApplicationContext context;
@@ -60,7 +51,7 @@ public class OrderControllerTest{
      * Integration testing for /orders API endpoint
      */
     @Test
-    @Timed(millis=1000)
+    @Timed(millis = 1000)
     public void givenOrders_whenMockMVC_thenVerifyResponseOK() throws Exception {
         this.mockMvc.perform(get("/orders"))
                 .andDo(print()).andExpect(status().isOk())
@@ -73,7 +64,7 @@ public class OrderControllerTest{
      * Integration testing for /orders/{id} API endpoint
      */
     @Test
-    @Timed(millis=1000)
+    @Timed(millis = 1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
                 .perform(get("/orders/{id}", "5a811d435c71494e4fe69bb4"))
@@ -88,10 +79,9 @@ public class OrderControllerTest{
 
     @Test
     @Timed(millis = 1000)
-    public void givenOrderByIdWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
-    {
+    public void givenOrderByIdWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
         this.mockMvc
-                .perform(get("/orders/{id}","ABCD*"))
+                .perform(get("/orders/{id}", "ABCD*"))
                 .andDo(print()).andExpect(status().isBadRequest())
 
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -100,7 +90,9 @@ public class OrderControllerTest{
 
     @Test
     public void givenOrdersWithPostAndFormData_whenMockMVC_thenResponseCREATED() throws Exception {
-        Order order = new Order("5a8112825c714934d46e8b7d","5a5f712c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
+        Order order = new Order("5a8112825c714934d46e8b7d", "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+            add("5a5f411f062cb49fbcd43ad6");
+        }});
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
@@ -117,7 +109,9 @@ public class OrderControllerTest{
     @Test
     @Timed(millis = 1000)
     public void givenOrdersWithPostAndFormDataInInvalidFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
-        Order order = new Order(null,"5a5f712c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
+        Order order = new Order(null, "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+            add("5a5f72d2062cb49fbcd43ad9");
+        }});
         //pass null value as the restaurant Id
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -128,8 +122,10 @@ public class OrderControllerTest{
 
     @Test
     @Timed(millis = 1000)
-    public void givenOrdersWithPostAndFormDataWithNoRestaurant_whenMockMVC_thenResponseBadRequest() throws Exception{
-        Order order = new Order("5a7b52c03235b718d1edcedo","5a5f712c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
+    public void givenOrdersWithPostAndFormDataWithNoRestaurant_whenMockMVC_thenResponseBadRequest() throws Exception {
+        Order order = new Order("5a7b52c03235b718d1edcedo", "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+            add("5a5f72d2062cb49fbcd43ad9");
+        }});
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
@@ -140,8 +136,10 @@ public class OrderControllerTest{
     @Test
     @Timed(millis = 1000)
     public void givenUpdateOrdersWithPathVariableAndFormData_whenMockMVC_thenResponseUPDATED() throws Exception {
-        Order order = new Order("5a7b52c03235b718d1edcedo","5a5f3fec062cb49fbcd43ad5","shipping","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
-        this.mockMvc.perform(put("/orders/{id}","5a807ad0136343325bde9702")
+        Order order = new Order("5a7b52c03235b718d1edcedo", "5a5f3fec062cb49fbcd43ad5", "shipping", "approved", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+            add("5a5f411f062cb49fbcd43ad6");
+        }});
+        this.mockMvc.perform(put("/orders/{id}", "5a807ad0136343325bde9702")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
                 .andDo(print())
@@ -155,11 +153,12 @@ public class OrderControllerTest{
 
     @Test
     @Timed(millis = 1000)
-    public void givenUpdateOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
-    {
-        Order order = new Order("213k705d062cb49fbc1j2kd7","5a5f712c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
+    public void givenUpdateOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
+        Order order = new Order("213k705d062cb49fbc1j2kd7", "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+            add("5a5f72d2062cb49fbcd43ad9");
+        }});
         this.mockMvc
-                .perform(put("/orders/{id}","ABCD*")
+                .perform(put("/orders/{id}", "ABCD*")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(order)))
 
@@ -170,13 +169,12 @@ public class OrderControllerTest{
 
     @Test
     @Timed(millis = 1000)
-    public void givenDeleteOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
-    {
+    public void givenDeleteOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
         this.mockMvc
-                .perform(delete("/orders/{id}","5a7ad86ea2684c44debeafdb")
+                .perform(delete("/orders/{id}", "5a7ad86ea2684c44debeafdb")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isNoContent());
-                }
+    }
 
     @After
     public void tearDown() {
