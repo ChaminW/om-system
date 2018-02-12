@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.createOrder: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);

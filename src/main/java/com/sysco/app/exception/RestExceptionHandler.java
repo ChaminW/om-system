@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.print.Doc;
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -48,8 +50,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return sendErrorResponse(ex , HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({AuthorizationFailureException.class})
-    public ResponseEntity<Object> handleAuthorizationFailureException(AuthorizationFailureException ex) {
+    @ExceptionHandler({AuthenticationFailureException.class})
+    public ResponseEntity<Object> handleAuthorizationFailureException(AuthenticationFailureException ex) {
         return sendErrorResponse(ex , HttpStatus.UNAUTHORIZED);
     }
 
@@ -79,5 +81,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put(MESSAGE, e.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<Object> handleException(Exception e) {
+        Document error = new Document();
+        error.put(MESSAGE, e.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
