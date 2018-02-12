@@ -25,8 +25,7 @@ public enum ErrorCode {
     ITEM_ID_VALIDATION_FAILURE(33, "Invalid pattern for item item id"),
 
     //Security Exceptions
-    AUTHENTICATION_FAILURE(40, "Authentication failure")
-    ;
+    AUTHENTICATION_FAILURE(40, "Authentication failure");
 
     private String desc;
     private int code;

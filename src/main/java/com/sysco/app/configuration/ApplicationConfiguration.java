@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -37,18 +38,18 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Validator validator (final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+    public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
 
-        ValidatorFactory validatorFactory = Validation.byProvider( HibernateValidator.class )
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
                 .buildValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
+        return validatorFactory.getValidator();
 
-        return validator;
+
     }
 
     @Bean
-     LocalValidatorFactoryBean Validator() {
+    LocalValidatorFactoryBean getValidatorFactoryBean() {
         LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
         validator.setValidationMessageSource(messageSource());
         validator.setParameterNameDiscoverer(new LocalVariableTableParameterNameDiscoverer());
@@ -64,7 +65,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
+    public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -72,7 +73,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public CookieLocaleResolver localeResolver(){
+    public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         localeResolver.setCookieName("locale-cookie");
@@ -81,7 +82,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public LocaleChangeInterceptor localeInterceptor(){
+    public LocaleChangeInterceptor localeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("locale");
         return interceptor;
