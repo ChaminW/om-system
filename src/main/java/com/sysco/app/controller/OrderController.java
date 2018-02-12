@@ -58,8 +58,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> getOrderById(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
-                                              @PathVariable("id") String id) {
+    public ResponseEntity<Order> getOrderById(@PathVariable("id") String id) {
         Order order = orderService.readOrder(id);
         return new ResponseEntity<>(order, HttpStatus.FOUND);
     }
@@ -72,7 +71,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order, Errors errors) {
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order, Errors errors) {
         if (errors.hasErrors()){
             System.out.println("inside get eroors");
             return null;
@@ -90,8 +89,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
-                                                  @PathVariable String id){
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") String id){
         orderService.deleteOrderById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

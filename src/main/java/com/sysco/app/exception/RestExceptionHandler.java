@@ -45,14 +45,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
     public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException ex) {
-
         return sendErrorResponse(ex , HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({AuthorizationFailureException.class})
     public ResponseEntity<Object> handleAuthorizationFailureException(AuthorizationFailureException ex) {
-
         return sendErrorResponse(ex , HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({ValidationFailureException.class})
+    public ResponseEntity<Object> handleValidationFailureException(ValidationFailureException ex) {
+        return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> sendErrorResponse(SystemException ex, HttpStatus httpStatus) {
