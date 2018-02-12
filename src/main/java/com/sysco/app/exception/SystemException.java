@@ -14,7 +14,9 @@ public class SystemException extends RuntimeException {
         this.timestamp = LocalDateTime.now().toString();
     }
 
-    public ErrorCode getErrorCode() { return errorCode; }
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
 
     public Class getRootClass() {
         return rootClass;

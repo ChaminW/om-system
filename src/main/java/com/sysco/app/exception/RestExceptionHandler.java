@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -22,8 +23,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String ROOT_CLASS = "rootClass";
     private static final String TIMESTAMP = "timestamp";
 
-    @Autowired
+    private final
     MessageSource messageSource;
+
+    @Autowired
+    public RestExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler({SystemException.class})
     protected ResponseEntity<Object> handleSystemException(SystemException ex) {
@@ -34,7 +40,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
 
-        return sendErrorResponse(ex , HttpStatus.NOT_FOUND);
+        return sendErrorResponse(ex, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({DatabaseException.class})
@@ -43,14 +49,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return sendErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
+    @ExceptionHandler(value = {RestaurantNotExistValidationException.class})
     public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException ex) {
-        return sendErrorResponse(ex , HttpStatus.BAD_REQUEST);
+        return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({AuthorizationFailureException.class})
     public ResponseEntity<Object> handleAuthorizationFailureException(AuthorizationFailureException ex) {
-        return sendErrorResponse(ex , HttpStatus.UNAUTHORIZED);
+        return sendErrorResponse(ex, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({ValidationFailureException.class})
@@ -68,11 +74,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put(ROOT_CLASS, ex.getRootClass());
         error.put(TIMESTAMP, ex.getTimestamp());
 
-        return new ResponseEntity<Object>(error , httpStatus);
+        return new ResponseEntity<Object>(error, httpStatus);
     }
 
     // Standard Exceptions
-    @ExceptionHandler(value = { ConstraintViolationException.class })
+    @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
