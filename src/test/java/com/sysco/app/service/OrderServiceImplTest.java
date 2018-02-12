@@ -1,5 +1,6 @@
 package com.sysco.app.service;
 
+import com.mongodb.MongoException;
 import com.sysco.app.configuration.ApplicationConfiguration;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.EntityNotFoundException;
@@ -16,21 +17,26 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Timed;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles(profiles = {"test"})
 @ContextConfiguration( classes = ApplicationConfiguration.class )
 @WebAppConfiguration
 public class OrderServiceImplTest {
 
     private Order order1,order2,order3;
+
     @Autowired
     @Qualifier("orderService")
     OrderService orderServiceWired;
@@ -41,6 +47,9 @@ public class OrderServiceImplTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private PageRequest pageRequest;
+
     @Before
     public void setUp()
     {
@@ -50,6 +59,7 @@ public class OrderServiceImplTest {
         order2 = new Order("res0002","addr0002","pipeline","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("item0002");}});
         order2.setId("order0002");
         order3 = new Order("213k705d062cb49fbc1j2kd7","123kj312c062cb49fbcd43ad8","pipeline","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
+        pageRequest = PageRequest.of(0, 2);
     }
 
 
@@ -70,32 +80,6 @@ public class OrderServiceImplTest {
 
     }
 
-    /*@Test
-    @Timed(millis = 1000)
-    public void createOrder_passOrderOb_thenSuccess(){
-
-        Mockito.when(orderRepository.insert(order1)).thenReturn(order1);
-        //Order order = orderService.createOrder(order1);
-    }*/
-
-    /*@Test
-    @Timed(millis = 1000)
-    public void deleteOrderById_passIncorrectId_notFoundEx(){
-
-    }*/
-
-    @Test
-    @Timed(millis = 1000)
-    public void createOrder_passNewObject_thenCreateFailure(){
-        try {
-            orderService.createOrder(new Order());
-        }
-        catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.createOrder: Error in reading");
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
-        }
-    }
-
     @Test
     @Timed(millis = 1000)
     public void readOrderById_IncorrectId_NotFoundEx(){
@@ -104,7 +88,7 @@ public class OrderServiceImplTest {
 
         try{
             orderService.readOrder("order0001");
-            Assert.fail("");
+            Assert.fail("testcase does not meet exception");
         }
         catch (EntityNotFoundException ex)
         {
@@ -147,6 +131,7 @@ public class OrderServiceImplTest {
 
         try{
             orderService.updateOrder("order0002",order1);
+            Assert.fail("testcase does not meet exception");
         }
         catch (EntityNotFoundException ex)
         {
@@ -167,6 +152,98 @@ public class OrderServiceImplTest {
         Assert.assertEquals(order2.getDeliveryMethod(),"shipping");
         Assert.assertEquals(order2.getStatus(),"pending");
 
+    }
+
+    //testing error codes when database exception raised
+    @Test
+    @Timed(millis = 1000)
+    public void createOrder_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).insert(order1);
+        try{
+            orderService.createOrder(order1);
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.createOrder: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_CREATE_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void readOrders_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).findAll();
+        try{
+            orderService.readOrders();
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrder: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_READ_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void readOrdersPageble_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).findAll(pageRequest);
+        try{
+            orderService.readOrdersPageable(0,2);
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrdersPageable: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_READ_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void updateOrder_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).save(order2);
+        Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(order2);
+        try{
+            orderService.updateOrder("order0002",order2);
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.updateOrder: Error in updating");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_UPDATE_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void deleteOrders_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).deleteById("order0001");
+        try{
+            orderService.deleteOrderById("order0001");
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.deleteOrder: Error in deleting");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_DELETE_FAILURE);
+        }
+    }
+
+    @Test
+    @Timed(millis = 1000)
+    public void readrderById_mongoError_DatabaseException() {
+        Mockito.doThrow(new MongoException("")).when(orderRepository).findOrderById("order0001");
+        try{
+            orderService.readOrder("order0001");
+            Assert.fail("testcase does not meet exception");
+        }
+        catch (DatabaseException ex)
+        {
+            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrder: Error in reading");
+            Assert.assertEquals(ex.getErrorCode(),ErrorCode.ORDER_READ_FAILURE);
+        }
     }
 
 }

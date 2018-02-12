@@ -28,7 +28,7 @@ public class RootController {
 
         logger.info("Service initiated");
 
-        return new RedirectView("/swagger-ui.html#/");
+        return new RedirectView("/swagger-ui.html");
     }
 
 }
