@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.sysco.app.repository")
 public class MongoTestConfiguration extends AbstractMongoConfiguration {
 
-    @Value("omapp-db-test")
+    @Value("${DB_NAME_TEST}")
     private String databaseName;
     @Value("${PORT}")
     private int clientPort;
