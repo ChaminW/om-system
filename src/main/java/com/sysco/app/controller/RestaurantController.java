@@ -17,31 +17,36 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "restaurants", description = "Operations pertaining to restaurants in Sysco Order Manger")
 public class RestaurantController {
 
-        @Autowired
-        RestaurantService restaurantService;
+    private final
+    RestaurantService restaurantService;
 
-        @ApiOperation(value = "Add a restaurant")
-        @ApiResponses(value = {
-                @ApiResponse(code = 201, message = "Successfully created"),
-                @ApiResponse(code = 400, message = "Invalid input"),
-                @ApiResponse(code = 401, message = "Authorization failed")
-        })
-        @PostMapping
-        public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant) {
+    @Autowired
+    public RestaurantController(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
+    }
 
-            Restaurant createdRestaurant = restaurantService.createRestaurant(restaurant);
-            return new ResponseEntity<>(createdRestaurant, HttpStatus.CREATED);
-        }
+    @ApiOperation(value = "Add a restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successfully created"),
+            @ApiResponse(code = 400, message = "Invalid input"),
+            @ApiResponse(code = 401, message = "Authorization failed")
+    })
+    @PostMapping
+    public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant) {
 
-    @ApiOperation(value = "View restaurants pageable" , produces = "application/json")
-    @ApiResponses( value = {
+        Restaurant createdRestaurant = restaurantService.createRestaurant(restaurant);
+        return new ResponseEntity<>(createdRestaurant, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "View restaurants pageable", produces = "application/json")
+    @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Successful"),
             @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 500, message = "Server Error")
     })
     @GetMapping
     public ResponseEntity<Page<Restaurant>> getRestaurants(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                               @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
+                                                           @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
 
         Page<Restaurant> restaurants = restaurantService.readRestaurantsPageable(page, size);
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
