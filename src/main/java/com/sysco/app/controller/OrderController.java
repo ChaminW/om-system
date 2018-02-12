@@ -1,6 +1,5 @@
 package com.sysco.app.controller;
 
-import com.sysco.app.annotation.CheckRestaurantId;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
 import io.swagger.annotations.Api;
@@ -15,7 +14,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 @Validated
 @RestController

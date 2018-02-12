@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -48,14 +49,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return sendErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = { RestaurantIdValidationException.class })
+    @ExceptionHandler(value = {RestaurantIdValidationException.class})
     public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantIdValidationException ex) {
-        return sendErrorResponse(ex , HttpStatus.BAD_REQUEST);
+        return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({AuthenticationFailureException.class})
     public ResponseEntity<Object> handleAuthorizationFailureException(AuthenticationFailureException ex) {
-        return sendErrorResponse(ex , HttpStatus.UNAUTHORIZED);
+        return sendErrorResponse(ex, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({ValidationFailureException.class})
