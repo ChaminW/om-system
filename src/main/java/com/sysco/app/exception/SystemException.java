@@ -3,9 +3,9 @@ package com.sysco.app.exception;
 import java.time.LocalDateTime;
 
 public class SystemException extends RuntimeException {
-    private ErrorCode errorCode;
-    private Class rootClass;
-    private String timestamp;
+    final private ErrorCode errorCode;
+    final private Class rootClass;
+    final private String timestamp;
 
     SystemException(String message, ErrorCode errorCode, Class rootClass) {
         super(message);
