@@ -30,9 +30,15 @@
     </appender>
 
     <logger name="com.sysco.app" additivity="false">
-        <level value="DEBUG" />
+        <level value="ALL" />
         <appender-ref ref="File"/>
         <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.validator" additivity="false">
+        <level value="ALL" />
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="File" />
     </logger>
 
     <root>
