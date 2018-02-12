@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository(value = "restaurantRepository")
 public interface RestaurantRepository extends MongoRepository<Restaurant, String>, PagingAndSortingRepository<Restaurant, String> {
-    Restaurant findOrderById (String id);
+    Restaurant findOrderById(String id);
 }
