@@ -43,7 +43,6 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<Page<Item>> getItems(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                @RequestParam(value = "size", required = false, defaultValue = "4") int size) {
-
         Page<Item> items = itemService.readItemsPageable(page, size);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
@@ -58,7 +57,6 @@ public class ItemController {
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable String id) {
-
         Item item = itemService.readItemById(id);
         return new ResponseEntity<>(item, HttpStatus.FOUND);
     }
@@ -72,7 +70,6 @@ public class ItemController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<Item> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
-
         Item updatedItem = itemService.updateItem(id, item);
         return new ResponseEntity<>(updatedItem, HttpStatus.NO_CONTENT);
     }
@@ -85,7 +82,6 @@ public class ItemController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteItem(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
                                                  @PathVariable String id) {
-
         itemService.deleteItemById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -45,17 +45,14 @@ public class OrderControllerTest{
     @Autowired
     private WebApplicationContext context;
 
-    @Autowired
-    private ConfigurableEnvironment env;
-
     private MockMvc mockMvc;
 
     @Mock
     OrderRepository orderRepository;
 
-
     @Before
     public void setUp() {
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
     }
 
@@ -65,7 +62,7 @@ public class OrderControllerTest{
     @Test
     @Timed(millis=1000)
     public void givenOrders_whenMockMVC_thenVerifyResponseOK() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get("/orders"))
+        this.mockMvc.perform(get("/orders"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -170,6 +167,16 @@ public class OrderControllerTest{
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.message").value("Invalid pattern for order id"));
     }
+
+    @Test
+    @Timed(millis = 1000)
+    public void givenDeleteOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
+    {
+        this.mockMvc
+                .perform(delete("/orders/{id}","5a7ad86ea2684c44debeafdb")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isNoContent());
+                }
 
     @After
     public void tearDown() {
