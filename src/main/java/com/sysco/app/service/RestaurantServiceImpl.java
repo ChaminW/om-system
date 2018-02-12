@@ -4,6 +4,7 @@ import com.mongodb.MongoException;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.ErrorCode;
 import com.sysco.app.model.Restaurant;
+import com.sysco.app.repository.OrderRepository;
 import com.sysco.app.repository.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,8 @@ import java.util.Date;
 @Component("restaurantService")
 public class RestaurantServiceImpl implements RestaurantService {
 
-    private final
+    @Qualifier("restaurantRepository")
+    @Autowired
     RestaurantRepository restaurantRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceImpl.class);

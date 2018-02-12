@@ -154,10 +154,10 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
@@ -187,7 +187,6 @@
             <artifactId>hibernate-validator-cdi</artifactId>
             <version>6.0.7.Final</version>
         </dependency>
-
     </dependencies>
 
     <build>

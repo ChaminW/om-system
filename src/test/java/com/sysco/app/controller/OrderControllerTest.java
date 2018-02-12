@@ -3,15 +3,24 @@ package com.sysco.app.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sysco.app.configuration.ApplicationConfiguration;
 import com.sysco.app.model.Order;
+import com.sysco.app.repository.ItemRepository;
+import com.sysco.app.repository.OrderRepository;
+import com.sysco.app.service.ItemServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Timed;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -20,20 +29,32 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles(profiles = {"test"})
 @ContextConfiguration(classes = { ApplicationConfiguration.class })
 @WebAppConfiguration
-public class OrderControllerTest {
+public class OrderControllerTest{
 
     @Autowired
     private WebApplicationContext context;
 
+    @Autowired
+    private ConfigurableEnvironment env;
+
     private MockMvc mockMvc;
+
+    @Mock
+    OrderRepository orderRepository;
+
+//    @InjectMocks
+//    ItemServiceImpl itemService;
 
     @Before
     public void setUp() {
