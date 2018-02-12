@@ -53,24 +53,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
                 .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
                 .buildValidatorFactory();
         Validator validator = validatorFactory.getValidator();
-
         return validator;
-    }
-
-    @Bean
-     LocalValidatorFactoryBean Validator() {
-        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-        validator.setValidationMessageSource(messageSource());
-        validator.setParameterNameDiscoverer(new LocalVariableTableParameterNameDiscoverer());
-        return validator;
-    }
-
-    @Bean
-    @Autowired
-    MethodValidationPostProcessor getValidationPostProcessor(LocalValidatorFactoryBean validator) {
-        MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
-        processor.setValidator(validator);
-        return processor;
     }
 
     @Bean
