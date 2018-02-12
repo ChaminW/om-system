@@ -158,23 +158,6 @@ public class OrderControllerTest{
 
     @Test
     @Timed(millis = 1000)
-    public void givenUpdateOrdersWithIncorrectResturentID_whenMockMVC_thenResponseUPDATED() throws Exception {
-        Order order = new Order("abcdef","5a5f3fec062cb49fbcd43ad5","shipping","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
-        this.mockMvc.perform(put("/orders/{id}","5a807ad0136343325bde9702")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(order)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.restaurantId").value("5a7b52c03235b718d1edcedo"))
-                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f3fec062cb49fbcd43ad5"))
-                .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
-                .andExpect(jsonPath("$.status").value("approved"));
-    }
-
-
-    @Test
-    @Timed(millis = 1000)
     public void givenUpdateOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception
     {
         Order order = new Order("213k705d062cb49fbc1j2kd7","5a5f712c062cb49fbcd43ad8","shipping","pending", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f72d2062cb49fbcd43ad9");}});
@@ -185,7 +168,7 @@ public class OrderControllerTest{
 
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.message").value("updateOrder.id: Id should be of varchar type"));
+                .andExpect(jsonPath("$.message").value("Invalid pattern for order id"));
     }
 
     @After
