@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
-import java.util.Date;
 
 
 @Component("restaurantService")
@@ -33,7 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @Override
     public Restaurant createRestaurant(Restaurant restaurant) {
-        restaurant.setCreatedAt(Date.from(Instant.now()));
+        restaurant.setCreatedAt(System.currentTimeMillis());
         Restaurant createdRestaurant;
 
         try {
