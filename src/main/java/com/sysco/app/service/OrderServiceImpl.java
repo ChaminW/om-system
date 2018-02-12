@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
-
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.createOrder: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
@@ -59,9 +58,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createValidatedOrder(Order order, Errors errors) {
         if (errors.hasErrors()) {
-            String errorMessage = "OrderServiceImpl.createOrder: Error in validating order";
+            String errorMessage = "Error in validating order";
             LOGGER.error(errorMessage);
-            throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
+            throw new RestaurantIdValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
                     OrderServiceImpl.class);
         }
         return this.createOrder(order);
@@ -73,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             return orderRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.readOrder: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
@@ -89,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orders = orderRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.readOrdersPageable: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
@@ -104,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
     public Order readOrder(String id) {
 
         if (!OrderValidator.isValidId(id)) {
-            String errorMessage = "OrderServiceImpl.readOrder: Invalid order id";
+            String errorMessage = "Invalid order id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
@@ -114,14 +113,14 @@ public class OrderServiceImpl implements OrderService {
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.readOrder: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
         }
 
         if (order == null) {
-            String errorMessage = "OrderServiceImpl.readOrder: Empty order";
+            String errorMessage = "Empty order";
             LOGGER.error(errorMessage);
             throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
@@ -137,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrder(String id, Order order) {
 
         if (!OrderValidator.isValidId(id)) {
-            String errorMessage = "OrderServiceImpl.updateOrder: Invalid order id";
+            String errorMessage = "Invalid order id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
@@ -161,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.save(newOrder);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.updateOrder: Error in updating";
+            String errorMessage = "Error in updating";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_UPDATE_FAILURE, OrderServiceImpl.class);
@@ -177,7 +176,7 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrderById(String id) {
 
         if (!OrderValidator.isValidId(id)) {
-            String errorMessage = "OrderServiceImpl.deleteOrderById: Invalid order id";
+            String errorMessage = "Invalid order id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
@@ -186,11 +185,10 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.deleteById(id);
         } catch (MongoException e) {
-            String errorMessage = "OrderServiceImpl.deleteOrder: Error in deleting";
+            String errorMessage = "Error in deleting";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
         }
-
     }
 }

@@ -47,6 +47,9 @@ public class OrderControllerTest{
 
     private MockMvc mockMvc;
 
+    @Mock
+    OrderRepository orderRepository;
+
     @Before
     public void setUp() {
 
@@ -64,10 +67,6 @@ public class OrderControllerTest{
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
                 .andReturn();
-
-        //      Can be used for test functions which Spring test library does not provide
-        //      Assert.assertEquals("application/json;charset=UTF-8",
-        //      mvcResult.getResponse().getContentType());
     }
 
     /**
@@ -77,14 +76,14 @@ public class OrderControllerTest{
     @Timed(millis=1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
-                .perform(get("/orders/{id}", "5a807ad0136343325bde9702"))
+                .perform(get("/orders/{id}", "5a811d435c71494e4fe69bb4"))
                 .andDo(print()).andExpect(status().isFound())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value("5a807ad0136343325bde9702"))
-                .andExpect(jsonPath("$.restaurantId").value("5a7b52c03235b718d1edcedo"))
-                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f3fec062cb49fbcd43ad5"))
+                .andExpect(jsonPath("$.id").value("5a811d435c71494e4fe69bb4"))
+                .andExpect(jsonPath("$.restaurantId").value("5a8112825c714934d46e8b7d"))
+                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
-                .andExpect(jsonPath("$.status").value("approved"));
+                .andExpect(jsonPath("$.status").value("pending"));
     }
 
     @Test
@@ -139,6 +138,7 @@ public class OrderControllerTest{
     }
 
     @Test
+    @Timed(millis = 1000)
     public void givenUpdateOrdersWithPathVariableAndFormData_whenMockMVC_thenResponseUPDATED() throws Exception {
         Order order = new Order("5a7b52c03235b718d1edcedo","5a5f3fec062cb49fbcd43ad5","shipping","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
         this.mockMvc.perform(put("/orders/{id}","5a807ad0136343325bde9702")
@@ -165,7 +165,7 @@ public class OrderControllerTest{
 
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.message").value("updateOrder.id: Id should be of varchar type"));
+                .andExpect(jsonPath("$.message").value("Invalid pattern for order id"));
     }
 
     @Test

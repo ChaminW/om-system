@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 @Validated
 @RestController
@@ -75,11 +76,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order, Errors errors) {
-        if (errors.hasErrors()) {
-            System.out.println("inside get eroors");
-            return null;
-        }
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order) {
         Order updatedOrder = orderService.updateOrder(id, order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }

@@ -22,7 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"test"})
-@ContextConfiguration( classes = ApplicationConfiguration.class )
+@ContextConfiguration(classes = ApplicationConfiguration.class)
 @WebAppConfiguration
 public class ItemServiceImplTest {
 
@@ -37,8 +37,7 @@ public class ItemServiceImplTest {
     ItemServiceImpl itemService;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         item = new Item();
@@ -96,7 +95,7 @@ public class ItemServiceImplTest {
         Assert.assertEquals(item.getId(), newItem.getId());
     }
 
-    @Test(expected  = EntityNotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void readItemById_validNonExistingId_EntityNotFoundException() {
         Item newItem = itemService.readItemById("1234");
     }
