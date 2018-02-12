@@ -12,7 +12,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-//@Api(value = "home", description = "Expose Swagger API Documentation")
 @ApiIgnore
 public class RootController {
 
