@@ -24,9 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,15 +51,15 @@ public class OrderServiceImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        order1 = new Order("res0001", "addr0001", "shipping", "pending", Date.from(Instant.now()), Date.from(Instant.now()), Date.from(Instant.now()), "", new ArrayList<String>() {{
+        order1 = new Order("res0001", "addr0001", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
             add("item0001");
         }});
         order1.setId("order0001");
-        order2 = new Order("res0002", "addr0002", "pipeline", "approved", Date.from(Instant.now()), Date.from(Instant.now()), Date.from(Instant.now()), "", new ArrayList<String>() {{
+        order2 = new Order("res0002", "addr0002", "pipeline", "approved", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
             add("item0002");
         }});
         order2.setId("order0002");
-        order3 = new Order("213k705d062cb49fbc1j2kd7", "123kj312c062cb49fbcd43ad8", "pipeline", "pending", Date.from(Instant.now()), Date.from(Instant.now()), Date.from(Instant.now()), "", new ArrayList<String>() {{
+        order3 = new Order("213k705d062cb49fbc1j2kd7", "123kj312c062cb49fbcd43ad8", "pipeline", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
             add("5a5f72d2062cb49fbcd43ad9");
         }});
         pageRequest = PageRequest.of(0, 2);
@@ -69,7 +67,6 @@ public class OrderServiceImplTest {
 
 
     @Test
-    @Timed(millis = 1000)
     public void createOrder_submitNewOrder_thenSuccess() {
         //order3 doesn't have an Id. Id will be auto generated in mongo db
         Order order = orderServiceWired.createOrder(order3);
@@ -86,7 +83,6 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    @Timed(millis = 1000)
     public void readOrderById_IncorrectId_NotFoundEx() {
 
         Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(null);

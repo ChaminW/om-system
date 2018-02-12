@@ -21,11 +21,16 @@ import javax.validation.Valid;
 @Api(value = "orders", description = "Operations pertaining to orders in Sysco Order Manager")
 public class OrderController {
 
-    @Autowired
+    private final
     OrderService orderService;
 
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
     @ApiOperation(value = "Add an order")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully created"),
             @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 401, message = "Authorization failed")
@@ -37,7 +42,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "View orders pageable", produces = "application/json")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Successful"),
             @ApiResponse(code = 401, message = "Authorization failed"),
     })
@@ -50,7 +55,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "View an order for a given Id", produces = "application/json")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Successful"),
             @ApiResponse(code = 400, message = "Invalid ID supplied"),
             @ApiResponse(code = 401, message = "Authorization failed"),
@@ -63,8 +68,8 @@ public class OrderController {
     }
 
 
-    @ApiOperation(value = "Update an order for a given Id",produces = "application/json")
-    @ApiResponses( value = {
+    @ApiOperation(value = "Update an order for a given Id", produces = "application/json")
+    @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 404, message = "Order not found")
@@ -76,16 +81,15 @@ public class OrderController {
     }
 
 
-
     @ApiOperation(value = "Delete an order for a given Id")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Successfully processed"),
             @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 404, message = "Order not found")
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteOrder(@PathVariable("id") String id){
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") String id) {
         orderService.deleteOrderById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

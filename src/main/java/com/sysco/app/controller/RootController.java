@@ -12,15 +12,19 @@ import org.springframework.web.servlet.view.RedirectView;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-//@Api(value = "home", description = "Expose Swagger API Documentation")
 @ApiIgnore
 public class RootController {
 
-    @Autowired
+    private final
     MessageSource messageSource;
 
 
     private Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    @Autowired
+    public RootController(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ApiOperation(value = "view API documentation", produces = "test/HTML")
     @RequestMapping(value = "/", method = RequestMethod.GET)

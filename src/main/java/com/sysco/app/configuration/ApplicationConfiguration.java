@@ -10,11 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -26,11 +23,15 @@ import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = "com.sysco.app")
-@PropertySource(value = { "classpath:application.properties" })
+@PropertySource(value = {"classpath:application.properties"})
 public class ApplicationConfiguration extends WebMvcConfigurationSupport {
 
+    private final SecurityKeyInterceptor securityKeyInterceptor;
+
     @Autowired
-    private SecurityKeyInterceptor securityKeyInterceptor;
+    public ApplicationConfiguration(SecurityKeyInterceptor securityKeyInterceptor) {
+        this.securityKeyInterceptor = securityKeyInterceptor;
+    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -47,17 +48,16 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Validator validator (final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+    public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
 
-        ValidatorFactory validatorFactory = Validation.byProvider( HibernateValidator.class )
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
                 .buildValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        return validator;
+        return validatorFactory.getValidator();
     }
 
     @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
+    public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -65,7 +65,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public CookieLocaleResolver localeResolver(){
+    public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         localeResolver.setCookieName("locale-cookie");
@@ -74,7 +74,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public LocaleChangeInterceptor localeInterceptor(){
+    public LocaleChangeInterceptor localeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("locale");
         return interceptor;

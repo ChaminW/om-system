@@ -5,6 +5,7 @@ import com.sysco.app.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,7 +17,7 @@ public class SecurityKeyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(!request.getHeader("APIKEY").contentEquals(apiKey)) {
+        if (!request.getHeader("APIKEY").contentEquals(apiKey)) {
             throw new AuthenticationFailureException("Authentication Failure",
                     ErrorCode.AUTHENTICATION_FAILURE, SecurityKeyInterceptor.class);
         }
