@@ -4,7 +4,6 @@ import com.mongodb.MongoException;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.ErrorCode;
 import com.sysco.app.model.Restaurant;
-import com.sysco.app.repository.OrderRepository;
 import com.sysco.app.repository.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.Instant;
 import java.util.Date;
 
@@ -21,8 +21,7 @@ import java.util.Date;
 @Component("restaurantService")
 public class RestaurantServiceImpl implements RestaurantService {
 
-    @Qualifier("restaurantRepository")
-    @Autowired
+    private final
     RestaurantRepository restaurantRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceImpl.class);
@@ -56,11 +55,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Page<Restaurant> readRestaurantsPageable(int page, int size) {
 
-        // Initiate a page request
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Restaurant> restaurants;
 
-        // Read restaurants
         try {
             restaurants = restaurantRepository.findAll(pageRequest);
         } catch (MongoException e) {

@@ -5,7 +5,6 @@ import com.sysco.app.controller.OrderController;
 import com.sysco.app.exception.*;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
-import com.sysco.app.validator.ItemValidator;
 import com.sysco.app.validator.OrderValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
+
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +23,15 @@ import java.util.List;
 @Component("orderService")
 public class OrderServiceImpl implements OrderService {
 
-    @Qualifier("orderRepository")
-    @Autowired
+    private final
     OrderRepository orderRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+
+    @Autowired
+    public OrderServiceImpl(@Qualifier("orderRepository") OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     @Transactional
     @Override
@@ -54,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createValidatedOrder(Order order, Errors errors) {
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             String errorMessage = "OrderServiceImpl.createOrder: Error in validating order";
             LOGGER.error(errorMessage);
             throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
@@ -79,11 +83,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> readOrdersPageable(int page, int size) {
 
-        // Initiate a page request
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Order> orders;
 
-        // Read orders
         try {
             orders = orderRepository.findAll(pageRequest);
         } catch (MongoException e) {
@@ -100,15 +102,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order readOrder(String id) {
-        // Validate order Id
-        if(!OrderValidator.isValidId(id)) {
+
+        if (!OrderValidator.isValidId(id)) {
             String errorMessage = "OrderServiceImpl.readOrder: Invalid order id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
         }
 
-        // Load order for a given Id
         Order order;
         try {
             order = orderRepository.findOrderById(id);
@@ -119,8 +120,7 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
         }
 
-        // If there is no existing order
-        if(order == null) {
+        if (order == null) {
             String errorMessage = "OrderServiceImpl.readOrder: Empty order";
             LOGGER.error(errorMessage);
             throw new EntityNotFoundException(errorMessage,
@@ -136,32 +136,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order updateOrder(String id, Order order) {
 
-        // Validate order Id
-        if(!OrderValidator.isValidId(id)) {
+        if (!OrderValidator.isValidId(id)) {
             String errorMessage = "OrderServiceImpl.updateOrder: Invalid order id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
         }
 
-        // Read order for the given id
         Order newOrder = readOrder(id);
 
-        // Setup parameters
-        if(order.getRestaurantId()!= null) {
+        if (order.getRestaurantId() != null) {
             newOrder.setRestaurantId(order.getRestaurantId());
         }
-        if(order.getDeliveryAddressId()!= null) {
+        if (order.getDeliveryAddressId() != null) {
             newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         }
-        if(order.getDeliveryMethod()!= null) {
+        if (order.getDeliveryMethod() != null) {
             newOrder.setDeliveryMethod(order.getDeliveryMethod());
         }
-        if(order.getStatus()!= null) {
+        if (order.getStatus() != null) {
             newOrder.setStatus(order.getStatus());
         }
 
-        // Update order
         try {
             orderRepository.save(newOrder);
         } catch (MongoException e) {
@@ -180,8 +176,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrderById(String id) {
 
-        // Validate order Id
-        if(!OrderValidator.isValidId(id)) {
+        if (!OrderValidator.isValidId(id)) {
             String errorMessage = "OrderServiceImpl.deleteOrderById: Invalid order id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
@@ -196,5 +191,6 @@ public class OrderServiceImpl implements OrderService {
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
         }
+
     }
 }
