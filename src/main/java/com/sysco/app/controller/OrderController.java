@@ -72,11 +72,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order, Errors errors) {
-        if (errors.hasErrors()){
-            System.out.println("inside get eroors");
-            return null;
-        }
+    public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order) {
         Order updatedOrder = orderService.updateOrder(id, order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
