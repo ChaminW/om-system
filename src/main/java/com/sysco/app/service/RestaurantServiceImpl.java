@@ -42,7 +42,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
             createdRestaurant = restaurantRepository.insert(restaurant);
         } catch (MongoException e) {
-            String errorMessage = "Error in reading";
+            String errorMessage = ErrorCode.RESTAURANT_CREATE_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.RESTAURANT_CREATE_FAILURE, RestaurantServiceImpl.class);
@@ -64,7 +64,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurants = restaurantRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = "Error in reading";
+            String errorMessage = ErrorCode.RESTAURANT_READ_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.RESTAURANT_READ_FAILURE, RestaurantServiceImpl.class);
