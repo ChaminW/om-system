@@ -34,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             createdItem = itemRepository.insert(item);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.createItem: Error in creating";
+            String errorMessage = "Error in creating";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.readItems: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
@@ -74,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.readItemsPageable: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
@@ -90,7 +90,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Validate item Id
         if(!ItemValidator.isValidId(id)) {
-            String errorMessage = "ItemServiceImpl.readItemById: Invalid item id";
+            String errorMessage = "Invalid item id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.readItemById: Error in reading";
+            String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
@@ -110,7 +110,7 @@ public class ItemServiceImpl implements ItemService {
 
         // If there is no item for the given id
         if(item == null){
-            String errorMessage = "ItemServiceImpl.readItemById: Empty item";
+            String errorMessage = "Empty item";
             LOGGER.info(errorMessage);
             throw new EntityNotFoundException(errorMessage,
                     ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
@@ -126,7 +126,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Validate item Id
         if(!ItemValidator.isValidId(id)) {
-            String errorMessage = "ItemServiceImpl.updateItem: Invalid item id";
+            String errorMessage = "Invalid item id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
@@ -156,7 +156,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             itemRepository.save(newItem);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.updateItem: Error in updating";
+            String errorMessage = "Error in updating";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
@@ -172,7 +172,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Validate item Id
         if(!ItemValidator.isValidId(id)) {
-            String errorMessage = "ItemServiceImpl.deleteItemById: Invalid item id";
+            String errorMessage = "Invalid item id";
             LOGGER.error(errorMessage);
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
@@ -182,7 +182,7 @@ public class ItemServiceImpl implements ItemService {
         try {
             itemRepository.deleteById(id);
         } catch (MongoException e) {
-            String errorMessage = "ItemServiceImpl.deleteItemById: Error in deleting";
+            String errorMessage = "Error in deleting";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
