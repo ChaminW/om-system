@@ -5,14 +5,17 @@ import com.sysco.app.controller.ItemController;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.EntityNotFoundException;
 import com.sysco.app.exception.ErrorCode;
+import com.sysco.app.exception.ValidationFailureException;
 import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
+import com.sysco.app.validator.ItemValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component("itemService")
@@ -85,6 +88,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item readItemById(String id) {
 
+        // Validate item Id
+        if(!ItemValidator.isValidId(id)) {
+            String errorMessage = "ItemServiceImpl.readItemById: Invalid item id";
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
+        }
+
         Item item;
 
         // Read item for the given id
@@ -112,6 +123,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item updateItem(String id, Item item) {
+
+        // Validate item Id
+        if(!ItemValidator.isValidId(id)) {
+            String errorMessage = "ItemServiceImpl.updateItem: Invalid item id";
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
+        }
 
         // Read item for the given id
         Item newItem = readItemById(id);
@@ -150,6 +169,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItemById(String id) {
+
+        // Validate item Id
+        if(!ItemValidator.isValidId(id)) {
+            String errorMessage = "ItemServiceImpl.deleteItemById: Invalid item id";
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
+        }
 
         // Delete item for a given id
         try {
