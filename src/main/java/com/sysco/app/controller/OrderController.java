@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -74,7 +75,6 @@ public class OrderController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Order> updateOrder(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type") @PathVariable("id") String id, @RequestBody Order order, Errors errors) {
         if (errors.hasErrors()){
-            System.out.println("inside get eroors");
             return null;
         }
         Order updatedOrder = orderService.updateOrder(id, order);

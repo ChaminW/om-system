@@ -53,8 +53,6 @@ public class OrderControllerTest{
     @Mock
     OrderRepository orderRepository;
 
-//    @InjectMocks
-//    ItemServiceImpl itemService;
 
     @Before
     public void setUp() {
@@ -72,9 +70,6 @@ public class OrderControllerTest{
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
                 .andReturn();
-        //Can be used for test functions which Spring test library does not provide
-        //Assert.assertEquals("application/json;charset=UTF-8",
-        //        mvcResult.getResponse().getContentType());
     }
 
     /**
@@ -146,6 +141,7 @@ public class OrderControllerTest{
     }
 
     @Test
+    @Timed(millis = 1000)
     public void givenUpdateOrdersWithPathVariableAndFormData_whenMockMVC_thenResponseUPDATED() throws Exception {
         Order order = new Order("5a7b52c03235b718d1edcedo","5a5f3fec062cb49fbcd43ad5","shipping","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
         this.mockMvc.perform(put("/orders/{id}","5a807ad0136343325bde9702")
@@ -159,6 +155,23 @@ public class OrderControllerTest{
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
                 .andExpect(jsonPath("$.status").value("approved"));
     }
+
+    @Test
+    @Timed(millis = 1000)
+    public void givenUpdateOrdersWithIncorrectResturentID_whenMockMVC_thenResponseUPDATED() throws Exception {
+        Order order = new Order("abcdef","5a5f3fec062cb49fbcd43ad5","shipping","approved", Date.from(Instant.now()),Date.from(Instant.now()),Date.from(Instant.now()),"",new ArrayList<String>(){{add("5a5f411f062cb49fbcd43ad6");}});
+        this.mockMvc.perform(put("/orders/{id}","5a807ad0136343325bde9702")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(order)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.restaurantId").value("5a7b52c03235b718d1edcedo"))
+                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f3fec062cb49fbcd43ad5"))
+                .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
+                .andExpect(jsonPath("$.status").value("approved"));
+    }
+
 
     @Test
     @Timed(millis = 1000)
