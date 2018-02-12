@@ -19,7 +19,10 @@ public enum ErrorCode {
     RESTAURANT_READ_FAILURE(29, "Cannot read restaurant"),
 
     //Validation Exceptions
-    ORDER_VALIDATION_FAILURE(30, "Cannot create order without existing restaurant"),
+    ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST(30, "Restaurant not exists"),
+    ORDER_VALIDATION_FAILURE_ITEM_NOT_EXIST(31, "Item(s) not exist"),
+    ORDER_ID_VALIDATION_FAILURE(32, "Invalid order id"),
+    ITEM_ID_VALIDATION_FAILURE(33, "Invalid item id"),
 
     //Security Exceptions
     AUTHENTICATION_FAILURE(40, "Authentication failure")
