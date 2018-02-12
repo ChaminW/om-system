@@ -2,12 +2,11 @@ package com.sysco.app.service;
 
 import com.mongodb.MongoException;
 import com.sysco.app.controller.OrderController;
-import com.sysco.app.exception.DatabaseException;
-import com.sysco.app.exception.EntityNotFoundException;
-import com.sysco.app.exception.ErrorCode;
-import com.sysco.app.exception.RestaurantNotExistValidationException;
+import com.sysco.app.exception.*;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
+import com.sysco.app.validator.ItemValidator;
+import com.sysco.app.validator.OrderValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +55,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createValidatedOrder(Order order, Errors errors) {
         if(errors.hasErrors()){
-            String errorMessage = "OrderServiceImpl.createOrder: Error in creating order";
+            String errorMessage = "OrderServiceImpl.createOrder: Error in validating order";
             LOGGER.error(errorMessage);
-            throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE, OrderServiceImpl.class);
+            throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
+                    OrderServiceImpl.class);
         }
         return this.createOrder(order);
     }
@@ -100,8 +100,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order readOrder(String id) {
+        // Validate order Id
+        if(!OrderValidator.isValidId(id)) {
+            String errorMessage = "OrderServiceImpl.readOrder: Invalid order id";
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
+        }
 
-        Order order;        // Read order
+        // Load order for a given Id
+        Order order;
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {
@@ -127,6 +135,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order updateOrder(String id, Order order) {
+
+        // Validate order Id
+        if(!OrderValidator.isValidId(id)) {
+            String errorMessage = "OrderServiceImpl.updateOrder: Invalid order id";
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
+        }
 
         // Read order for the given id
         Order newOrder = readOrder(id);
@@ -163,6 +179,15 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void deleteOrderById(String id) {
+
+        // Validate order Id
+        if(!OrderValidator.isValidId(id)) {
+            String errorMessage = "OrderServiceImpl.deleteOrderById: Invalid order id";
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
+        }
+
         try {
             orderRepository.deleteById(id);
         } catch (MongoException e) {

@@ -21,8 +21,6 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-
-
     @ApiOperation(value = "Add an item")
     @ApiResponses( value = {
             @ApiResponse(code = 201, message = "Successfully created"),
