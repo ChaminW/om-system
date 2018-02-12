@@ -13,13 +13,17 @@ import javax.validation.ConstraintValidatorContext;
 @Component
 public class RestaurantExistValidator implements ConstraintValidator<CheckRestaurant, String> {
 
-    @Qualifier("restaurantRepository")
-    @Autowired
+    final
     RestaurantRepository restaurantRepository;
 
-    @Qualifier("orderRepository")
-    @Autowired
+    final
     OrderRepository orderRepository;
+
+    @Autowired
+    public RestaurantExistValidator(@Qualifier("restaurantRepository") RestaurantRepository restaurantRepository, @Qualifier("orderRepository") OrderRepository orderRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.orderRepository = orderRepository;
+    }
 
     @Override
     public boolean isValid(String restaurantId,

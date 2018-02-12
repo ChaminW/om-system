@@ -64,7 +64,6 @@ public class OrderServiceImplTest {
 
 
     @Test
-    @Timed(millis = 1000)
     public void createOrder_submitNewOrder_thenSuccess(){
         //order3 doesn't have an Id. Id will be auto generated in mongo db
         Order order = orderServiceWired.createOrder(order3);
@@ -81,7 +80,6 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    @Timed(millis = 1000)
     public void readOrderById_IncorrectId_NotFoundEx(){
 
         Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(null);
@@ -92,7 +90,6 @@ public class OrderServiceImplTest {
         }
         catch (EntityNotFoundException ex)
         {
-            Assert.assertEquals(ex.getMessage(),"OrderServiceImpl.readOrder: Empty order");
             Assert.assertEquals(ex.getErrorCode(),ErrorCode.NO_ORDER_FOR_THE_ID);
         }
     }

@@ -2,7 +2,7 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg %n
             </Pattern>
         </encoder>
         <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -14,7 +14,7 @@
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/tmp/omsystem.log</file>
         <encoder>
-            <Pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg %n</Pattern>
+            <Pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger - %msg %n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
