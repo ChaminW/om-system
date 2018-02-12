@@ -142,7 +142,6 @@ public class OrderServiceImpl implements OrderService {
             throw new ValidationFailureException(errorMessage,
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
         }
-
         // Read order for the given id
         Order newOrder = readOrder(id);
 
@@ -196,4 +195,5 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
         }
     }
+
 }
