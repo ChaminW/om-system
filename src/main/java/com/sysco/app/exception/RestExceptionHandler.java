@@ -16,6 +16,8 @@ import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
+
+
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String MESSAGE = "message";
