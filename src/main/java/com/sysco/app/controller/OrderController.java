@@ -72,13 +72,11 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order, Errors errors) {
-        if (errors.hasErrors()){
-            return null;
-        }
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order) {
         Order updatedOrder = orderService.updateOrder(id, order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
+
 
 
     @ApiOperation(value = "Delete an order for a given Id")

@@ -76,14 +76,14 @@ public class OrderControllerTest{
     @Timed(millis=1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
-                .perform(get("/orders/{id}", "5a807ad0136343325bde9702"))
+                .perform(get("/orders/{id}", "5a811d435c71494e4fe69bb4"))
                 .andDo(print()).andExpect(status().isFound())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value("5a807ad0136343325bde9702"))
-                .andExpect(jsonPath("$.restaurantId").value("5a7b52c03235b718d1edcedo"))
-                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f3fec062cb49fbcd43ad5"))
+                .andExpect(jsonPath("$.id").value("5a811d435c71494e4fe69bb4"))
+                .andExpect(jsonPath("$.restaurantId").value("5a8112825c714934d46e8b7d"))
+                .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
-                .andExpect(jsonPath("$.status").value("approved"));
+                .andExpect(jsonPath("$.status").value("pending"));
     }
 
     @Test

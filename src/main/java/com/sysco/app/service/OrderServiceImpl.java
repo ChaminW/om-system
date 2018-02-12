@@ -5,7 +5,6 @@ import com.sysco.app.controller.OrderController;
 import com.sysco.app.exception.*;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
-import com.sysco.app.validator.ItemValidator;
 import com.sysco.app.validator.OrderValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
         if(errors.hasErrors()){
             String errorMessage = "Error in validating order";
             LOGGER.error(errorMessage);
-            throw new RestaurantNotExistValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
+            throw new RestaurantIdValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
                     OrderServiceImpl.class);
         }
         return this.createOrder(order);
