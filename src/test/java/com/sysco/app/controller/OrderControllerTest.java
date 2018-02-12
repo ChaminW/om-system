@@ -103,7 +103,7 @@ public class OrderControllerTest{
                 .andDo(print()).andExpect(status().isBadRequest())
 
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.message").value("getOrderById.id: Id should be of varchar type"));
+                .andExpect(jsonPath("$.message").value("Invalid pattern for order id"));
     }
 
     @Test
