@@ -131,9 +131,6 @@ public class OrderServiceImpl implements OrderService {
         Order dbOrder = readOrder(id);
         dbOrder.setLastUpdatedAt(System.currentTimeMillis());
 
-        if (order.getRestaurantId() != null) {
-            dbOrder.setRestaurantId(order.getRestaurantId());
-        }
         if (order.getDeliveryAddressId() != null) {
             dbOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         }
@@ -142,6 +139,9 @@ public class OrderServiceImpl implements OrderService {
         }
         if (order.getStatus() != null) {
             dbOrder.setStatus(order.getStatus());
+        }
+        if (order.getValidUntil() != null) {
+            dbOrder.setValidUntil(order.getValidUntil());
         }
 
         try {

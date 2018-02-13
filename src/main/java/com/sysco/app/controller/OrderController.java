@@ -93,8 +93,13 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order order) {
-
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @Valid @RequestBody Order order, Errors errors) {
+        if (errors.hasErrors()) {
+            String errorMessage = ErrorCode.VALID_UNTIL_DATE_FAILURE.getDesc();
+            LOGGER.error(errorMessage);
+            throw new ValidUntilValidationException(errorMessage, ErrorCode.VALID_UNTIL_DATE_FAILURE,
+                    OrderController.class);
+        }
         Order updatedOrder = orderService.updateOrder(id, order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
