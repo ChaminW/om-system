@@ -28,6 +28,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private final
     MessageSource messageSource;
 
+    /*
+        User Defined Exception Handlers
+     */
     @Autowired
     public RestExceptionHandler(MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -53,16 +56,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {RestaurantIdValidationException.class})
     public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantIdValidationException ex) {
+
         return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({AuthenticationFailureException.class})
     public ResponseEntity<Object> handleAuthorizationFailureException(AuthenticationFailureException ex) {
+
         return sendErrorResponse(ex, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({ValidationFailureException.class})
     public ResponseEntity<Object> handleValidationFailureException(ValidationFailureException ex) {
+
         return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
@@ -79,21 +85,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(error, httpStatus);
     }
 
-    // Standard Exceptions
+    /*
+        Standard Exception Handlers
+     */
     @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
-
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleException(Exception e) {
+
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
-
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
