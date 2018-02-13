@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
         }
 
-        LOGGER.info("Item added ", item.getId());
+        LOGGER.info("Item created ", createdItem.getId());
         return createdItem;
     }
 
@@ -152,7 +152,7 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
         }
 
-        LOGGER.info("Item updated ", item.getId());
+        LOGGER.info("Item updated ", dbItem.getId());
         return dbItem;
     }
 
@@ -176,6 +176,6 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
         }
 
-        LOGGER.info("Item deleted ");
+        LOGGER.info("Item deleted ", id);
     }
 }

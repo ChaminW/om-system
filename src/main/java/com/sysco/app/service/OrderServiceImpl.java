@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
-
 import java.util.List;
 
 @Component("orderService")
@@ -48,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
         }
 
-        LOGGER.info("Order added", order);
+        LOGGER.info("Order created ", createdOrder.getId());
         return createdOrder;
     }
 
@@ -99,12 +98,12 @@ public class OrderServiceImpl implements OrderService {
         }
 
         LOGGER.info("Orders retrieved");
-
         return orders;
     }
 
     @Override
     public Order readOrder(String id) {
+
         if (!OrderValidator.isValidId(id)) {
             String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
             LOGGER.error(errorMessage);
@@ -129,8 +128,7 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
         }
 
-        LOGGER.info("Order retrieved", order);
-
+        LOGGER.info("Order retrieved ", order.getId());
         return order;
     }
 
@@ -145,34 +143,33 @@ public class OrderServiceImpl implements OrderService {
                     ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
         }
 
-        Order newOrder = readOrder(id);
-        newOrder.setLastUpdatedAt(System.currentTimeMillis());
+        Order dbOrder = readOrder(id);
+        dbOrder.setLastUpdatedAt(System.currentTimeMillis());
 
         if (order.getRestaurantId() != null) {
-            newOrder.setRestaurantId(order.getRestaurantId());
+            dbOrder.setRestaurantId(order.getRestaurantId());
         }
         if (order.getDeliveryAddressId() != null) {
-            newOrder.setDeliveryAddressId(order.getDeliveryAddressId());
+            dbOrder.setDeliveryAddressId(order.getDeliveryAddressId());
         }
         if (order.getDeliveryMethod() != null) {
-            newOrder.setDeliveryMethod(order.getDeliveryMethod());
+            dbOrder.setDeliveryMethod(order.getDeliveryMethod());
         }
         if (order.getStatus() != null) {
-            newOrder.setStatus(order.getStatus());
+            dbOrder.setStatus(order.getStatus());
         }
 
         try {
-            orderRepository.save(newOrder);
+            orderRepository.save(dbOrder);
         } catch (MongoException e) {
             String errorMessage = ErrorCode.ORDER_UPDATE_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
+            LOGGER.error (errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_UPDATE_FAILURE, OrderServiceImpl.class);
         }
 
-        LOGGER.info("Order updated", order);
-
-        return newOrder;
+        LOGGER.info("Order updated ", dbOrder.getId());
+        return dbOrder;
     }
 
     @Transactional
@@ -194,5 +191,7 @@ public class OrderServiceImpl implements OrderService {
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
         }
+
+        LOGGER.info("Order deleted ", id);
     }
 }
