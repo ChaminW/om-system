@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 public @interface CheckRestaurantId {
     ConstraintTarget validationAppliesTo() default ConstraintTarget.IMPLICIT;
 
-    String message() default "A restuarant should exit to add an order";
+    String message() default "A restaurant should exit to add an order";
 
     Class<?>[] groups() default {};
 

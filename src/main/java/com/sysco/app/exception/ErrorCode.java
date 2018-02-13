@@ -2,6 +2,9 @@ package com.sysco.app.exception;
 
 public enum ErrorCode {
 
+    // System Exceptions
+    INTERNAL_SERVER_ERROR(0, "Internal Server Error"),
+
     // Entity Not Found Exceptions
     NO_ITEM_FOR_THE_ID(10, "Item not found"),
     NO_ORDER_FOR_THE_ID(11, "Order not found"),
@@ -25,7 +28,8 @@ public enum ErrorCode {
     ITEM_ID_VALIDATION_FAILURE(33, "Invalid pattern for item item id"),
 
     //Security Exceptions
-    AUTHENTICATION_FAILURE(40, "Authentication failure");
+    AUTHENTICATION_FAILURE(40, "Authentication failure"),
+    MISSING_AUTHENTICATION_KEY(41, "Authentication key is missing");
 
     private String desc;
     private int code;
