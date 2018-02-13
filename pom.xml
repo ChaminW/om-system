@@ -31,11 +31,15 @@
             **/com/sysco/app/service/OrderServiceImpl.java,
             **/com/sysco/app/exception/RestaurantIdValidationException.java,
             **/com/sysco/app/exception/ValidationFailureException.java,
+            **/com/sysco/app/exception/AuthenticationFailureException.java,
             **/com/sysco/app/configuration/ApplicationInitializer.java,
             **/com/sysco/app/annotation/RestaurantIdValidator.java,
             **/com/sysco/app/validator/ItemValidator.java,
             **/com/sysco/app/validator/OrderValidator.java,
-            **/com/sysco/app/controller/RestaurantController.java
+            **/com/sysco/app/controller/RestaurantController.java,
+            **/com/sysco/app/controller/ItemController.java,
+            **/com/sysco/app/controller/OrderController.java,
+            **/com/sysco/app/controller/RootController.java
         </sonar.exclusions>
     </properties>
 
