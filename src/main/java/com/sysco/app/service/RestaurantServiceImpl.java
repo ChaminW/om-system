@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-
 
 @Component("restaurantService")
 public class RestaurantServiceImpl implements RestaurantService {
@@ -22,7 +20,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final
     RestaurantRepository restaurantRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceImpl.class);
+    private static final
+    Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
     @Autowired
     public RestaurantServiceImpl(@Qualifier("restaurantRepository") RestaurantRepository restaurantRepository) {
@@ -36,7 +35,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant createdRestaurant;
 
         try {
-
             createdRestaurant = restaurantRepository.insert(restaurant);
         } catch (MongoException e) {
             String errorMessage = ErrorCode.RESTAURANT_CREATE_FAILURE.getDesc();
@@ -45,8 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                     ErrorCode.RESTAURANT_CREATE_FAILURE, RestaurantServiceImpl.class);
         }
 
-        LOGGER.info("Restaurant added", restaurant);
-
+        LOGGER.info("Restaurant created", createdRestaurant.getId());
         return createdRestaurant;
     }
 
@@ -66,7 +63,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
 
         LOGGER.info("Restaurants retrieved");
-
         return restaurants;
     }
 }
