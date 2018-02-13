@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.constraints.Pattern;
 
 @RestController
@@ -27,7 +28,7 @@ public class ItemController {
     }
 
     @ApiOperation(value = "Add an item")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully created"),
             @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 500, message = "Server Error")
@@ -39,8 +40,8 @@ public class ItemController {
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "View items pageable" , produces = "application/json")
-    @ApiResponses( value = {
+    @ApiOperation(value = "View items pageable", produces = "application/json")
+    @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Successful"),
             @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 500, message = "Server Error")
@@ -53,8 +54,8 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "View an item for a given Id" , produces = "application/json")
-    @ApiResponses( value = {
+    @ApiOperation(value = "View an item for a given Id", produces = "application/json")
+    @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Successful"),
             @ApiResponse(code = 400, message = "Invalid ID supplied"),
             @ApiResponse(code = 401, message = "Authorization failed"),
@@ -69,7 +70,7 @@ public class ItemController {
     }
 
     @ApiOperation(value = "Update an item for a given id")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 404, message = "Item not found"),
@@ -83,13 +84,13 @@ public class ItemController {
     }
 
     @ApiOperation(value = "Delete an item for a given id")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 500, message = "Server Error")
     })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteItem(@Pattern(regexp = "[0-9a-z]*", message = "Id should be of varchar type")
-                                                 @PathVariable String id) {
+                                             @PathVariable String id) {
 
         itemService.deleteItemById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
