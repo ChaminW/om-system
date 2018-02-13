@@ -88,14 +88,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order readOrder(String id) {
-
-        if (!OrderValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
-        }
-
+        validateId(id);
         Order order;
         try {
             order = orderRepository.findOrderById(id);
@@ -120,14 +113,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order updateOrder(String id, Order order) {
-
-        if (!OrderValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
-        }
-
+        validateId(id);
         Order dbOrder = readOrder(id);
         dbOrder.setLastUpdatedAt(System.currentTimeMillis());
 
@@ -178,5 +164,15 @@ public class OrderServiceImpl implements OrderService {
         }
 
         LOGGER.info("Order deleted ", id);
+    }
+
+    private void validateId(String id){
+
+        if (!OrderValidator.isValidId(id)) {
+            String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
+            LOGGER.error(errorMessage);
+            throw new ValidationFailureException(errorMessage,
+                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
+        }
     }
 }
