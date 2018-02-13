@@ -3,7 +3,6 @@ package com.sysco.app.model;
 import com.sysco.app.annotation.CheckRestaurantId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.List;
 
 @Document(collection = "orders")
