@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Component("itemService")
@@ -25,7 +24,8 @@ public class ItemServiceImpl implements ItemService {
     private final
     ItemRepository itemRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private static final
+    Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     public ItemServiceImpl(ItemRepository itemRepository) {
@@ -36,7 +36,6 @@ public class ItemServiceImpl implements ItemService {
     public Item createItem(Item item) {
 
         Item createdItem;
-
         try {
             createdItem = itemRepository.insert(item);
         } catch (MongoException e) {
@@ -47,7 +46,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         LOGGER.info("Item added", item);
-
         return createdItem;
     }
 
@@ -55,7 +53,6 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> readItems() {
 
         List<Item> items;
-
         try {
             items = itemRepository.findAll();
         } catch (MongoException e) {
@@ -65,6 +62,7 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
         }
 
+        LOGGER.info("Items retrieved");
         return items;
     }
 
@@ -73,7 +71,6 @@ public class ItemServiceImpl implements ItemService {
 
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> items;
-
         try {
             items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
@@ -84,7 +81,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         LOGGER.info("Items retrieved");
-
         return items;
     }
 
@@ -99,7 +95,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         Item item;
-
         try {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
@@ -117,7 +112,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         LOGGER.info("Item retrieved", item);
-
         return item;
     }
 
@@ -132,26 +126,25 @@ public class ItemServiceImpl implements ItemService {
                     ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
         }
 
-        Item newItem = readItemById(id);
-
+        Item dbItem = readItemById(id);
         if (item.getName() != null) {
-            newItem.setName(item.getName());
+            dbItem.setName(item.getName());
         }
         if (item.getType() != null) {
-            newItem.setType(item.getType());
+            dbItem.setType(item.getType());
         }
         if (item.getPricePerItem() != null) {
-            newItem.setPricePerItem(item.getPricePerItem());
+            dbItem.setPricePerItem(item.getPricePerItem());
         }
         if (item.getTotalQuantity() != null) {
-            newItem.setTotalQuantity(item.getTotalQuantity());
+            dbItem.setTotalQuantity(item.getTotalQuantity());
         }
         if (item.getDescription() != null) {
-            newItem.setDescription(item.getDescription());
+            dbItem.setDescription(item.getDescription());
         }
 
         try {
-            itemRepository.save(newItem);
+            itemRepository.save(dbItem);
         } catch (MongoException e) {
             String errorMessage = ErrorCode.ITEM_UPDATE_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
@@ -160,8 +153,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         LOGGER.info("Item updated");
-
-        return newItem;
+        return dbItem;
     }
 
     @Transactional
