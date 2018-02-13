@@ -47,10 +47,10 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
         if (errors.hasErrors()) {
-            String errorMessage = "Error in validating order";
+            String errorMessage = ErrorCode.VALID_UNTIL_DATE_FAILURE.getDesc();
             LOGGER.error(errorMessage);
             throw new ValidUntilValidationException(errorMessage, ErrorCode.VALID_UNTIL_DATE_FAILURE,
-                    OrderServiceImpl.class);
+                    OrderController.class);
         }
         Order createdOrder = orderService.createOrder(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
