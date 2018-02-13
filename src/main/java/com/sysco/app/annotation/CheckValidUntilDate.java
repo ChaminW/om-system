@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckValidUntilDate {
-    String message() default "A restuarant should exit to add an order";
+    String message() default "valid until date should be future";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
