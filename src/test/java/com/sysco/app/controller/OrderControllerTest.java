@@ -49,7 +49,7 @@ public class OrderControllerTest {
     @Timed(millis = 1000)
     public void givenOrders_whenMockMVC_thenVerifyResponseOK() throws Exception {
         this.mockMvc.perform(get("/orders")
-                .header("APIKEY", "DannoDanithi"))
+                .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -63,11 +63,11 @@ public class OrderControllerTest {
     @Timed(millis = 1000)
     public void givenOrderByIdWithPathVariable_whenMockMVC_thenResponseFOUND() throws Exception {
         this.mockMvc
-                .perform(get("/orders/{id}", "5a811d435c71494e4fe69bb4")
-                        .header("APIKEY", "DannoDanithi"))
+                .perform(get("/orders/{id}", "5a8121965c7149562f3e96ee")
+                        .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax"))
                 .andDo(print()).andExpect(status().isFound())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value("5a811d435c71494e4fe69bb4"))
+                .andExpect(jsonPath("$.id").value("5a8121965c7149562f3e96ee"))
                 .andExpect(jsonPath("$.restaurantId").value("5a8112825c714934d46e8b7d"))
                 .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
@@ -79,7 +79,7 @@ public class OrderControllerTest {
     public void givenOrderByIdWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
         this.mockMvc
                 .perform(get("/orders/{id}", "ABCD*")
-                        .header("APIKEY", "DannoDanithi"))
+                        .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax"))
                 .andDo(print()).andExpect(status().isBadRequest())
 
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -92,7 +92,7 @@ public class OrderControllerTest {
             add("5a5f411f062cb49fbcd43ad6");
         }});
         this.mockMvc.perform(post("/orders")
-                .header("APIKEY", "DannoDanithi")
+                .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
                 .andDo(print())
@@ -113,7 +113,7 @@ public class OrderControllerTest {
         }});
         //pass null value as the restaurant Id
         this.mockMvc.perform(post("/orders")
-                .header("APIKEY", "DannoDanithi")
+                .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
                 .andDo(print())
@@ -127,7 +127,7 @@ public class OrderControllerTest {
             add("5a5f72d2062cb49fbcd43ad9");
         }});
         this.mockMvc.perform(post("/orders")
-                .header("APIKEY", "DannoDanithi")
+                .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
                 .andDo(print())
@@ -141,7 +141,7 @@ public class OrderControllerTest {
             add("5a5f411f062cb49fbcd43ad6");
         }});
         this.mockMvc.perform(put("/orders/{id}", "5a807ad0136343325bde9702")
-                .header("APIKEY", "DannoDanithi")
+                .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(order)))
                 .andDo(print())
@@ -161,7 +161,7 @@ public class OrderControllerTest {
         }});
         this.mockMvc
                 .perform(put("/orders/{id}", "ABCD*")
-                        .header("APIKEY", "DannoDanithi")
+                        .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(order)))
 
@@ -175,7 +175,7 @@ public class OrderControllerTest {
     public void givenDeleteOrderWithPathVariableOfIncorrectFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
         this.mockMvc
                 .perform(delete("/orders/{id}", "5a7ad86ea2684c44debeafdb")
-                        .header("APIKEY", "DannoDanithi")
+                        .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isNoContent());
     }
