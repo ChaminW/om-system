@@ -141,8 +141,6 @@ public class OrderServiceImplTest {
 
         Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(order2);
         orderService.updateOrder("order0002", order1);
-
-        Assert.assertEquals(order2.getRestaurantId(), "res0001");
         Assert.assertEquals(order2.getDeliveryAddressId(), "addr0001");
         Assert.assertEquals(order2.getDeliveryMethod(), "shipping");
         Assert.assertEquals(order2.getStatus(), "pending");

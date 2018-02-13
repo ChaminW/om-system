@@ -16,7 +16,7 @@ import javax.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping(value = "/items")
-@Api(value = "items", description = "Operations pertaining to items in Sysco Order Manger")
+@Api(value = "items", tags = "Operations pertaining to items in Sysco Order Manger")
 public class ItemController {
 
     private final
