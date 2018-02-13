@@ -1,8 +1,7 @@
 package com.sysco.app.annotation;
 
-import com.sysco.app.model.Restaurant;
+
 import com.sysco.app.repository.RestaurantRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -10,21 +9,23 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Component
-public class RestaurantIdValidator implements ConstraintValidator<CheckRestaurantId, String> {
+public class ValidUntilDateValidator implements ConstraintValidator<CheckValidUntilDate, Long> {
 
     private final
     RestaurantRepository restaurantRepository;
 
     @Autowired
-    public RestaurantIdValidator(@Qualifier("restaurantRepository") RestaurantRepository restaurantRepository) {
+    public ValidUntilDateValidator(@Qualifier("restaurantRepository") RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
     }
 
     @Override
-    public boolean isValid(String restaurantId,
+    public boolean isValid(Long validUntil,
                            ConstraintValidatorContext cxt) {
-        Restaurant restaurant = restaurantRepository.findOrderById(restaurantId);
-        return (!StringUtils.isBlank(restaurantId) && restaurant != null);
+//        Long b = 1518459044808L;
+        boolean a;
+        a = System.currentTimeMillis() < validUntil;
+        return a;
     }
 
 }
