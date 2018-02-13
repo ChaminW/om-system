@@ -79,7 +79,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
         error.put(ROOT_CLASS, ex.getRootClass());
         error.put(TIMESTAMP, ex.getTimestamp());
-        return new ResponseEntity<Object>(error, httpStatus);
+        return new ResponseEntity<>(error, httpStatus);
     }
 
     /*
@@ -90,6 +90,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
+        error.put(ROOT_CLASS, ConstraintViolationException.class);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

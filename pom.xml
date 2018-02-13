@@ -22,6 +22,25 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
+        <sonar.exclusions>
+            **/com/sysco/app/model/Item.java,
+            **/com/sysco/app/model/Restaurant.java,
+            **/com/sysco/app/model/Order.java,
+            **/com/sysco/app/service/RestaurantServiceImpl.java,
+            **/com/sysco/app/service/ItemServiceImpl.java,
+            **/com/sysco/app/service/OrderServiceImpl.java,
+            **/com/sysco/app/exception/RestaurantIdValidationException.java,
+            **/com/sysco/app/exception/ValidationFailureException.java,
+            **/com/sysco/app/exception/AuthenticationFailureException.java,
+            **/com/sysco/app/configuration/ApplicationInitializer.java,
+            **/com/sysco/app/annotation/RestaurantIdValidator.java,
+            **/com/sysco/app/validator/ItemValidator.java,
+            **/com/sysco/app/validator/OrderValidator.java,
+            **/com/sysco/app/controller/RestaurantController.java,
+            **/com/sysco/app/controller/ItemController.java,
+            **/com/sysco/app/controller/OrderController.java,
+            **/com/sysco/app/controller/RootController.java
+        </sonar.exclusions>
     </properties>
 
 
