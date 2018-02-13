@@ -146,14 +146,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void deleteOrderById(String id) {
-
-        if (!OrderValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
-        }
-
+        validateId(id);
         try {
             orderRepository.deleteById(id);
         } catch (MongoException e) {
