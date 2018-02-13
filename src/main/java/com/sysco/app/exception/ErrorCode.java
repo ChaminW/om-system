@@ -26,6 +26,7 @@ public enum ErrorCode {
     ORDER_VALIDATION_FAILURE_ITEM_NOT_EXIST(31, "Item(s) not exist"),
     ORDER_ID_VALIDATION_FAILURE(32, "Invalid pattern for order id"),
     ITEM_ID_VALIDATION_FAILURE(33, "Invalid pattern for item item id"),
+    NO_RESTAURANT_EXIST_FAILURE(34, "Restaurant not exist"),
 
     //Security Exceptions
     AUTHENTICATION_FAILURE(40, "Authentication failure"),

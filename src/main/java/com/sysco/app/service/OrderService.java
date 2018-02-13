@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order createOrder(Order order);
+    Order createOrder(Order order) throws Exception;
 
     List<Order> readOrders();
 
