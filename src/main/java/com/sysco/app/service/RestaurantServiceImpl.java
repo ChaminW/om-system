@@ -13,9 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-import java.util.Date;
-
 
 @Component("restaurantService")
 public class RestaurantServiceImpl implements RestaurantService {
@@ -23,7 +20,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final
     RestaurantRepository restaurantRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceImpl.class);
+    private static final
+    Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
     @Autowired
     public RestaurantServiceImpl(@Qualifier("restaurantRepository") RestaurantRepository restaurantRepository) {
@@ -33,43 +31,38 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @Override
     public Restaurant createRestaurant(Restaurant restaurant) {
-        restaurant.setCreatedAt(Date.from(Instant.now()));
+        restaurant.setCreatedAt(System.currentTimeMillis());
         Restaurant createdRestaurant;
 
         try {
-
             createdRestaurant = restaurantRepository.insert(restaurant);
         } catch (MongoException e) {
-            String errorMessage = "RestaurantServiceImpl.createRestaurant: Error in reading";
+            String errorMessage = ErrorCode.RESTAURANT_CREATE_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.RESTAURANT_CREATE_FAILURE, RestaurantServiceImpl.class);
         }
 
-        LOGGER.info("Restaurant added", restaurant);
-
+        LOGGER.info("Restaurant created", createdRestaurant.getId());
         return createdRestaurant;
     }
 
     @Override
     public Page<Restaurant> readRestaurantsPageable(int page, int size) {
 
-        // Initiate a page request
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Restaurant> restaurants;
 
-        // Read restaurants
         try {
             restaurants = restaurantRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = "RestaurantServiceImpl.readRestaurantsPageable: Error in reading";
+            String errorMessage = ErrorCode.RESTAURANT_READ_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.RESTAURANT_READ_FAILURE, RestaurantServiceImpl.class);
         }
 
         LOGGER.info("Restaurants retrieved");
-
         return restaurants;
     }
 }

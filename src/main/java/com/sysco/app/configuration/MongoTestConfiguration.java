@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@Profile("!test")
+@Profile("test")
 @EnableMongoRepositories(basePackages = "com.sysco.app.repository")
-public class MongoConfiguration extends AbstractMongoConfiguration {
+public class MongoTestConfiguration extends AbstractMongoConfiguration {
 
-    @Value("${DB_NAME}")
+    @Value("${DB_NAME_TEST}")
     private String databaseName;
     @Value("${PORT}")
     private int clientPort;
@@ -27,4 +27,3 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
         return new MongoClient(clientHost, clientPort);
     }
 }
-

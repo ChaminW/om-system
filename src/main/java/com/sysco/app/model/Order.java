@@ -1,12 +1,8 @@
 package com.sysco.app.model;
 
-import com.sysco.app.annotation.CheckRestaurant;
+import com.sysco.app.annotation.CheckValidUntilDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 @Document(collection = "orders")
@@ -14,17 +10,14 @@ public class Order {
 
     @Id
     private String id;
-    @NotBlank(message = "Restaurant Id must not be blank!") @NotNull @CheckRestaurant
     private String restaurantId;
     private String deliveryAddressId;
     private String deliveryMethod;
     private String status;
-    @DateTimeFormat
-    private Date createdDate;
-    @DateTimeFormat
-    private Date validUntil;
-    @DateTimeFormat
-    private Date lastUpdatedAt;
+    private Long createdDate;
+    @CheckValidUntilDate
+    private Long validUntil;
+    private Long lastUpdatedAt;
     private String description;
     private List<String> itemIdList;
 
@@ -37,7 +30,7 @@ public class Order {
         this.restaurantId = "";
     }
 
-    public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Date createdDate, Date validUntil, Date lastUpdatedAt, String description, List<String> itemIdList) {
+    public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Long createdDate, Long validUntil, Long lastUpdatedAt, String description, List<String> itemIdList) {
         this.restaurantId = restaurantId;
         this.deliveryAddressId = deliveryAddressId;
         this.deliveryMethod = deliveryMethod;
@@ -89,27 +82,27 @@ public class Order {
         this.status = status;
     }
 
-    public Date getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getValidUntil() {
+    public Long getValidUntil() {
         return validUntil;
     }
 
-    public void setValidUntil(Date validUntil) {
+    public void setValidUntil(Long validUntil) {
         this.validUntil = validUntil;
     }
 
-    public Date getLastUpdatedAt() {
+    public Long getLastUpdatedAt() {
         return lastUpdatedAt;
     }
 
-    public void setLastUpdatedAt(Date lastUpdatedAt) {
+    public void setLastUpdatedAt(Long lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 

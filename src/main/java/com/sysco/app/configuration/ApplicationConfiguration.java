@@ -7,12 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -24,8 +22,20 @@ import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = "com.sysco.app")
-@PropertySource("classpath:application.properties")
+@PropertySource(value = {"classpath:application.properties"})
 public class ApplicationConfiguration extends WebMvcConfigurationSupport {
+
+    private final SecurityKeyInterceptor securityKeyInterceptor;
+
+    @Autowired
+    public ApplicationConfiguration(SecurityKeyInterceptor securityKeyInterceptor) {
+        this.securityKeyInterceptor = securityKeyInterceptor;
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -37,34 +47,16 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Validator validator (final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+    public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
 
-        ValidatorFactory validatorFactory = Validation.byProvider( HibernateValidator.class )
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
                 .buildValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-
-        return validator;
+        return validatorFactory.getValidator();
     }
 
     @Bean
-     LocalValidatorFactoryBean Validator() {
-        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-        validator.setValidationMessageSource(messageSource());
-        validator.setParameterNameDiscoverer(new LocalVariableTableParameterNameDiscoverer());
-        return validator;
-    }
-
-    @Bean
-    @Autowired
-    MethodValidationPostProcessor getValidationPostProcessor(LocalValidatorFactoryBean validator) {
-        MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
-        processor.setValidator(validator);
-        return processor;
-    }
-
-    @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
+    public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -72,7 +64,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public CookieLocaleResolver localeResolver(){
+    public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         localeResolver.setCookieName("locale-cookie");
@@ -81,7 +73,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public LocaleChangeInterceptor localeInterceptor(){
+    public LocaleChangeInterceptor localeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("locale");
         return interceptor;
@@ -89,6 +81,7 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(securityKeyInterceptor).addPathPatterns("/items/**", "/orders/**");
         registry.addInterceptor(localeInterceptor());
     }
 }

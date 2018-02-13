@@ -2,6 +2,9 @@ package com.sysco.app.exception;
 
 public enum ErrorCode {
 
+    // System Exceptions
+    INTERNAL_SERVER_ERROR(0, "Internal Server Error"),
+
     // Entity Not Found Exceptions
     NO_ITEM_FOR_THE_ID(10, "Item not found"),
     NO_ORDER_FOR_THE_ID(11, "Order not found"),
@@ -19,14 +22,17 @@ public enum ErrorCode {
     RESTAURANT_READ_FAILURE(29, "Cannot read restaurant"),
 
     //Validation Exceptions
-    ORDER_VALIDATION_FAILURE(30, "Cannot create order without existing restaurant"),
+    VALID_UNTIL_DATE_FAILURE(30, "ValidUntil date not future"),
+    ORDER_VALIDATION_FAILURE_ITEM_NOT_EXIST(31, "Item(s) not exist"),
+    ORDER_ID_VALIDATION_FAILURE(32, "Invalid pattern for order id"),
+    ITEM_ID_VALIDATION_FAILURE(33, "Invalid pattern for item item id"),
 
     //Security Exceptions
-    AUTHENTICATION_FAILURE(40, "Authentication failure")
-    ;
+    AUTHENTICATION_FAILURE(40, "Authentication failure"),
+    MISSING_AUTHENTICATION_KEY(41, "Authentication key is missing");
 
-    private String desc;
-    private int code;
+    private final String desc;
+    private final int code;
 
     ErrorCode(int code, String desc) {
         this.code = code;

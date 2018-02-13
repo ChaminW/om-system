@@ -15,12 +15,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( classes = ApplicationConfiguration.class )
+@ActiveProfiles(profiles = {"test"})
+@ContextConfiguration(classes = ApplicationConfiguration.class)
 @WebAppConfiguration
 public class ItemServiceImplTest {
 
@@ -35,8 +37,7 @@ public class ItemServiceImplTest {
     ItemServiceImpl itemService;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         item = new Item();
@@ -94,7 +95,7 @@ public class ItemServiceImplTest {
         Assert.assertEquals(item.getId(), newItem.getId());
     }
 
-    @Test(expected  = EntityNotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void readItemById_validNonExistingId_EntityNotFoundException() {
         Item newItem = itemService.readItemById("1234");
     }

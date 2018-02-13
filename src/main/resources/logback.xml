@@ -2,42 +2,41 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg %n
             </Pattern>
         </encoder>
-        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>-->
     </appender>
-
 
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/tmp/omsystem.log</file>
-        <encoder>
-            <Pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd} %d{HH:mm:ss} %-5level [%thread] %class{5}.%M -%L - %msg %n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>tmp/omsystem.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
-            <MaxHistory>1</MaxHistory>
-            <totalSizeCap>1KB</totalSizeCap>
+            <FileNamePattern>omsystem.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
         </rollingPolicy>
 
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <MaxFileSize>5MB</MaxFileSize>
         </triggeringPolicy>
-
     </appender>
 
     <logger name="com.sysco.app" additivity="false">
-        <level value="DEBUG" />
+        <level value="ALL"/>
         <appender-ref ref="File"/>
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="org.hibernate.validator" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="File"/>
     </logger>
 
     <root>
-        <level value="INFO" />
-        <appender-ref ref="STDOUT" />
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>

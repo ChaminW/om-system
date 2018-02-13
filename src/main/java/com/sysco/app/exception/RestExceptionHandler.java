@@ -15,6 +15,8 @@ import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
+
+
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String MESSAGE = "message";
@@ -22,8 +24,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String ROOT_CLASS = "rootClass";
     private static final String TIMESTAMP = "timestamp";
 
-    @Autowired
+    private final
     MessageSource messageSource;
+
+    /*
+        User Defined Exception Handlers
+     */
+    @Autowired
+    public RestExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler({SystemException.class})
     protected ResponseEntity<Object> handleSystemException(SystemException ex) {
@@ -34,7 +44,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
 
-        return sendErrorResponse(ex , HttpStatus.NOT_FOUND);
+        return sendErrorResponse(ex, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({DatabaseException.class})
@@ -43,38 +53,53 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return sendErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = { RestaurantNotExistValidationException.class })
-    public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantNotExistValidationException ex) {
+    @ExceptionHandler(value = {ValidUntilValidationException.class})
+    public ResponseEntity<Object> handleRestaurantNotExistValidationException(ValidUntilValidationException ex) {
 
-        return sendErrorResponse(ex , HttpStatus.BAD_REQUEST);
+        return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({AuthorizationFailureException.class})
-    public ResponseEntity<Object> handleAuthorizationFailureException(AuthorizationFailureException ex) {
+    @ExceptionHandler({AuthenticationFailureException.class})
+    public ResponseEntity<Object> handleAuthorizationFailureException(AuthenticationFailureException ex) {
 
-        return sendErrorResponse(ex , HttpStatus.UNAUTHORIZED);
+        return sendErrorResponse(ex, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({ValidationFailureException.class})
+    public ResponseEntity<Object> handleValidationFailureException(ValidationFailureException ex) {
+
+        return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> sendErrorResponse(SystemException ex, HttpStatus httpStatus) {
 
         Document error = new Document();
-
         error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
                 LocaleContextHolder.getLocale()));
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
         error.put(ROOT_CLASS, ex.getRootClass());
         error.put(TIMESTAMP, ex.getTimestamp());
-
-        return new ResponseEntity<Object>(error , httpStatus);
+        return new ResponseEntity<>(error, httpStatus);
     }
 
-    // Standard Exceptions
-    @ExceptionHandler(value = { ConstraintViolationException.class })
+    /*
+        Standard Exception Handlers
+     */
+    @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
-
+        error.put(ROOT_CLASS, ConstraintViolationException.class);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<Object> handleException(Exception e) {
+
+        Document error = new Document();
+        error.put(MESSAGE, e.getMessage());
+        error.put(ROOT_CLASS, Exception.class);
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
