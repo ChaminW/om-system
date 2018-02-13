@@ -3,11 +3,11 @@ package com.sysco.app.exception;
 import java.time.LocalDateTime;
 
 public class SystemException extends RuntimeException {
-    final private ErrorCode errorCode;
-    final private Class rootClass;
-    final private String timestamp;
+    private final ErrorCode errorCode;
+    private final Class rootClass;
+    private final String timestamp;
 
-    public SystemException(String message, ErrorCode errorCode, Class rootClass) {
+    SystemException(String message, ErrorCode errorCode, Class rootClass) {
         super(message);
         this.errorCode = errorCode;
         this.rootClass = rootClass;
