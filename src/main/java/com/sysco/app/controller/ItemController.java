@@ -16,7 +16,7 @@ import javax.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping(value = "/items")
-@Api(value = "items", description = "Operations pertaining to items in Sysco Order Manger")
+@Api(value = "items", tags = "Operations pertaining to items in Sysco Order Manager")
 public class ItemController {
 
     private final
@@ -31,6 +31,7 @@ public class ItemController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully created"),
             @ApiResponse(code = 400, message = "Invalid input"),
+            @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 500, message = "Server Error")
     })
     @PostMapping
@@ -86,6 +87,7 @@ public class ItemController {
     @ApiOperation(value = "Delete an item for a given id")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Invalid input"),
+            @ApiResponse(code = 401, message = "Authorization failed"),
             @ApiResponse(code = 500, message = "Server Error")
     })
     @DeleteMapping(value = "/{id}")

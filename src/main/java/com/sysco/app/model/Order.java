@@ -22,12 +22,10 @@ public class Order {
     private List<String> itemIdList;
 
     public Order() {
-        this.restaurantId = "";
     }
 
     public Order(String id) {
         this.id = id;
-        this.restaurantId = "";
     }
 
     public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Long createdDate, Long validUntil, Long lastUpdatedAt, String description, List<String> itemIdList) {

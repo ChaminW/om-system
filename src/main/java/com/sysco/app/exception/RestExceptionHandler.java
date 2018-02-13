@@ -11,17 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 
-
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String MESSAGE = "message";
     private static final String ERROR_CODE = "errorCode";
-    private static final String ROOT_CLASS = "rootClass";
+    //private static final String ROOT_CLASS = "rootClass";
     private static final String TIMESTAMP = "timestamp";
 
     private final
@@ -77,7 +77,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
                 LocaleContextHolder.getLocale()));
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
-        error.put(ROOT_CLASS, ex.getRootClass());
+        /*error.put(ROOT_CLASS, ex.getRootClass());*/
         error.put(TIMESTAMP, ex.getTimestamp());
         return new ResponseEntity<>(error, httpStatus);
     }
@@ -90,7 +90,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
-        error.put(ROOT_CLASS, ConstraintViolationException.class);
+        /*error.put(ROOT_CLASS, ConstraintViolationException.class);*/
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -99,7 +99,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
-        error.put(ROOT_CLASS, Exception.class);
+        /*error.put(ROOT_CLASS, Exception.class);*/
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

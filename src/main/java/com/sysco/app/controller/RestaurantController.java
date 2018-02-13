@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/restaurants")
-@Api(value = "restaurants", description = "Operations pertaining to restaurants in Sysco Order Manger")
+@Api(value = "restaurants", tags = "Operations pertaining to restaurants in Sysco Order Manager")
 public class RestaurantController {
 
     private final
