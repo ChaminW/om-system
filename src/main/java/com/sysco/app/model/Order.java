@@ -1,6 +1,6 @@
 package com.sysco.app.model;
 
-import com.sysco.app.annotation.CheckRestaurantId;
+import com.sysco.app.annotation.CheckValidUntilDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
@@ -10,12 +10,12 @@ public class Order {
 
     @Id
     private String id;
-    @CheckRestaurantId
     private String restaurantId;
     private String deliveryAddressId;
     private String deliveryMethod;
     private String status;
     private Long createdDate;
+    @CheckValidUntilDate
     private Long validUntil;
     private Long lastUpdatedAt;
     private String description;

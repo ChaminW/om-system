@@ -9,8 +9,6 @@ public interface OrderService {
 
     Order createOrder(Order order);
 
-    Order createValidatedOrder(Order order, Errors errors);
-
     List<Order> readOrders();
 
     Page<Order> readOrdersPageable(int page, int size);
