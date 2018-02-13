@@ -24,7 +24,8 @@ public class OrderServiceImpl implements OrderService {
     private final
     OrderRepository orderRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private static final
+    Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     public OrderServiceImpl(@Qualifier("orderRepository") OrderRepository orderRepository) {
@@ -37,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
 
         order.setCreatedDate(System.currentTimeMillis());
         order.setLastUpdatedAt(System.currentTimeMillis());
-
         Order createdOrder;
         try {
             createdOrder = orderRepository.insert(order);
@@ -49,32 +49,38 @@ public class OrderServiceImpl implements OrderService {
         }
 
         LOGGER.info("Order added", order);
-
         return createdOrder;
     }
 
     @Override
     public Order createValidatedOrder(Order order, Errors errors) {
+
         if (errors.hasErrors()) {
             String errorMessage = "Error in validating order";
             LOGGER.error(errorMessage);
             throw new RestaurantIdValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
                     OrderServiceImpl.class);
         }
+
         return this.createOrder(order);
     }
 
 
     @Override
     public List<Order> readOrders() {
+
+        List<Order> orders;
         try {
-            return orderRepository.findAll();
+            orders = orderRepository.findAll();
         } catch (MongoException e) {
             String errorMessage = "Error in reading";
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
         }
+
+        LOGGER.info("Orders retrieved");
+        return orders;
     }
 
     @Override
