@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
 import java.util.List;
 
 @Component("orderService")
@@ -50,20 +49,6 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("Order created ", createdOrder.getId());
         return createdOrder;
     }
-
-    @Override
-    public Order createValidatedOrder(Order order, Errors errors) {
-
-        if (errors.hasErrors()) {
-            String errorMessage = "Error in validating order";
-            LOGGER.error(errorMessage);
-            throw new RestaurantIdValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
-                    OrderServiceImpl.class);
-        }
-
-        return this.createOrder(order);
-    }
-
 
     @Override
     public List<Order> readOrders() {

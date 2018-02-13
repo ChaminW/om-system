@@ -53,8 +53,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return sendErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = {RestaurantIdValidationException.class})
-    public ResponseEntity<Object> handleRestaurantNotExistValidationException(RestaurantIdValidationException ex) {
+    @ExceptionHandler(value = {ValidUntilValidationException.class})
+    public ResponseEntity<Object> handleRestaurantNotExistValidationException(ValidUntilValidationException ex) {
 
         return sendErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
