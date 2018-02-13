@@ -31,8 +31,8 @@ public enum ErrorCode {
     AUTHENTICATION_FAILURE(40, "Authentication failure"),
     MISSING_AUTHENTICATION_KEY(41, "Authentication key is missing");
 
-    private String desc;
-    private int code;
+    private final String desc;
+    private final int code;
 
     ErrorCode(int code, String desc) {
         this.code = code;

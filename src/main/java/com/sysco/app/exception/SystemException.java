@@ -7,7 +7,7 @@ public class SystemException extends RuntimeException {
     private final Class rootClass;
     private final String timestamp;
 
-    SystemException(String message, ErrorCode errorCode, Class rootClass) {
+    public SystemException(String message, ErrorCode errorCode, Class rootClass) {
         super(message);
         this.errorCode = errorCode;
         this.rootClass = rootClass;

@@ -88,7 +88,8 @@ public class OrderControllerTest {
 
     @Test
     public void givenOrdersWithPostAndFormData_whenMockMVC_thenResponseCREATED() throws Exception {
-        Order order = new Order("5a8112825c714934d46e8b7d", "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+        Long currentTime = System.currentTimeMillis();
+        Order order = new Order("5a8112825c714934d46e8b7d", "5a5f712c062cb49fbcd43ad8", "shipping", "pending", currentTime, currentTime + 5000000000000L , currentTime, "", new ArrayList<String>() {{
             add("5a5f411f062cb49fbcd43ad6");
         }});
         this.mockMvc.perform(post("/orders")
@@ -102,28 +103,15 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.restaurantId").value("5a8112825c714934d46e8b7d"))
                 .andExpect(jsonPath("$.deliveryAddressId").value("5a5f712c062cb49fbcd43ad8"))
                 .andExpect(jsonPath("$.deliveryMethod").value("shipping"))
-                .andExpect(jsonPath("$.status").value("pending"));
+                .andExpect(jsonPath("$.status").value("pending"))
+                .andExpect(jsonPath("$.validUntil").value(currentTime + 5000000000000L));
     }
 
     @Test
     @Timed(millis = 1000)
-    public void givenOrdersWithPostAndFormDataInInvalidFormat_whenMockMVC_thenResponseBadRequest() throws Exception {
-        Order order = new Order(null, "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
-            add("5a5f72d2062cb49fbcd43ad9");
-        }});
-        //pass null value as the restaurant Id
-        this.mockMvc.perform(post("/orders")
-                .header("APIKEY", "yZwjdlsmaB0D7jdZpC8KO2YnOhLjhMax")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(order)))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @Timed(millis = 1000)
-    public void givenOrdersWithPostAndFormDataWithNoRestaurant_whenMockMVC_thenResponseBadRequest() throws Exception {
-        Order order = new Order("5a7b52c03235b718d1edcedo", "5a5f712c062cb49fbcd43ad8", "shipping", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+    public void givenOrdersWithPostAndFormDataWithInCorrectValidUntilDate_whenMockMVC_thenResponseBadRequest() throws Exception {
+        Long currentTime = System.currentTimeMillis();
+        Order order = new Order("5a7b52c03235b718d1edcedo", "5a5f712c062cb49fbcd43ad8", "shipping", "pending",currentTime, currentTime - 5000000000000L , currentTime, "", new ArrayList<String>() {{
             add("5a5f72d2062cb49fbcd43ad9");
         }});
         this.mockMvc.perform(post("/orders")

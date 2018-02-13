@@ -13,7 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @ApiIgnore
 public class RootController {
 
-    private Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @ApiOperation(value = "view API documentation", produces = "test/HTML")
     @RequestMapping(value = "/", method = RequestMethod.GET)
