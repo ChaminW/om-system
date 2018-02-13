@@ -1,6 +1,5 @@
 package com.sysco.app.configuration;
 
-import com.sysco.app.configuration.security.SecurityKeyInterceptor;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;

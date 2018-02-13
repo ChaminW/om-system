@@ -74,13 +74,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> sendErrorResponse(SystemException ex, HttpStatus httpStatus) {
 
         Document error = new Document();
-
         error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
                 LocaleContextHolder.getLocale()));
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
         error.put(ROOT_CLASS, ex.getRootClass());
         error.put(TIMESTAMP, ex.getTimestamp());
-
         return new ResponseEntity<Object>(error, httpStatus);
     }
 
@@ -100,6 +98,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
+        error.put(ROOT_CLASS, Exception.class);
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
