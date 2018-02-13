@@ -52,20 +52,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createValidatedOrder(Order order, Errors errors) {
-
-        if (errors.hasErrors()) {
-            String errorMessage = "Error in validating order";
-            LOGGER.error(errorMessage);
-            throw new RestaurantIdValidationException(errorMessage, ErrorCode.ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST,
-                    OrderServiceImpl.class);
-        }
-
-        return this.createOrder(order);
-    }
-
-
-    @Override
     public List<Order> readOrders() {
 
         List<Order> orders;

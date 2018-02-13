@@ -1,11 +1,16 @@
 package com.sysco.app.controller;
 
+import com.sysco.app.exception.ErrorCode;
+import com.sysco.app.exception.ValidUntilValidationException;
 import com.sysco.app.model.Order;
 import com.sysco.app.service.OrderService;
+import com.sysco.app.service.OrderServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,6 +30,9 @@ public class OrderController {
     private final
     OrderService orderService;
 
+    private static final
+    Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -38,8 +46,13 @@ public class OrderController {
     })
     @PostMapping
     public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
-
-        Order createdOrder = orderService.createValidatedOrder(order, errors);
+        if (errors.hasErrors()) {
+            String errorMessage = "Error in validating order";
+            LOGGER.error(errorMessage);
+            throw new ValidUntilValidationException(errorMessage, ErrorCode.VALID_UNTIL_DATE_FAILURE,
+                    OrderServiceImpl.class);
+        }
+        Order createdOrder = orderService.createOrder(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 

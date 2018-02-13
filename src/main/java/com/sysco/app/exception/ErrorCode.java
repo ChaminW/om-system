@@ -22,7 +22,7 @@ public enum ErrorCode {
     RESTAURANT_READ_FAILURE(29, "Cannot read restaurant"),
 
     //Validation Exceptions
-    ORDER_VALIDATION_FAILURE_RESTAURANT_NOT_EXIST(30, "Restaurant not exists"),
+    VALID_UNTIL_DATE_FAILURE(30, "ValidUntil date not future"),
     ORDER_VALIDATION_FAILURE_ITEM_NOT_EXIST(31, "Item(s) not exist"),
     ORDER_ID_VALIDATION_FAILURE(32, "Invalid pattern for order id"),
     ITEM_ID_VALIDATION_FAILURE(33, "Invalid pattern for item item id"),
