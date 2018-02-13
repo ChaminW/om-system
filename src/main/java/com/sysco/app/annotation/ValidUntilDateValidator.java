@@ -14,7 +14,7 @@ public class ValidUntilDateValidator implements ConstraintValidator<CheckValidUn
     @Override
     public boolean isValid(Long validUntil,
                            ConstraintValidatorContext cxt) {
-        return System.currentTimeMillis() < validUntil;
+        return validUntil == null || System.currentTimeMillis() < validUntil;
     }
 
 }
