@@ -11,17 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import javax.validation.ConstraintViolationException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 
-
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String MESSAGE = "message";
     private static final String ERROR_CODE = "errorCode";
-    private static final String ROOT_CLASS = "rootClass";
+    //private static final String ROOT_CLASS = "rootClass";
     private static final String TIMESTAMP = "timestamp";
 
     private final
