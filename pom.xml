@@ -27,8 +27,6 @@
             **/com/sysco/app/model/Restaurant.java,
             **/com/sysco/app/model/Order.java,
             **/com/sysco/app/service/RestaurantServiceImpl.java,
-            **/com/sysco/app/service/ItemServiceImpl.java,
-            **/com/sysco/app/service/OrderServiceImpl.java,
             **/com/sysco/app/exception/RestaurantIdValidationException.java,
             **/com/sysco/app/exception/ValidationFailureException.java,
             **/com/sysco/app/exception/AuthenticationFailureException.java,
@@ -38,18 +36,15 @@
             **/com/sysco/app/validator/OrderValidator.java,
             **/com/sysco/app/controller/RestaurantController.java,
             **/com/sysco/app/controller/ItemController.java,
-            **/com/sysco/app/controller/OrderController.java,
-            **/com/sysco/app/controller/RootController.java
+            **/com/sysco/app/controller/RootController.java,
+            **/com/sysco/app/exception/RestExceptionHandler.java,
+            **/com/sysco/app/configuration/SecurityKeyInterceptor.java
         </sonar.exclusions>
     </properties>
 
 
     <dependencies>
         <!-- Spring -->
-        <!--
-           Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans)
-           This is the central artifact for Spring's Dependency Injection Container and is generally always defined
-       -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -61,25 +56,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--
-            Spring MVC for Servlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
-            Define this if you use Spring MVC with a Servlet Container such as Apache Tomcat (org.springframework.web.servlet.*)
-        -->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
-        <!-- The spring-aop module provides an AOP Alliance-compliant aspect-oriented
-            programming implementation allowing you to define -->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
-        <!-- The spring-web module provides basic web-oriented integration features
-            such as multipart file upload functionality and the initialization of the
-            IoC container using Servlet listeners and a web-oriented application context -->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -125,11 +114,7 @@
             <artifactId>logback-classic</artifactId>
             <version>1.1.8</version>
         </dependency>
-        <!--  <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>-->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -161,22 +146,14 @@
             <artifactId>spring-security-config</artifactId>
             <version>4.2.3.RELEASE</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>-->
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-        </dependency>-->
+
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
@@ -243,29 +220,16 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.2.201409121644</version>
                 <executions>
-                    <!--
-                        Prepares the property pointing to the JaCoCo runtime agent which
-                        is passed as VM argument when Maven the Surefire plugin is executed.
-                    -->
                     <execution>
                         <id>pre-unit-test</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
                             <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                            <!--
-                                Sets the name of the property containing the settings
-                                for JaCoCo runtime agent.
-                            -->
                             <propertyName>surefireArgLine</propertyName>
                         </configuration>
                     </execution>
-                    <!--
-                        Ensures that the code coverage report for unit tests is created after
-                        unit tests have been run.
-                    -->
                     <execution>
                         <id>post-unit-test</id>
                         <phase>test</phase>
@@ -273,9 +237,7 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
                             <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                            <!-- Sets the output directory for the code coverage report. -->
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
                         </configuration>
                     </execution>
@@ -293,8 +255,6 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.20.1</version>
                 <executions>
-                    <!-- Ensures that both integration-test and verify goals of the Failsafe
-                        Maven plugin are executed. -->
                     <execution>
                         <id>integration-tests</id>
                         <goals>

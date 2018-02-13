@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping(value = "/orders")
-@Api(value = "orders", description = "Operations pertaining to orders in Sysco Order Manager")
+@Api(value = "orders", tags = "Operations pertaining to orders in Sysco Order Manager")
 public class OrderController {
 
     private final
