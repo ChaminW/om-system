@@ -55,8 +55,15 @@ public class OrderServiceImpl implements OrderService {
         try {
             createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ORDER_READ_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_CREATE_FAILURE);
+=======
+            String errorMessage = ErrorCode.ORDER_CREATE_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);

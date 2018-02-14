@@ -35,11 +35,18 @@ public class ItemServiceImpl implements ItemService {
         try {
             createdItem = itemRepository.insert(item);
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ITEM_CREATE_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_CREATE_FAILURE);
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
+=======
+            String errorMessage = ErrorCode.ITEM_CREATE_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         }
 
         LOGGER.info("Item created ", createdItem.getId());
@@ -53,11 +60,18 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll();
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ITEM_READ_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_READ_FAILURE);
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
+=======
+            String errorMessage = ErrorCode.ITEM_READ_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         }
 
         LOGGER.info("Items retrieved");
@@ -72,11 +86,18 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ITEM_READ_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_READ_FAILURE);
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
+=======
+            String errorMessage = ErrorCode.ITEM_READ_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         }
 
         LOGGER.info("Items retrieved");
@@ -95,11 +116,18 @@ public class ItemServiceImpl implements ItemService {
         try {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ITEM_READ_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_READ_FAILURE);
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
+=======
+            String errorMessage = ErrorCode.ITEM_READ_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         }
 
         if (item == null) {
@@ -140,11 +168,18 @@ public class ItemServiceImpl implements ItemService {
         try {
             itemRepository.save(dbItem);
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ITEM_UPDATE_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_UPDATE_FAILURE);
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
+=======
+            String errorMessage = ErrorCode.ITEM_UPDATE_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         }
 
         LOGGER.info("Item updated ", dbItem.getId());
@@ -163,11 +198,18 @@ public class ItemServiceImpl implements ItemService {
         try {
             itemRepository.deleteById(id);
         } catch (MongoException e) {
+<<<<<<< HEAD
             LOGGER.error(ErrorCode.ITEM_DELETE_FAILURE.getDesc(), e);
             throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_DELETE_FAILURE);
         } catch (Exception e) {
             LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
             throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
+=======
+            String errorMessage = ErrorCode.ITEM_DELETE_FAILURE.getDesc();
+            LOGGER.error(errorMessage, e);
+            throw new DatabaseException(errorMessage,
+                    ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
+>>>>>>> e774ba92c963e7f225688940f108bb090cb0d990
         }
 
         LOGGER.info("Item deleted ", id);

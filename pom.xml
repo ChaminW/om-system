@@ -38,6 +38,7 @@
             **/com/sysco/app/controller/ItemController.java,
             **/com/sysco/app/controller/RootController.java,
             **/com/sysco/app/exception/RestExceptionHandler.java,
+            **/com/sysco/app/service/OrderServiceImpl.java,
             **/com/sysco/app/configuration/SecurityKeyInterceptor.java
         </sonar.exclusions>
     </properties>
