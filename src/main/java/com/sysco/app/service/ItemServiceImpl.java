@@ -1,7 +1,6 @@
 package com.sysco.app.service;
 
 import com.mongodb.MongoException;
-import com.sysco.app.controller.ItemController;
 import com.sysco.app.exception.*;
 import com.sysco.app.model.Item;
 import com.sysco.app.repository.ItemRepository;
@@ -31,20 +30,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item createItem(Item item) {
-
+        item.setId(null);
         Item createdItem;
         try {
             createdItem = itemRepository.insert(item);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ITEM_CREATE_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_CREATE_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_CREATE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Item created ", createdItem.getId());
@@ -58,15 +53,11 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ITEM_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Items retrieved");
@@ -81,15 +72,11 @@ public class ItemServiceImpl implements ItemService {
         try {
             items = itemRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ITEM_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Items retrieved");
@@ -100,32 +87,24 @@ public class ItemServiceImpl implements ItemService {
     public Item readItemById(String id) {
 
         if (!ItemValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc());
+            throw new ValidationFailureException(this.getClass().getName(), ErrorCode.ITEM_ID_VALIDATION_FAILURE);
         }
 
         Item item;
         try {
             item = itemRepository.findItemById(id);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ITEM_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         if (item == null) {
-            String errorMessage = ErrorCode.NO_ITEM_FOR_THE_ID.getDesc();
-            LOGGER.info(errorMessage);
-            throw new EntityNotFoundException(errorMessage,
-                    ErrorCode.NO_ITEM_FOR_THE_ID, ItemController.class);
+            LOGGER.info(ErrorCode.NO_ITEM_FOR_THE_ID.getDesc());
+            throw new EntityNotFoundException(this.getClass().getName(), ErrorCode.NO_ITEM_FOR_THE_ID);
         }
 
         LOGGER.info("Item retrieved ", item.getId());
@@ -137,10 +116,8 @@ public class ItemServiceImpl implements ItemService {
     public Item updateItem(String id, Item item) {
 
         if (!ItemValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc());
+            throw new ValidationFailureException(this.getClass().getName(), ErrorCode.ITEM_ID_VALIDATION_FAILURE);
         }
 
         Item dbItem = readItemById(id);
@@ -163,15 +140,11 @@ public class ItemServiceImpl implements ItemService {
         try {
             itemRepository.save(dbItem);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ITEM_UPDATE_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_UPDATE_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_UPDATE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Item updated ", dbItem.getId());
@@ -183,24 +156,18 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItemById(String id) {
 
         if (!ItemValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ITEM_ID_VALIDATION_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_ID_VALIDATION_FAILURE.getDesc());
+            throw new ValidationFailureException(this.getClass().getName(), ErrorCode.ITEM_ID_VALIDATION_FAILURE);
         }
 
         try {
             itemRepository.deleteById(id);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ITEM_DELETE_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.ITEM_DELETE_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ITEM_DELETE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Item deleted ", id);

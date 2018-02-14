@@ -24,9 +24,6 @@ public class Order {
     public Order() {
     }
 
-    public Order(String id) {
-        this.id = id;
-    }
     public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Long createdDate, Long validUntil, Long lastUpdatedAt, String description, List<String> itemIdList) {
         this.restaurantId = restaurantId;
         this.deliveryAddressId = deliveryAddressId;

@@ -41,11 +41,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order order){
 
+        order.setId(null);
         String restaurantId = order.getRestaurantId();
         Restaurant restaurant = restaurantRepository.findOrderById(restaurantId);
         if(StringUtils.isBlank(restaurantId) || restaurant == null){
-            LOGGER.error("Restaurant does not exist");
-            throw new ValidationFailureException("Restaurant does not exist", ErrorCode.NO_RESTAURANT_EXIST_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.NO_RESTAURANT_EXIST_FAILURE.getDesc());
+            throw new ValidationFailureException(this.getClass().getName(), ErrorCode.NO_RESTAURANT_EXIST_FAILURE);
         }
 
         order.setCreatedDate(System.currentTimeMillis());
@@ -54,15 +55,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.ORDER_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_CREATE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Order created ", createdOrder.getId());
@@ -76,15 +73,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             orders = orderRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.ORDER_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Orders retrieved");
@@ -100,15 +93,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             orders = orderRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.ORDER_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Orders retrieved");
@@ -122,22 +111,16 @@ public class OrderServiceImpl implements OrderService {
         try {
             order = orderRepository.findOrderById(id);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.ORDER_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         if (order == null) {
-            String errorMessage = ErrorCode.NO_ORDER_FOR_THE_ID.getDesc();
-            LOGGER.error(errorMessage);
-            throw new EntityNotFoundException(errorMessage,
-                    ErrorCode.NO_ORDER_FOR_THE_ID, OrderController.class);
+            LOGGER.error(ErrorCode.NO_ORDER_FOR_THE_ID.getDesc());
+            throw new EntityNotFoundException(this.getClass().getName(), ErrorCode.NO_ORDER_FOR_THE_ID);
         }
 
         LOGGER.info("Order retrieved ", order.getId());
@@ -167,15 +150,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.save(dbOrder);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ORDER_UPDATE_FAILURE.getDesc();
-            LOGGER.error (errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ORDER_UPDATE_FAILURE, OrderServiceImpl.class);
+            LOGGER.error (ErrorCode.ORDER_UPDATE_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_UPDATE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Order updated ", dbOrder.getId());
@@ -189,15 +168,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.deleteById(id);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.ORDER_DELETE_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.ORDER_DELETE_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.ORDER_DELETE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Order deleted ", id);
@@ -206,10 +181,8 @@ public class OrderServiceImpl implements OrderService {
     private void validateId(String id){
 
         if (!OrderValidator.isValidId(id)) {
-            String errorMessage = ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc();
-            LOGGER.error(errorMessage);
-            throw new ValidationFailureException(errorMessage,
-                    ErrorCode.ORDER_ID_VALIDATION_FAILURE, OrderServiceImpl.class);
+            LOGGER.error(ErrorCode.ORDER_ID_VALIDATION_FAILURE.getDesc());
+            throw new ValidationFailureException(this.getClass().getName(), ErrorCode.ORDER_ID_VALIDATION_FAILURE);
         }
     }
 }
