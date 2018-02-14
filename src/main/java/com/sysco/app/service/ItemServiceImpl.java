@@ -40,11 +40,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_CREATE_FAILURE, ItemServiceImpl.class);
-        } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
         }
 
         LOGGER.info("Item created ", createdItem.getId());
@@ -62,11 +57,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
-        } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
         }
 
         LOGGER.info("Items retrieved");
@@ -85,11 +75,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
-        } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
         }
 
         LOGGER.info("Items retrieved");
@@ -114,11 +99,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_READ_FAILURE, ItemServiceImpl.class);
-        } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
         }
 
         if (item == null) {
@@ -167,11 +147,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_UPDATE_FAILURE, ItemServiceImpl.class);
-        } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
         }
 
         LOGGER.info("Item updated ", dbItem.getId());
@@ -196,11 +171,6 @@ public class ItemServiceImpl implements ItemService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ITEM_DELETE_FAILURE, ItemServiceImpl.class);
-        } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, ItemServiceImpl.class);
         }
 
         LOGGER.info("Item deleted ", id);
