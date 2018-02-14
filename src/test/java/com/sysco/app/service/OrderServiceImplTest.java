@@ -5,6 +5,7 @@ import com.sysco.app.configuration.ApplicationConfiguration;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.EntityNotFoundException;
 import com.sysco.app.exception.ErrorCode;
+import com.sysco.app.exception.ValidationFailureException;
 import com.sysco.app.model.Order;
 import com.sysco.app.repository.OrderRepository;
 import org.junit.Assert;
@@ -59,7 +60,7 @@ public class OrderServiceImplTest {
             add("item0002");
         }});
         order2.setId("order0002");
-        order3 = new Order("213k705d062cb49fbc1j2kd7", "123kj312c062cb49fbcd43ad8", "pipeline", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
+        order3 = new Order("5a8112825c714934d46e8b7d", "123kj312c062cb49fbcd43ad8", "pipeline", "pending", System.currentTimeMillis(), System.currentTimeMillis() + 1000000000, System.currentTimeMillis(), "", new ArrayList<String>() {{
             add("5a5f72d2062cb49fbcd43ad9");
         }});
         pageRequest = PageRequest.of(0, 2);
@@ -73,12 +74,26 @@ public class OrderServiceImplTest {
 
         //check returned object Id value
         Assert.assertNotEquals(order.getId(), "");
-        Assert.assertEquals(order.getId().length(), 24);
+        Assert.assertEquals(24,order.getId().length());
         Assert.assertEquals(order.getDeliveryAddressId(), order3.getDeliveryAddressId());
         Assert.assertEquals(order.getDeliveryMethod(), order3.getDeliveryMethod());
         Assert.assertEquals(order.getRestaurantId(), order3.getRestaurantId());
         Assert.assertEquals(order.getStatus(), order3.getStatus());
         Assert.assertEquals(order.getItemIdList().get(0), order3.getItemIdList().get(0));
+
+    }
+
+    @Test
+    public void createOrder_submitNewOrderWithIncorrectRestaurantId_thenValidationException() throws Exception {
+        //below restaurant Id does not exists in database
+        order3.setRestaurantId("fdafgdh3154");
+
+        try {
+            orderServiceWired.createOrder(order3);
+            Assert.fail("testcase does not meet exception");
+        } catch (ValidationFailureException ex) {
+            Assert.assertEquals(ErrorCode.NO_RESTAURANT_EXIST_FAILURE,ex.getErrorCode());
+        }
 
     }
 
@@ -91,7 +106,7 @@ public class OrderServiceImplTest {
             orderService.readOrder("order0001");
             Assert.fail("testcase does not meet exception");
         } catch (EntityNotFoundException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.NO_ORDER_FOR_THE_ID);
+            Assert.assertEquals(ErrorCode.NO_ORDER_FOR_THE_ID,ex.getErrorCode());
         }
     }
 
@@ -102,9 +117,9 @@ public class OrderServiceImplTest {
         Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(order1);
 
         Order order = orderService.readOrder("order0001");
-        Assert.assertEquals(order.getRestaurantId(), "res0001");
-        Assert.assertEquals(order.getDeliveryAddressId(), "addr0001");
-        Assert.assertEquals(order.getItemIdList().get(0), "item0001");
+        Assert.assertEquals("res0001",order.getRestaurantId());
+        Assert.assertEquals("addr0001",order.getDeliveryAddressId());
+        Assert.assertEquals("item0001",order.getItemIdList().get(0));
     }
 
     @Test
@@ -131,7 +146,7 @@ public class OrderServiceImplTest {
             orderService.updateOrder("order0002", order1);
             Assert.fail("testcase does not meet exception");
         } catch (EntityNotFoundException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.NO_ORDER_FOR_THE_ID);
+            Assert.assertEquals(ErrorCode.NO_ORDER_FOR_THE_ID,ex.getErrorCode());
         }
     }
 
@@ -141,9 +156,9 @@ public class OrderServiceImplTest {
 
         Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(order2);
         orderService.updateOrder("order0002", order1);
-        Assert.assertEquals(order2.getDeliveryAddressId(), "addr0001");
-        Assert.assertEquals(order2.getDeliveryMethod(), "shipping");
-        Assert.assertEquals(order2.getStatus(), "pending");
+        Assert.assertEquals("addr0001",order2.getDeliveryAddressId());
+        Assert.assertEquals("shipping",order2.getDeliveryMethod());
+        Assert.assertEquals("pending",order2.getStatus());
 
     }
 
@@ -156,7 +171,7 @@ public class OrderServiceImplTest {
             orderService.createOrder(order1);
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
+            Assert.assertEquals(ErrorCode.ORDER_CREATE_FAILURE,ex.getErrorCode());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -170,7 +185,7 @@ public class OrderServiceImplTest {
             orderService.readOrders();
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_READ_FAILURE);
+            Assert.assertEquals(ErrorCode.ORDER_READ_FAILURE,ex.getErrorCode());
         }
     }
 
@@ -182,7 +197,7 @@ public class OrderServiceImplTest {
             orderService.readOrdersPageable(0, 2);
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_READ_FAILURE);
+            Assert.assertEquals(ErrorCode.ORDER_READ_FAILURE,ex.getErrorCode());
         }
     }
 
@@ -195,7 +210,7 @@ public class OrderServiceImplTest {
             orderService.updateOrder("order0002", order2);
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_UPDATE_FAILURE);
+            Assert.assertEquals(ErrorCode.ORDER_UPDATE_FAILURE,ex.getErrorCode());
         }
     }
 
@@ -207,7 +222,7 @@ public class OrderServiceImplTest {
             orderService.deleteOrderById("order0001");
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_DELETE_FAILURE);
+            Assert.assertEquals(ErrorCode.ORDER_DELETE_FAILURE,ex.getErrorCode());
         }
     }
 
@@ -219,7 +234,7 @@ public class OrderServiceImplTest {
             orderService.readOrder("order0001");
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
-            Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_READ_FAILURE);
+            Assert.assertEquals(ErrorCode.ORDER_READ_FAILURE,ex.getErrorCode());
         }
     }
 
