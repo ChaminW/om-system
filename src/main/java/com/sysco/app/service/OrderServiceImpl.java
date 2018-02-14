@@ -44,6 +44,11 @@ public class OrderServiceImpl implements OrderService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
         }
 
         LOGGER.info("Order created ", createdOrder.getId());
@@ -61,6 +66,11 @@ public class OrderServiceImpl implements OrderService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
         }
 
         LOGGER.info("Orders retrieved");
@@ -80,6 +90,11 @@ public class OrderServiceImpl implements OrderService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
         }
 
         LOGGER.info("Orders retrieved");
@@ -97,6 +112,11 @@ public class OrderServiceImpl implements OrderService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
         }
 
         if (order == null) {
@@ -137,6 +157,11 @@ public class OrderServiceImpl implements OrderService {
             LOGGER.error (errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_UPDATE_FAILURE, OrderServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
         }
 
         LOGGER.info("Order updated ", dbOrder.getId());
@@ -154,6 +179,11 @@ public class OrderServiceImpl implements OrderService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_DELETE_FAILURE, OrderServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, OrderServiceImpl.class);
         }
 
         LOGGER.info("Order deleted ", id);

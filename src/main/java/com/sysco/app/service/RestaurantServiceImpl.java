@@ -3,6 +3,7 @@ package com.sysco.app.service;
 import com.mongodb.MongoException;
 import com.sysco.app.exception.DatabaseException;
 import com.sysco.app.exception.ErrorCode;
+import com.sysco.app.exception.SystemException;
 import com.sysco.app.model.Restaurant;
 import com.sysco.app.repository.RestaurantRepository;
 import org.slf4j.Logger;
@@ -41,6 +42,11 @@ public class RestaurantServiceImpl implements RestaurantService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.RESTAURANT_CREATE_FAILURE, RestaurantServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, RestaurantServiceImpl.class);
         }
 
         LOGGER.info("Restaurant created", createdRestaurant.getId());
@@ -60,6 +66,11 @@ public class RestaurantServiceImpl implements RestaurantService {
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.RESTAURANT_READ_FAILURE, RestaurantServiceImpl.class);
+        } catch (Exception e) {
+            String errorMessage = "System Error";
+            LOGGER.error(errorMessage, e);
+            throw new SystemException(errorMessage,
+                    ErrorCode.INTERNAL_SERVER_ERROR, RestaurantServiceImpl.class);
         }
 
         LOGGER.info("Restaurants retrieved");

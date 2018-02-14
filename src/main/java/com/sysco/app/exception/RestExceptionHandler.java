@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.text.DateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Locale;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -21,7 +26,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String MESSAGE = "message";
     private static final String ERROR_CODE = "errorCode";
-    //private static final String ROOT_CLASS = "rootClass";
+    private static final String TIME_ZONE = "timeZone";
     private static final String TIMESTAMP = "timestamp";
 
     private final
@@ -73,12 +78,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> sendErrorResponse(SystemException ex, HttpStatus httpStatus) {
 
+        // Resolving time zone
+        Locale locale = LocaleContextHolder.getLocale();
+        String timeZone = messageSource.getMessage("ZONE_ID", null, locale);
+        ZoneId zone = ZoneId.of(timeZone);
+        LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(ex.getTimestamp()), zone);
+
+
         Document error = new Document();
-        error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null,
-                LocaleContextHolder.getLocale()));
+        error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null, locale));
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
-        /*error.put(ROOT_CLASS, ex.getRootClass());*/
-        error.put(TIMESTAMP, ex.getTimestamp());
+        error.put(TIMESTAMP, timestamp.toString());
+        error.put(TIME_ZONE, timeZone);
         return new ResponseEntity<>(error, httpStatus);
     }
 
