@@ -114,8 +114,7 @@ public class OrderController {
         if (errors.hasErrors()) {
             String errorMessage = ErrorCode.VALID_UNTIL_DATE_FAILURE.getDesc();
             LOGGER.error(errorMessage);
-            throw new ValidUntilValidationException(errorMessage, ErrorCode.VALID_UNTIL_DATE_FAILURE,
-                    OrderController.class);
+            throw new ValidUntilValidationException("Until date is not valid", ErrorCode.VALID_UNTIL_DATE_FAILURE);
         }
     }
 
