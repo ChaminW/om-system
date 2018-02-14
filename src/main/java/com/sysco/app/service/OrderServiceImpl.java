@@ -44,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
         String restaurantId = order.getRestaurantId();
         Restaurant restaurant = restaurantRepository.findOrderById(restaurantId);
         if(StringUtils.isBlank(restaurantId) || restaurant == null){
+            LOGGER.error("Restaurant does not exist");
             throw new ValidationFailureException("Restaurant does not exist", ErrorCode.NO_RESTAURANT_EXIST_FAILURE, OrderServiceImpl.class);
         }
 
@@ -53,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
-            String errorMessage = "Error in reading";
+            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
@@ -70,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orders = orderRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = "Error in reading";
+            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
