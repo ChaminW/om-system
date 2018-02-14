@@ -46,7 +46,7 @@ public class OrderController {
             @ApiResponse(code = 401, message = "Authorization failed")
     })
     @PostMapping
-    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody Order order, Errors errors) throws Exception {
         validateValidUntil(errors);
         Order createdOrder = orderService.createOrder(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);

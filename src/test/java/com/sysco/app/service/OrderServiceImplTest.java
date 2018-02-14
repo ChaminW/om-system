@@ -67,7 +67,7 @@ public class OrderServiceImplTest {
 
 
     @Test
-    public void createOrder_submitNewOrder_thenSuccess() {
+    public void createOrder_submitNewOrder_thenSuccess() throws Exception {
         //order3 doesn't have an Id. Id will be auto generated in mongo db
         Order order = orderServiceWired.createOrder(order3);
 
@@ -157,6 +157,8 @@ public class OrderServiceImplTest {
             Assert.fail("testcase does not meet exception");
         } catch (DatabaseException ex) {
             Assert.assertEquals(ex.getErrorCode(), ErrorCode.ORDER_CREATE_FAILURE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

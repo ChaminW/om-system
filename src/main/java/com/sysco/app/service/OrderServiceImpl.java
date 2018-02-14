@@ -4,8 +4,11 @@ import com.mongodb.MongoException;
 import com.sysco.app.controller.OrderController;
 import com.sysco.app.exception.*;
 import com.sysco.app.model.Order;
+import com.sysco.app.model.Restaurant;
 import com.sysco.app.repository.OrderRepository;
+import com.sysco.app.repository.RestaurantRepository;
 import com.sysco.app.validator.OrderValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +25,28 @@ public class OrderServiceImpl implements OrderService {
     private final
     OrderRepository orderRepository;
 
+    private final
+    RestaurantRepository restaurantRepository;
+
     private static final
     Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
-    public OrderServiceImpl(@Qualifier("orderRepository") OrderRepository orderRepository) {
+    public OrderServiceImpl(@Qualifier("orderRepository") OrderRepository orderRepository, @Qualifier("restaurantRepository") RestaurantRepository restaurantRepository) {
         this.orderRepository = orderRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @Transactional
     @Override
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order){
+
+        String restaurantId = order.getRestaurantId();
+        Restaurant restaurant = restaurantRepository.findOrderById(restaurantId);
+        if(StringUtils.isBlank(restaurantId) || restaurant == null){
+            LOGGER.error("Restaurant does not exist");
+            throw new ValidationFailureException("Restaurant does not exist", ErrorCode.NO_RESTAURANT_EXIST_FAILURE, OrderServiceImpl.class);
+        }
 
         order.setCreatedDate(System.currentTimeMillis());
         order.setLastUpdatedAt(System.currentTimeMillis());
@@ -40,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             createdOrder = orderRepository.insert(order);
         } catch (MongoException e) {
-            String errorMessage = "Error in reading";
+            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_CREATE_FAILURE, OrderServiceImpl.class);
@@ -62,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orders = orderRepository.findAll();
         } catch (MongoException e) {
-            String errorMessage = "Error in reading";
+            String errorMessage = ErrorCode.ORDER_READ_FAILURE.getDesc();
             LOGGER.error(errorMessage, e);
             throw new DatabaseException(errorMessage,
                     ErrorCode.ORDER_READ_FAILURE, OrderServiceImpl.class);
