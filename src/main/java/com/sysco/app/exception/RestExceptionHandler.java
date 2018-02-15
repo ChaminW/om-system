@@ -11,12 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import javax.validation.ConstraintViolationException;
-import java.text.DateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Locale;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -26,7 +21,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String MESSAGE = "message";
     private static final String ERROR_CODE = "errorCode";
-    private static final String TIME_ZONE = "timeZone";
     private static final String TIMESTAMP = "timestamp";
 
     private final
@@ -80,16 +74,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         // Resolving time zone
         Locale locale = LocaleContextHolder.getLocale();
-        String timeZone = messageSource.getMessage("ZONE_ID", null, locale);
-        ZoneId zone = ZoneId.of(timeZone);
-        LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(ex.getTimestamp()), zone);
-
-
         Document error = new Document();
         error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null, locale));
         error.put(ERROR_CODE, ex.getErrorCode().getCode());
-        error.put(TIMESTAMP, timestamp.toString());
-        error.put(TIME_ZONE, timeZone);
+        error.put(TIMESTAMP, ex.getTimestamp());
         return new ResponseEntity<>(error, httpStatus);
     }
 
@@ -101,7 +89,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         Document error = new Document();
         error.put(MESSAGE, e.getMessage());
-        /*error.put(ROOT_CLASS, ConstraintViolationException.class);*/
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -109,8 +96,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleException(Exception e) {
 
         Document error = new Document();
-        error.put(MESSAGE, e.getMessage());
-        /*error.put(ROOT_CLASS, Exception.class);*/
+        error.put(MESSAGE, "Unexpected error occurred");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
