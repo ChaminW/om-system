@@ -38,15 +38,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             createdRestaurant = restaurantRepository.insert(restaurant);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.RESTAURANT_CREATE_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.RESTAURANT_CREATE_FAILURE, RestaurantServiceImpl.class);
+            LOGGER.error(ErrorCode.RESTAURANT_CREATE_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.RESTAURANT_CREATE_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, RestaurantServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Restaurant created", createdRestaurant.getId());
@@ -62,15 +58,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurants = restaurantRepository.findAll(pageRequest);
         } catch (MongoException e) {
-            String errorMessage = ErrorCode.RESTAURANT_READ_FAILURE.getDesc();
-            LOGGER.error(errorMessage, e);
-            throw new DatabaseException(errorMessage,
-                    ErrorCode.RESTAURANT_READ_FAILURE, RestaurantServiceImpl.class);
+            LOGGER.error(ErrorCode.RESTAURANT_READ_FAILURE.getDesc(), e);
+            throw new DatabaseException(this.getClass().getName(), ErrorCode.RESTAURANT_READ_FAILURE);
         } catch (Exception e) {
-            String errorMessage = "System Error";
-            LOGGER.error(errorMessage, e);
-            throw new SystemException(errorMessage,
-                    ErrorCode.INTERNAL_SERVER_ERROR, RestaurantServiceImpl.class);
+            LOGGER.error(ErrorCode.INTERNAL_SERVER_ERROR.getDesc(), e);
+            throw new SystemException(this.getClass().getName(), ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         LOGGER.info("Restaurants retrieved");

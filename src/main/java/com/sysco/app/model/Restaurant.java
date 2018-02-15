@@ -18,10 +18,6 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(String id) {
-        this.id = id;
-    }
-
     public Restaurant(String id, String owner, String addressId, Long createdAt, String contact, String description, Boolean isActive) {
         this.id = id;
         this.owner = owner;

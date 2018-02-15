@@ -72,7 +72,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> sendErrorResponse(SystemException ex, HttpStatus httpStatus) {
 
-        // Resolving time zone
         Locale locale = LocaleContextHolder.getLocale();
         Document error = new Document();
         error.put(MESSAGE, messageSource.getMessage(String.valueOf(ex.getErrorCode().getCode()), null, locale));
