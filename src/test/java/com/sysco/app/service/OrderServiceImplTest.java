@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles(profiles = {"test"})
 @ContextConfiguration(classes = ApplicationConfiguration.class)
 @WebAppConfiguration
 public class OrderServiceImplTest {
@@ -68,7 +67,7 @@ public class OrderServiceImplTest {
 
 
     @Test
-    public void createOrder_submitNewOrder_thenSuccess() throws Exception {
+    public void createOrderSubmitNewOrderThenSuccess() throws Exception {
         //order3 doesn't have an Id. Id will be auto generated in mongo db
         Order order = orderServiceWired.createOrder(order3);
 
@@ -84,7 +83,7 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    public void createOrder_submitNewOrderWithIncorrectRestaurantId_thenValidationException() throws Exception {
+    public void createOrderSubmitNewOrderWithIncorrectRestaurantIdThenValidationException() throws Exception {
         //below restaurant Id does not exists in database
         order3.setRestaurantId("fdafgdh3154");
 
@@ -98,7 +97,7 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    public void readOrderById_IncorrectId_NotFoundEx() {
+    public void readOrderByIdIncorrectIdNotFoundEx() {
 
         Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(null);
 
@@ -112,7 +111,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void readOrderById_correctId_successful() {
+    public void readOrderByIdCorrectIdSuccessful() {
 
         Mockito.when(orderRepository.findOrderById("order0001")).thenReturn(order1);
 
@@ -138,7 +137,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void updateOrder_IncorrectId_NotFoundEx() {
+    public void updateOrderIncorrectIdNotFoundEx() {
 
         Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(null);
 
@@ -165,7 +164,7 @@ public class OrderServiceImplTest {
     //testing error codes when database exception raised
     @Test
     @Timed(millis = 1000)
-    public void createOrder_mongoError_DatabaseException() {
+    public void createOrderMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(orderRepository).insert(order1);
         try {
             orderService.createOrder(order1);
@@ -179,7 +178,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void readOrders_mongoError_DatabaseException() {
+    public void readOrdersMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(orderRepository).findAll();
         try {
             orderService.readOrders();
@@ -191,7 +190,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void readOrdersPageble_mongoError_DatabaseException() {
+    public void readOrdersPagebleMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(orderRepository).findAll(pageRequest);
         try {
             orderService.readOrdersPageable(0, 2);
@@ -203,7 +202,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void updateOrder_mongoError_DatabaseException() {
+    public void updateOrderMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(orderRepository).save(order2);
         Mockito.when(orderRepository.findOrderById("order0002")).thenReturn(order2);
         try {
@@ -216,7 +215,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void deleteOrders_mongoError_DatabaseException() {
+    public void deleteOrdersMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(orderRepository).deleteById("order0001");
         try {
             orderService.deleteOrderById("order0001");
@@ -228,7 +227,7 @@ public class OrderServiceImplTest {
 
     @Test
     @Timed(millis = 1000)
-    public void readrderById_mongoError_DatabaseException() {
+    public void readOrderByIdMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(orderRepository).findOrderById("order0001");
         try {
             orderService.readOrder("order0001");

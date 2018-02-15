@@ -52,51 +52,51 @@ public class ItemServiceImplTest {
     }
 
     @Test(expected = DatabaseException.class)
-    public void createItem_mongoError_DatabaseException() {
+    public void createItemMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(itemRepository).insert(item);
         itemService.createItem(item);
     }
 
     @Test(expected = DatabaseException.class)
-    public void readItems_mongoError_DatabaseException() {
+    public void readItemsMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(itemRepository).findAll();
         itemService.readItems();
     }
 
     @Test(expected = DatabaseException.class)
-    public void readItemsPageable_mongoError_DatabaseException() {
+    public void readItemsPageableMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(itemRepository).findAll(pageRequest);
         itemService.readItemsPageable(0, 2);
     }
 
     @Test(expected = DatabaseException.class)
-    public void readItemById_mongoError_DatabaseException() {
+    public void readItemByIdMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(itemRepository).findItemById("123");
         itemService.readItemById("123");
     }
 
     @Test(expected = DatabaseException.class)
-    public void updateItem_mongoError_DatabaseException() {
+    public void updateItemMongoErrorDatabaseException() {
         Mockito.when(itemRepository.findItemById("123")).thenReturn(item);
         Mockito.doThrow(new MongoException("")).when(itemRepository).save(item);
         itemService.updateItem("123", item);
     }
 
     @Test(expected = DatabaseException.class)
-    public void deleteItemById_mongoError_DatabaseException() {
+    public void deleteItemByIdMongoErrorDatabaseException() {
         Mockito.doThrow(new MongoException("")).when(itemRepository).deleteById("123");
         itemService.deleteItemById("123");
     }
 
     @Test
-    public void readItemById_validExistingId_Item() {
+    public void readItemByIdValidExistingIdItem() {
         Mockito.when(itemRepository.findItemById("123")).thenReturn(item);
         Item newItem = itemService.readItemById("123");
         Assert.assertEquals(item.getId(), newItem.getId());
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void readItemById_validNonExistingId_EntityNotFoundException() {
+    public void readItemByIdValidNonExistingIdEntityNotFoundException() {
         Item newItem = itemService.readItemById("1234");
     }
 }

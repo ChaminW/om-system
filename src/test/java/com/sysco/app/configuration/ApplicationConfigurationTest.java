@@ -32,7 +32,7 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
-    public void givenContext_whenServletContext_thenItProvidesRootController() {
+    public void givenContextWhenServletContextThenItProvidesRootController() {
         ServletContext servletContext = context.getServletContext();
 
         Assert.assertNotNull(servletContext);
@@ -41,7 +41,7 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
-    public void givenContext_whenServletContext_thenItProvidesOrderController() {
+    public void givenContextWhenServletContextThenItProvidesOrderController() {
         ServletContext servletContext = context.getServletContext();
 
         Assert.assertNotNull(servletContext);
@@ -50,7 +50,7 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
-    public void givenContext_whenServletContext_thenItProvidesItemController() {
+    public void givenContextWhenServletContextThenItProvidesItemController() {
         ServletContext servletContext = context.getServletContext();
 
         Assert.assertNotNull(servletContext);
