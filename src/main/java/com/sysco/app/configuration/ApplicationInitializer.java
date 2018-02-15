@@ -1,9 +1,17 @@
 package com.sysco.app.configuration;
 
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
 public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+        servletContext.setInitParameter("ACTIVE_PROFILE", "dev");
+    }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {

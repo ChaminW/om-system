@@ -22,7 +22,7 @@ import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = "com.sysco.app")
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = {"classpath:application.${ACTIVE_PROFILE}.properties"})
 public class ApplicationConfiguration extends WebMvcConfigurationSupport {
 
     private final SecurityKeyInterceptor securityKeyInterceptor;
@@ -85,3 +85,4 @@ public class ApplicationConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(localeInterceptor());
     }
 }
+
