@@ -1,9 +1,8 @@
 package com.sysco.app.model;
 
+import com.sysco.app.annotation.CheckValidUntilDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 import java.util.List;
 
 @Document(collection = "orders")
@@ -15,16 +14,17 @@ public class Order {
     private String deliveryAddressId;
     private String deliveryMethod;
     private String status;
-    private Date createdDate;
-    private Date validUntil;
-    private Date lastUpdatedAt;
+    private Long createdDate;
+    @CheckValidUntilDate
+    private Long validUntil;
+    private Long lastUpdatedAt;
     private String description;
     private List<String> itemIdList;
 
     public Order() {
     }
 
-    public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Date createdDate, Date validUntil, Date lastUpdatedAt, String description, List<String> itemIdList) {
+    public Order(String restaurantId, String deliveryAddressId, String deliveryMethod, String status, Long createdDate, Long validUntil, Long lastUpdatedAt, String description, List<String> itemIdList) {
         this.restaurantId = restaurantId;
         this.deliveryAddressId = deliveryAddressId;
         this.deliveryMethod = deliveryMethod;
@@ -76,27 +76,27 @@ public class Order {
         this.status = status;
     }
 
-    public Date getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getValidUntil() {
+    public Long getValidUntil() {
         return validUntil;
     }
 
-    public void setValidUntil(Date validUntil) {
+    public void setValidUntil(Long validUntil) {
         this.validUntil = validUntil;
     }
 
-    public Date getLastUpdatedAt() {
+    public Long getLastUpdatedAt() {
         return lastUpdatedAt;
     }
 
-    public void setLastUpdatedAt(Date lastUpdatedAt) {
+    public void setLastUpdatedAt(Long lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 
