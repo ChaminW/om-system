@@ -17,7 +17,7 @@
         <junit.version>4.12</junit.version>
         <testng.version>6.11</testng.version>
         <mockito.version>1.9.5</mockito.version>
-        <jackson.version>2.9.3</jackson.version>
+        <jackson.version>2.9.10.4</jackson.version>
 
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
